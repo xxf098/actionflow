@@ -2,13 +2,12 @@ package main
 
 import (
     "github.com/xxf098/dagflow"
-     "github.com/xxf098/dagflow/core"
+    "github.com/xxf098/dagflow/core"
 )
 
 
-AddHello: {
-	dir: dagflow.#FS
-
+#AddHello: {
+	dir: string
     name: string
 
     write: core.#WriteFile & {
@@ -18,3 +17,10 @@ AddHello: {
     }
 }
 
+
+dagflow.#Plan & {
+      actions: hello: #AddHello & {
+        dir: "."
+        name: "fileName"
+    }
+}

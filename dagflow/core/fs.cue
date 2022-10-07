@@ -19,7 +19,7 @@ import "github.com/xxf098/dagflow"
 	$dagger: task: _name: "WriteFile"
 
 	// Input filesystem tree
-	input: dagflow.#FS
+	input: string
 	// Path of the file to write
 	path: string
 	// Contents to write

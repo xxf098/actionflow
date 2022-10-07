@@ -9,6 +9,10 @@ import (
 	"cuelang.org/go/cue/load"
 )
 
+const (
+	ScalarKind cue.Kind = cue.StringKind | cue.NumberKind | cue.BoolKind
+)
+
 var ErrNotTask = errors.New("not a task")
 
 // cue.mod in the root of go project
@@ -32,18 +36,47 @@ func loadCue() {
 			continue
 		}
 
-		p := cue.MakePath(cue.Str("AddHello"), cue.Str("write"))
-		w := value.LookupPath(p)
-		if w.Exists() {
-			if t, err := lookupType(&w); err == nil {
-				// use type to find task action
-				fmt.Println("type: ", t)
-			}
+		// p := cue.MakePath(cue.Str("AddHello"), cue.Str("write"))
+		// w := value.LookupPath(p)
+		// if w.Exists() {
+		// 	if t, err := lookupType(&w); err == nil {
+		// 		// use type to find task action
+		// 		fmt.Println("type: ", t)
+		// 	}
+		// }
+
+		p := cue.MakePath(cue.Str("actions"), cue.Str("hello"))
+		a := value.LookupPath(p)
+		if a.Exists() {
+			inputs := lookupInput(&a)
+			fmt.Println("hello: ", a)
+			fmt.Println(inputs)
 		}
 
 		fmt.Println("kind: ", value.Kind())
 		fmt.Printf("main value: %v", value)
 	}
+}
+
+type Input struct {
+	Name          string
+	Type          string
+	Documentation string
+}
+
+func lookupInput(v *cue.Value) []Input {
+	inputs := []Input{}
+	for iter, _ := v.Fields(cue.Optional(true)); iter.Next(); {
+		vn := iter.Value()
+		ik := vn.IncompleteKind()
+		if ik.IsAnyOf(ScalarKind) && v.IsConcrete() {
+			inputs = append(inputs, Input{
+				Name: iter.Label(),
+				Type: ik.String(),
+			})
+		}
+	}
+	return inputs
 }
 
 //  find action type
