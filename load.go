@@ -36,6 +36,7 @@ func loadCue() {
 		w := value.LookupPath(p)
 		if w.Exists() {
 			if t, err := lookupType(&w); err == nil {
+				// use type to find task action
 				fmt.Println("type: ", t)
 			}
 		}
@@ -45,6 +46,7 @@ func loadCue() {
 	}
 }
 
+//  find action type
 func lookupType(v *cue.Value) (string, error) {
 
 	typePath := cue.MakePath(
