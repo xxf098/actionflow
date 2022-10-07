@@ -19,7 +19,7 @@ import "github.com/xxf098/dagflow"
 	$dagger: task: _name: "WriteFile"
 
 	// Input filesystem tree
-	input: dagger.#FS
+	input: dagflow.#FS
 	// Path of the file to write
 	path: string
 	// Contents to write
@@ -27,5 +27,5 @@ import "github.com/xxf098/dagflow"
 	// Permissions of the file
 	permissions: *0o644 | int
 	// Output filesystem tree
-	output: dagger.#FS @dagger(generated)
+	output: dagflow.#FS @dagger(generated)
 }

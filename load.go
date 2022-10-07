@@ -11,7 +11,7 @@ import (
 // import mod inside pkg
 func loadCue() {
 	ctx := cuecontext.New()
-	entrypoints := []string{"./root.cue"}
+	entrypoints := []string{"./main.cue"}
 
 	bis := load.Instances(entrypoints, nil)
 
@@ -28,6 +28,6 @@ func loadCue() {
 			continue
 		}
 
-		fmt.Println("root value:", value)
+		fmt.Printf("main value: %v", value)
 	}
 }
