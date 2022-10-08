@@ -1,25 +1,23 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
+	"github.com/xxf098/dagflow/task"
 )
 
 const (
 	ScalarKind cue.Kind = cue.StringKind | cue.NumberKind | cue.BoolKind
 )
 
-var ErrNotTask = errors.New("not a task")
-
 // cue.mod in the root of go project
 // import mod inside pkg
-func loadCue() {
+func loadCue(filePath string) {
 	ctx := cuecontext.New()
-	entrypoints := []string{"./main.cue"}
+	entrypoints := []string{filePath}
 
 	bis := load.Instances(entrypoints, nil)
 
@@ -98,5 +96,5 @@ func lookupType(v *cue.Value) (string, error) {
 			return typ.String()
 		}
 	}
-	return "", ErrNotTask
+	return "", task.ErrNotTask
 }

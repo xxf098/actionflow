@@ -10,7 +10,7 @@ import (
 func main() {
 	// flowTask()
 	// print()
-	loadCue()
+	loadCue("./main.cue")
 }
 
 func print() {
