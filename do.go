@@ -1,15 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
+	"github.com/xxf098/dagflow/task"
 )
 
 // run a action in cue
-// find action dependency
+// run action with dependency
 func Do(filePath string, actionName string) {
 
 	ctx := cuecontext.New()
@@ -35,17 +37,24 @@ func Do(filePath string, actionName string) {
 		if !a.Exists() {
 			continue
 		}
-		taskType := lookupAction(&a)
+		taskType, actionValue := lookupAction(&a)
 		if len(taskType) < 1 {
 			continue
 		}
 		fmt.Println(taskType)
-
+		t := task.New(taskType)
+		if t == nil {
+			continue
+		}
+		_, err := t.Run(context.Background(), actionValue)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 }
 
-func lookupAction(v *cue.Value) string {
+func lookupAction(v *cue.Value) (string, *cue.Value) {
 	for iter, _ := v.Fields(cue.Optional(true)); iter.Next(); {
 		vn := iter.Value()
 		ik := vn.IncompleteKind()
@@ -54,8 +63,8 @@ func lookupAction(v *cue.Value) string {
 			if err != nil {
 				continue
 			}
-			return t
+			return t, &vn
 		}
 	}
-	return ""
+	return "", nil
 }
