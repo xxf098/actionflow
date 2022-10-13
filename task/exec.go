@@ -3,7 +3,6 @@ package task
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os/exec"
 
 	"cuelang.org/go/cue"
@@ -16,6 +15,7 @@ func init() {
 type execTask struct {
 }
 
+// redirect output to current shell
 func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	common, err := parseCommon(v)
 	if err != nil {
@@ -28,13 +28,13 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	}
 	envs := []string{}
 	for it.Next() {
-		key := it.Label()
+		// key := it.Label()
 		value, err := it.Value().String()
 		if err != nil {
 			return nil, err
 		}
-		env := fmt.Sprintf("%s=%v", key, value)
-		envs = append(envs, env)
+		// env := fmt.Sprintf("%s=%v", key, value)
+		envs = append(envs, value)
 	}
 	name := common.args[0]
 	args := common.args[1:]
