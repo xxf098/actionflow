@@ -11,7 +11,7 @@ import (
 )
 
 // run a action in cue
-// run action with dependency
+// TODO: run action with dependency
 func Do(filePath string, actionName string) {
 
 	ctx := cuecontext.New()

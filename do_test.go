@@ -2,6 +2,6 @@ package main
 
 import "testing"
 
-func TestDo(t *testing.T) {
+func TestWriteFile(t *testing.T) {
 	Do("./main.cue", "hello")
 }

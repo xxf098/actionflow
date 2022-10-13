@@ -1,4 +1,4 @@
-module dagflow
+module github.com/xxf098/dagflow
 
 go 1.18
 
