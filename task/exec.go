@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os/exec"
 
 	"cuelang.org/go/cue"
@@ -21,12 +22,25 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		return nil, err
 	}
 	// env
-
+	it, err := v.Lookup("env").Fields()
+	if err != nil {
+		return nil, err
+	}
+	envs := []string{}
+	for it.Next() {
+		key := it.Label()
+		value, err := it.Value().String()
+		if err != nil {
+			return nil, err
+		}
+		env := fmt.Sprintf("%s=%v", key, value)
+		envs = append(envs, env)
+	}
 	name := common.args[0]
 	args := common.args[1:]
 	cmd := exec.CommandContext(ctx, name, args...)
 	cmd.Dir = common.workdir
-	// cmd.Env
+	cmd.Env = append(cmd.Env, envs...)
 	err = cmd.Run()
 	if err != nil {
 		return nil, err
