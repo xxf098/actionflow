@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"cuelang.org/go/cue"
-	"cuelang.org/go/cue/cuecontext"
 )
 
 var (
@@ -74,13 +73,4 @@ func lookupType(v *cue.Value) (string, error) {
 		}
 	}
 	return "", ErrNotTask
-}
-
-func NewValue() (*cue.Value, error) {
-	c := cuecontext.New()
-	v := c.CompileString("", cue.Filename("_"))
-	if v.Err() != nil {
-		return nil, v.Err()
-	}
-	return &v, nil
 }

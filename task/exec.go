@@ -6,6 +6,7 @@ import (
 	"os/exec"
 
 	"cuelang.org/go/cue"
+	"github.com/xxf098/dagflow/compiler"
 )
 
 func init() {
@@ -45,7 +46,7 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewValue()
+	return compiler.NewValue(), nil
 }
 
 type execCommon struct {
