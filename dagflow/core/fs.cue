@@ -46,3 +46,21 @@ import "github.com/xxf098/dagflow"
 	// Output filesystem tree
 	output: dagflow.#FS @dagger(generated)
 }
+
+// Create one or multiple directory in a container
+#Mkdir: {
+	$dagger: task: _name: "Mkdir"
+
+	// Path of the directory to create
+	// It can be nested (e.g : "/foo" or "/foo/bar")
+	path: string
+
+	// Permissions of the directory
+	permissions: *0o755 | int
+
+	// If set, it creates parents' directory if they do not exist
+	parents: *true | false
+
+	// Modified filesystem
+	output: dagflow.#FS @dagger(generated)
+}

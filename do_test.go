@@ -13,3 +13,7 @@ func TestExec(t *testing.T) {
 func TestRmFile(t *testing.T) {
 	Do("./testcues/rmfile.cue", "hello")
 }
+
+func TestMkdir(t *testing.T) {
+	Do("./testcues/mkdir.cue", "hello")
+}
