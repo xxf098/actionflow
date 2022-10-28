@@ -12,12 +12,14 @@ import (
 
 // run a action in cue
 // TODO: run action with dependency
-func Do(filePath string, actionName string) {
+func Do(filePath string, actionName string) *cue.Value {
 
 	ctx := cuecontext.New()
 	entrypoints := []string{filePath}
 
 	bis := load.Instances(entrypoints, nil)
+
+	var output *cue.Value
 
 	for _, bi := range bis {
 
@@ -46,12 +48,13 @@ func Do(filePath string, actionName string) {
 		if t == nil {
 			continue
 		}
-		_, err := t.Run(context.Background(), actionValue)
+		var err error
+		output, err = t.Run(context.Background(), actionValue)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
-
+	return output
 }
 
 func lookupAction(v *cue.Value) (string, *cue.Value) {
