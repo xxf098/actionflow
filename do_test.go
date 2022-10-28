@@ -9,3 +9,7 @@ func TestWriteFile(t *testing.T) {
 func TestExec(t *testing.T) {
 	Do("./testcues/exec.cue", "touch")
 }
+
+func TestRmFile(t *testing.T) {
+	Do("./testcues/rmfile.cue", "hello")
+}

@@ -29,3 +29,20 @@ import "github.com/xxf098/dagflow"
 	// Output filesystem tree
 	output: dagflow.#FS @dagger(generated)
 }
+
+
+// Remove file or directory from a filesystem tree
+#Rm: {
+	$dagger: task: _name: "Rm"
+
+	// Path to delete (handle wildcard)
+	// (e.g. /file.txt or /*.txt)
+	path: string
+
+	// Allow wildcard selection
+	// Default to: true
+	allowWildcard: *true | bool
+
+	// Output filesystem tree
+	output: dagflow.#FS @dagger(generated)
+}
