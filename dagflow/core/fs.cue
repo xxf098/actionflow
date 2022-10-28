@@ -61,6 +61,6 @@ import "github.com/xxf098/dagflow"
 	// If set, it creates parents' directory if they do not exist
 	parents: *true | false
 
-	// Modified filesystem
-	output: dagflow.#FS @dagger(generated)
+	// dir full path
+	output: string @dagger(generated)
 }
