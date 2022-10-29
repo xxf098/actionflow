@@ -39,7 +39,7 @@ func Do(filePath string, actionName string) *cue.Value {
 		if !a.Exists() {
 			continue
 		}
-		taskType, actionValue := lookupAction(&a)
+		taskType, actionValue := task.LookupAction(&a)
 		if len(taskType) < 1 {
 			continue
 		}
@@ -55,19 +55,4 @@ func Do(filePath string, actionName string) *cue.Value {
 		}
 	}
 	return output
-}
-
-func lookupAction(v *cue.Value) (string, *cue.Value) {
-	for iter, _ := v.Fields(cue.Optional(true)); iter.Next(); {
-		vn := iter.Value()
-		ik := vn.IncompleteKind()
-		if ik.IsAnyOf(cue.StructKind) && v.IsConcrete() {
-			t, err := lookupType(&vn)
-			if err != nil {
-				continue
-			}
-			return t, &vn
-		}
-	}
-	return "", nil
 }

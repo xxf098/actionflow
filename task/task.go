@@ -113,3 +113,19 @@ func lookupType(v *cue.Value) (string, error) {
 	}
 	return "", ErrNotTask
 }
+
+// lookup action type in cue
+func LookupAction(v *cue.Value) (string, *cue.Value) {
+	for iter, _ := v.Fields(cue.Optional(true)); iter.Next(); {
+		vn := iter.Value()
+		ik := vn.IncompleteKind()
+		if ik.IsAnyOf(cue.StructKind) && v.IsConcrete() {
+			t, err := lookupType(&vn)
+			if err != nil {
+				continue
+			}
+			return t, &vn
+		}
+	}
+	return "", nil
+}
