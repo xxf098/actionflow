@@ -60,16 +60,16 @@ func (r *Runner) update(p cue.Path, v *cue.Value) error {
 	if value.Value().Err() != nil {
 		return value.Value().Err()
 	}
-	r.initTasks()
+	r.initTasks(v)
 	return nil
 }
 
-func (r *Runner) initTasks() {
+func (r *Runner) initTasks(v *cue.Value) {
 	flow := cueflow.New(
 		&cueflow.Config{
 			FindHiddenTasks: true,
 		},
-		r.mirror,
+		v,
 		noOpRunner,
 	)
 
@@ -110,7 +110,6 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 	if !r.shouldRun(v.Path()) {
 		return nil, nil
 	}
-	fmt.Println(v.Path().String())
 	return cueflow.RunnerFunc(func(t *cueflow.Task) error {
 		ctx := t.Context()
 		taskPath := t.Path().String()
@@ -121,6 +120,7 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 			lg.Debug().Str("dependency", dep.Path().String()).Msg("dependency detected")
 		}
 
+		// fixme
 		tval := t.Value()
 		start := time.Now()
 		result, err := handler.Run(ctx, &tval)

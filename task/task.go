@@ -90,9 +90,9 @@ func Lookup(v *cue.Value) (Task, error) {
 		return nil, ErrNotTask
 	}
 
-	typeString, err := lookupType(v)
-	if err != nil {
-		return nil, err
+	typeString, v := LookupAction(v)
+	if v == nil {
+		return nil, ErrNotTask
 	}
 
 	t := New(typeString)
