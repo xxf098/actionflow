@@ -23,6 +23,45 @@ var (
 	paths = []cue.Path{corePath, typePath}
 )
 
+// State is the state of the task.
+type State int8
+
+func (s State) String() string {
+	return [...]string{"computing", "skipped", "completed", "cancelled", "failed"}[s]
+}
+
+func ParseState(s string) (State, error) {
+	switch s {
+	case "computing":
+		return StateComputing, nil
+	case "skipped":
+		return StateSkipped, nil
+	case "cancelled":
+		return StateCanceled, nil
+	case "failed":
+		return StateFailed, nil
+	case "completed":
+		return StateCompleted, nil
+	}
+
+	return -1, fmt.Errorf("invalid state [%s]", s)
+}
+
+func (s State) CanTransition(t State) bool {
+	return s <= t
+}
+
+const (
+	// state order is important here since it defines the  order
+	// on how states can transition only forwards
+	// computing > completed > canceled > failed
+	StateComputing State = iota
+	StateSkipped
+	StateCompleted
+	StateCanceled
+	StateFailed
+)
+
 // return result
 type Task interface {
 	Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
