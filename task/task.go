@@ -90,9 +90,9 @@ func Lookup(v *cue.Value) (Task, error) {
 		return nil, ErrNotTask
 	}
 
-	typeString, v := LookupAction(v)
-	if v == nil {
-		return nil, ErrNotTask
+	typeString, err := lookupActionType(v)
+	if err != nil {
+		return nil, err
 	}
 
 	t := New(typeString)
@@ -110,6 +110,19 @@ func lookupType(v *cue.Value) (string, error) {
 			// fmt.Println(v.Cue())
 			return typ.String()
 		}
+	}
+	return "", ErrNotTask
+}
+
+// lookup action type in cue
+func lookupActionType(v *cue.Value) (string, error) {
+	ik := v.IncompleteKind()
+	if ik.IsAnyOf(cue.StructKind) && v.IsConcrete() {
+		t, err := lookupType(v)
+		if err != nil {
+			return "", err
+		}
+		return t, nil
 	}
 	return "", ErrNotTask
 }

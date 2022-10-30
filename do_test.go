@@ -1,9 +1,18 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+
+	"cuelang.org/go/cue"
+)
 
 func TestWriteFile(t *testing.T) {
 	Do("./testcues/writefile.cue", "hello")
+}
+
+func TestWriteFile1(t *testing.T) {
+	Do("./testcues/writefile1.cue", "hello")
 }
 
 func TestExec(t *testing.T) {
@@ -15,5 +24,8 @@ func TestRmFile(t *testing.T) {
 }
 
 func TestMkdir(t *testing.T) {
-	Do("./testcues/mkdir.cue", "hello")
+	output := Do("./testcues/mkdir.cue", "hello")
+	v := output.LookupPath(cue.ParsePath("output"))
+	s, _ := v.String()
+	fmt.Println(s)
 }
