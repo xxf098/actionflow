@@ -29,3 +29,7 @@ func TestMkdir(t *testing.T) {
 	s, _ := v.String()
 	fmt.Println(s)
 }
+
+func TestGitPull(t *testing.T) {
+	Do("./testcues/gitpull.cue", "hello")
+}
