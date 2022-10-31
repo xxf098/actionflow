@@ -1,4 +1,4 @@
-package main
+package dagflow
 
 import (
 	"context"
@@ -30,6 +30,7 @@ func NewRunner(target cue.Path) *Runner {
 	}
 }
 
+// context
 func (r *Runner) Run(ctx context.Context, src cue.Value) error {
 	if !src.LookupPath(r.target).Exists() {
 		return fmt.Errorf("%s not found", r.target.String())

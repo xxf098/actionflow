@@ -1,4 +1,4 @@
-package main
+package dagflow
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"cuelang.org/go/cue/cuecontext"
 )
 
-func main() {
+func main1() {
 	// flowTask()
 	// print()
 	loadCue("./main.cue")
