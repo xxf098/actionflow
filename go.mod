@@ -13,6 +13,7 @@ require (
 require (
 	github.com/cockroachdb/apd/v2 v2.0.1 // indirect
 	github.com/emicklei/proto v1.6.15 // indirect
+	github.com/gofrs/flock v0.8.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/mpvl/unique v0.0.0-20150818121801-cbe035fff7de // indirect

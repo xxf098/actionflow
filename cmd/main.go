@@ -19,17 +19,21 @@ func main() {
 	}
 	args := os.Args[1:]
 	if args[0] == "init" {
-		dir := "."
-		if len(args) > 1 {
-			dir = args[1]
-		}
-		projectInit(dir)
+		projectInit(args)
+		return
+	}
+
+	if args[0] == "update" {
+		projectUpdate(args)
 		return
 	}
 }
 
-func projectInit(dir string) {
-
+func projectInit(args []string) {
+	dir := "."
+	if len(args) > 1 {
+		dir = args[1]
+	}
 	err := project.Init(context.Background(), dir, "")
 	if err != nil {
 		log.Fatal(err)
@@ -39,4 +43,12 @@ func projectInit(dir string) {
 	} else {
 		fmt.Printf("Project initialized in \"%s\"! To install dagger packages, go to subfolder \"%s\" and run \"dagger project update\"", dir, dir)
 	}
+}
+
+func projectUpdate(args []string) {
+	dir := "."
+	if len(args) > 1 {
+		dir = args[1]
+	}
+	project.Update(dir)
 }
