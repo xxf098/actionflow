@@ -17,7 +17,7 @@ import (
 
 var (
 	// FS contains the filesystem of the stdlib.
-	//go:embed core
+	//go:embed github.com
 	FS embed.FS
 )
 
