@@ -27,6 +27,10 @@ func main() {
 		projectUpdate(args)
 		return
 	}
+	if args[0] == "do" {
+		flowAction(args)
+		return
+	}
 }
 
 func projectInit(args []string) {
@@ -51,4 +55,14 @@ func projectUpdate(args []string) {
 		dir = args[1]
 	}
 	project.Update(dir)
+}
+
+func flowAction(args []string) {
+	action := args[1]
+	dir, _ := os.Getwd()
+	if len(args) > 2 {
+		dir = args[2]
+	}
+	// Flow(dir, action)
+	Do(dir, action)
 }
