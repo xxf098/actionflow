@@ -7,7 +7,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
-	_ "github.com/xxf098/dagflow/task"
+	_ "github.com/xxf098/dagflow/plan/task"
 )
 
 func loadFile(filePath string) cue.Value {

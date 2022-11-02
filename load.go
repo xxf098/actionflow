@@ -6,7 +6,7 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
-	"github.com/xxf098/dagflow/task"
+	"github.com/xxf098/dagflow/plan/task"
 )
 
 const (
