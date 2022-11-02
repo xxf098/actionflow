@@ -27,7 +27,7 @@ func TestRmFile(t *testing.T) {
 }
 
 func TestRmFileWildcard(t *testing.T) {
-	_, err := Do("./testcues/rmfile.cue", "test.rmWildcard.rm")
+	err := Flow("./testcues/rmfile.cue", "test.rmWildcard.verify")
 	if err != nil {
 		t.Fatal(err)
 	}

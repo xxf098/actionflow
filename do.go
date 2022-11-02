@@ -67,3 +67,16 @@ func Do(filePath string, actionName string) (*cue.Value, error) {
 	}
 	return output, err
 }
+
+func Flow(cueFile string, action string) error {
+
+	v := loadFile(cueFile)
+	iter, _ := v.Fields()
+	for iter.Next() {
+		fmt.Println(iter.Label())
+	}
+	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
+	runner := NewRunner(target)
+	err := runner.Run(context.Background(), v)
+	return err
+}

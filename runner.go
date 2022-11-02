@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"cuelang.org/go/cue"
+	"cuelang.org/go/cue/cuecontext"
+	"cuelang.org/go/cue/load"
 	cueflow "cuelang.org/go/tools/flow"
 	"github.com/rs/zerolog/log"
 	"github.com/xxf098/dagflow/compiler"
@@ -175,4 +177,12 @@ func noOpRunner(v cue.Value) (cueflow.Runner, error) {
 	return cueflow.RunnerFunc(func(t *cueflow.Task) error {
 		return nil
 	}), nil
+}
+
+func loadFile(filePath string) cue.Value {
+	ctx := cuecontext.New()
+	entrypoints := []string{filePath}
+
+	bis := load.Instances(entrypoints, nil)
+	return ctx.BuildInstance(bis[0])
 }
