@@ -3,6 +3,7 @@ package dagflow
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
@@ -22,6 +23,10 @@ func Do(filePath string, actionName string) (*cue.Value, error) {
 	var output *cue.Value
 
 	var err error
+	selectors := []cue.Selector{cue.Str("actions")}
+	for _, v := range strings.Split(actionName, ".") {
+		selectors = append(selectors, cue.Str(v))
+	}
 
 	for _, bi := range bis {
 
@@ -38,9 +43,10 @@ func Do(filePath string, actionName string) (*cue.Value, error) {
 			continue
 		}
 
-		p := cue.MakePath(cue.Str("actions"), cue.Str(actionName))
+		p := cue.MakePath(selectors...)
 		a := value.LookupPath(p)
 		if !a.Exists() {
+			err = fmt.Errorf("path not found")
 			continue
 		}
 		taskType, actionValue := task.LookupAction(&a)

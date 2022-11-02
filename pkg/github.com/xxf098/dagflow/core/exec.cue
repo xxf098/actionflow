@@ -17,4 +17,6 @@ package core
 
     // User ID or name
 	user: string | *"root:root"
+
+	output: string @dagger(generated)
 }

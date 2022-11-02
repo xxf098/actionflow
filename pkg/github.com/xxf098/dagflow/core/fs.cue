@@ -35,6 +35,7 @@ import "github.com/xxf098/dagflow"
 #Rm: {
 	$dagger: task: _name: "Rm"
 
+	input: _
 	// Path to delete (handle wildcard)
 	// (e.g. /file.txt or /*.txt)
 	path: string
@@ -44,7 +45,7 @@ import "github.com/xxf098/dagflow"
 	allowWildcard: *true | bool
 
 	// Output filesystem tree
-	output: dagflow.#FS @dagger(generated)
+	output: string @dagger(generated)
 }
 
 // Create one or multiple directory in a container

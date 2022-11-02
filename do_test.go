@@ -20,7 +20,14 @@ func TestExec(t *testing.T) {
 }
 
 func TestRmFile(t *testing.T) {
-	_, err := Do("./testcues/rmfile.cue", "test.rmfile")
+	_, err := Do("./testcues/rmfile.cue", "test.rmFile.verify")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestRmFileWildcard(t *testing.T) {
+	_, err := Do("./testcues/rmfile.cue", "test.rmWildcard.rm")
 	if err != nil {
 		t.Fatal(err)
 	}

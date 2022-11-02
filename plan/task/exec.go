@@ -46,7 +46,10 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-	return compiler.NewValue(), nil
+	// FIXME: pipe output
+	value := compiler.NewValue()
+	output := value.FillPath(cue.ParsePath("output"), "")
+	return &output, nil
 }
 
 type execCommon struct {
