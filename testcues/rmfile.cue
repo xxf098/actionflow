@@ -6,17 +6,17 @@ import (
 )
 
 
-#RmHello: {
-	dir: string
- 
-    write: core.#Rm & {
-        path: "hello.txt"
-    }
-}
-
-
 dagflow.#Plan & {
-      actions: hello: #RmHello & {
-        dir: "."
-    }
+      actions: {
+        // Write a new file
+        write: core.#WriteFile & {
+            path:     "./test.txt"
+            contents: "1,2,3"
+        }
+
+		// Remove file
+        rm: core.#Rm & {
+            path:  write.path
+        }
+      }
 }

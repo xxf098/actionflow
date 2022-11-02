@@ -20,11 +20,17 @@ func TestExec(t *testing.T) {
 }
 
 func TestRmFile(t *testing.T) {
-	Do("./testcues/rmfile.cue", "hello")
+	_, err := Do("./testcues/rmfile.cue", "rm")
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestMkdir(t *testing.T) {
-	output := Do("./testcues/mkdir.cue", "hello")
+	output, err := Do("./testcues/mkdir.cue", "hello")
+	if err != nil {
+		t.Fatal(err)
+	}
 	v := output.LookupPath(cue.ParsePath("output"))
 	s, _ := v.String()
 	fmt.Println(s)

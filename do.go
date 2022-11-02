@@ -12,7 +12,7 @@ import (
 
 // run a action in cue
 // TODO: run action with dependency
-func Do(filePath string, actionName string) *cue.Value {
+func Do(filePath string, actionName string) (*cue.Value, error) {
 
 	ctx := cuecontext.New()
 	entrypoints := []string{filePath}
@@ -21,16 +21,20 @@ func Do(filePath string, actionName string) *cue.Value {
 
 	var output *cue.Value
 
+	var err error
+
 	for _, bi := range bis {
 
 		if bi.Err != nil {
 			fmt.Println("Error during load:", bi.Err)
+			err = bi.Err
 			continue
 		}
 
 		value := ctx.BuildInstance(bi)
 		if value.Err() != nil {
 			fmt.Println("Error during build:", value.Err())
+			err = value.Err()
 			continue
 		}
 
@@ -41,6 +45,7 @@ func Do(filePath string, actionName string) *cue.Value {
 		}
 		taskType, actionValue := task.LookupAction(&a)
 		if len(taskType) < 1 {
+			err = fmt.Errorf("task not found")
 			continue
 		}
 		fmt.Println(taskType)
@@ -54,5 +59,5 @@ func Do(filePath string, actionName string) *cue.Value {
 			fmt.Println(err)
 		}
 	}
-	return output
+	return output, err
 }
