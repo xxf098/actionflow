@@ -18,5 +18,12 @@ dagflow.#Plan & {
         rm: core.#Rm & {
             path:  write.path
         }
+
+        verify: core.#Exec & {
+                input: rm.output
+                args: ["/bin/sh", "-e", "-c", """
+                    test ! -e ./test.txt
+                    """]
+            }
       }
 }

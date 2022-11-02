@@ -26,8 +26,8 @@ import "github.com/xxf098/dagflow"
 	contents: string
 	// Permissions of the file
 	permissions: *0o644 | int
-	// Output filesystem tree
-	output: dagflow.#FS @dagger(generated)
+	// Output file path
+	output: string @dagger(generated)
 }
 
 

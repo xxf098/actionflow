@@ -3,6 +3,8 @@ package core
 #Exec: {
 	$dagger: task: _name: "Exec"
 
+	input: _
+
     // Command to execute
 	// Example: ["echo", "hello, world!"]
 	args: [...string]
