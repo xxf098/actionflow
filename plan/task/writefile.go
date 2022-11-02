@@ -29,6 +29,7 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 	if err != nil {
 		return nil, err
 	}
-
-	return compiler.NewValue(), nil
+	value := compiler.NewValue()
+	output := value.FillPath(cue.ParsePath("output"), p)
+	return &output, nil
 }

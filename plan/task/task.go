@@ -129,6 +129,9 @@ func lookupActionType(v *cue.Value) (string, error) {
 
 // lookup action type in cue
 func LookupAction(v *cue.Value) (string, *cue.Value) {
+	if t, err := lookupType(v); err == nil && len(t) > 0 {
+		return t, v
+	}
 	for iter, _ := v.Fields(cue.Optional(true)); iter.Next(); {
 		vn := iter.Value()
 		ik := vn.IncompleteKind()
