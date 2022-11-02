@@ -54,8 +54,34 @@ dagflow.#Plan & {
 							test ! -e ./bar.txt
 							test -e ./data.json
 						"""]
-				    }
-			    }            
-            }
-      }
+				}
+			}
+
+            rmDir: {
+				// Write directory
+				write: core.#Exec & {
+					args: ["/bin/sh", "-e", "-c", """
+						mkdir -p ./test
+						touch ./test/foo.txt
+						touch ./test/bar.txt
+						"""]
+				}
+
+				// Remove directory
+				rm: core.#Rm & {
+					input: write.output
+					path:  "./test"
+				}
+
+				verify: core.#Exec & {
+					input: rm.output
+					args: ["/bin/sh", "-e", "-c", """
+							test ! -e ./test
+						"""]
+				}
+			}
+               
+
+        }
+    }
 }

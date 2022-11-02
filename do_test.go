@@ -33,6 +33,13 @@ func TestRmFileWildcard(t *testing.T) {
 	}
 }
 
+func TestRmDir(t *testing.T) {
+	err := Flow("./testcues/rmfile.cue", "test.rmDir.verify")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestMkdir(t *testing.T) {
 	output, err := Do("./testcues/mkdir.cue", "hello")
 	if err != nil {
