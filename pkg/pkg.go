@@ -15,6 +15,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// ln -s ~/github/dagflow/pkg/github.com/xxf098/dagflow dagflow
 var (
 	// FS contains the filesystem of the stdlib.
 	//go:embed github.com
