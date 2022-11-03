@@ -32,7 +32,7 @@ func (t *gitPullTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
 
 	args := []string{"clone"}
 	if gitPull.Depth > 0 {
-		args = append(args, "--depth", fmt.Sprintf("%d", gitPull.Depth))
+		args = append(args, fmt.Sprintf("--depth=%d", gitPull.Depth))
 	}
 	args = append(args, gitPull.Remote)
 
