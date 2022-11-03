@@ -80,3 +80,10 @@ func TestEnv(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestArgs(t *testing.T) {
+	err := Flow("./testcues/exec/args.cue", "verify")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
