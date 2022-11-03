@@ -66,3 +66,10 @@ func TestMkdir(t *testing.T) {
 func TestGitPull(t *testing.T) {
 	Do("./testcues/gitpull.cue", "hello")
 }
+
+func TestWorkDir(t *testing.T) {
+	err := Flow("./testcues/exec_workdir.cue", "verify")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
