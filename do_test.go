@@ -46,6 +46,13 @@ func TestMkDir1(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestMkDirParent(t *testing.T) {
+	err := Flow("./testcues/mkdir_parents.cue", "readChecker")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
 func TestMkdir(t *testing.T) {
 	output, err := Do("./testcues/mkdir.cue", "hello")
 	if err != nil {
