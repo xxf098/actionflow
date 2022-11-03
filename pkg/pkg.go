@@ -157,5 +157,34 @@ func CueModInit(ctx context.Context, parentDir, module string) error {
 		}
 	}
 
+	mainFile := path.Join(absParentDir, "main.cue")
+	if _, err := os.Stat(mainFile); err != nil {
+		statErr, ok := err.(*os.PathError)
+		if !ok {
+			return statErr
+		}
+
+		lg.Debug().Str("mod", parentDir).Msg("initializing main.cue")
+		contents := `package main
+import (
+	"github.com/xxf098/dagflow"
+	"github.com/xxf098/dagflow/core"
+)
+
+dagflow.#Plan & {
+	actions: {
+
+		mkdir: core.#Mkdir & {
+			path:  "./hello"
+		}
+		
+	}
+}		
+`
+		if err := os.WriteFile(mainFile, []byte(contents), 0600); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
