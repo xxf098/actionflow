@@ -1,25 +1,25 @@
 package core
 
-import "github.com/xxf098/dagflow"
 
-
+// Read the contents of a UTF-8 encoded file into a CUE string. Any non-UTF-8
+// encoded content may have UTF replacement characters instead of the expected data.
 #ReadFile: {
 	$dagger: task: _name: "ReadFile"
 
 	// Filesystem tree holding the file
-	input: dagflow.#FS
+	input: _
 	// Path of the file to read
 	path: string
 	// Contents of the file
-	contents: string @dagger(generated)
+	output: string @dagger(generated)
 }
 
-
+// Write a file to a filesystem tree, creating it if needed
 #WriteFile: {
 	$dagger: task: _name: "WriteFile"
 
 	// Input filesystem tree
-	input: string
+	input: _
 	// Path of the file to write
 	path: string
 	// Contents to write
