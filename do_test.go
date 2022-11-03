@@ -68,7 +68,14 @@ func TestGitPull(t *testing.T) {
 }
 
 func TestWorkDir(t *testing.T) {
-	err := Flow("./testcues/exec_workdir.cue", "verify")
+	err := Flow("./testcues/exec/workdir.cue", "verify")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestEnv(t *testing.T) {
+	err := Flow("./testcues/exec/env.cue", "verify")
 	if err != nil {
 		t.Fatal(err)
 	}
