@@ -71,7 +71,7 @@ func TestMkdir(t *testing.T) {
 }
 
 func TestGitPull(t *testing.T) {
-	Do("./testcues/gitpull.cue", "hello")
+	Do("./testcues/git.cue", "hello")
 }
 
 func TestWorkDir(t *testing.T) {

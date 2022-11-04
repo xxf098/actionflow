@@ -9,7 +9,7 @@ import (
 #HelloClone: {
 	url: string
  
-    write: core.#GitPull & {
+    write: core.#Git & {
         remote: url
     }
 }

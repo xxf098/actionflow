@@ -10,14 +10,14 @@ import (
 )
 
 func init() {
-	Register("GitPull", func() Task { return &gitPullTask{} })
+	Register("Git", func() Task { return &gitTask{} })
 }
 
-type gitPullTask struct {
+type gitTask struct {
 }
 
 // FIXME: auth
-func (t *gitPullTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
+func (t *gitTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	var gitPull struct {
 		Remote    string
 		Depth     int
