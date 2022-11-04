@@ -27,7 +27,7 @@ package core
 	// Permissions of the file
 	permissions: *0o644 | int
 	// Output file path
-	output: string @dagger(generated)
+	output: string @dagger(generated)		
 }
 
 
@@ -38,7 +38,7 @@ package core
 	input: _
 	// Path to delete (handle wildcard)
 	// (e.g. /file.txt or /*.txt)
-	path: string
+	path: string | [...string]
 
 	// Allow wildcard selection
 	// Default to: true

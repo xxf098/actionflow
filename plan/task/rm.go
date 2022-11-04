@@ -19,10 +19,9 @@ type rmTask struct {
 
 func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	paths := []string{}
-	path, err := v.Lookup("path").String()
-	if err != nil {
-		// check is list
-		iter, err := v.Lookup("path").List()
+	pValue := v.Lookup("path")
+	if pValue.IncompleteKind().IsAnyOf(cue.ListKind) {
+		iter, err := pValue.List()
 		if err != nil {
 			return nil, err
 		}
@@ -34,9 +33,14 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			paths = append(paths, path)
 		}
 	} else {
+		path, err := pValue.String()
+		if err != nil {
+			return nil, err
+		}
 		paths = append(paths, path)
 	}
 
+	var err error
 	for _, path := range paths {
 		if strings.Contains(path, "*") {
 			paths, err := filepath.Glob(path)
