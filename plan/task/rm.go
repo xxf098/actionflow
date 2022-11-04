@@ -18,31 +18,47 @@ type rmTask struct {
 }
 
 func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
+	paths := []string{}
 	path, err := v.Lookup("path").String()
 	if err != nil {
-		return nil, err
-	}
-
-	if strings.Contains(path, "*") {
-		paths, err := filepath.Glob(path)
+		// check is list
+		iter, err := v.Lookup("path").List()
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
-		for _, p := range paths {
-			err = os.RemoveAll(p)
+		for iter.Next() {
+			path, err := iter.Value().String()
 			if err != nil {
-				break
+				return nil, err
 			}
+			paths = append(paths, path)
 		}
 	} else {
-		err = os.RemoveAll(path)
+		paths = append(paths, path)
 	}
 
-	if err != nil {
-		return nil, err
+	for _, path := range paths {
+		if strings.Contains(path, "*") {
+			paths, err := filepath.Glob(path)
+			if err != nil {
+				panic(err)
+			}
+			for _, p := range paths {
+				err = os.RemoveAll(p)
+				if err != nil {
+					break
+				}
+			}
+		} else {
+			err = os.RemoveAll(path)
+		}
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	value := compiler.NewValue()
-	output := value.FillPath(cue.ParsePath("output"), path)
+	output := value.FillPath(cue.ParsePath("output"), paths[0])
 	return &output, nil
 }

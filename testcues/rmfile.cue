@@ -80,7 +80,24 @@ dagflow.#Plan & {
 						"""]
 				}
 			}
-               
+
+			rmMulti: {
+
+				write: core.#Exec & {
+					args: ["/bin/sh", "-e", "-c", """
+						mkdir -p ./test
+						touch ./test/foo.txt
+						touch ./test/bar.json
+						touch ./test/baz.yaml
+						"""]
+				}
+
+				rm: core.#Rm & {
+					input: write.output
+					path:  ["./test/foo.txt", "./test/bar.json"]
+				}
+
+			}
 
         }
     }

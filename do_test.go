@@ -40,6 +40,13 @@ func TestRmDir(t *testing.T) {
 	}
 }
 
+func TestRmMulti(t *testing.T) {
+	err := Flow("./testcues/rmfile.cue", "test.rmMulti.rm")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestMkDir1(t *testing.T) {
 	err := Flow("./testcues/mkdir1.cue", "readChecker")
 	if err != nil {
