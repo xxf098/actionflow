@@ -1,9 +1,7 @@
 package core
 
-#Exec: {
+#Exec: #Task & {
 	$dagger: task: _name: "Exec"
-
-	input: _
 
     // Command to execute
 	// Example: ["echo", "hello, world!"]
@@ -18,5 +16,4 @@ package core
     // User ID or name
 	user: string | *"root:root"
 
-	output: string @dagger(generated)
 }

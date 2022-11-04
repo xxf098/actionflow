@@ -17,7 +17,7 @@ package core
 // func Filename(name string) HTTPOption
 
 // Fetch a file over HTTP
-#HTTPFetch: {
+#HTTPFetch: #Task & {
 	$dagger: task: _name: "HTTPFetch"
 
 	// Source url
@@ -41,7 +41,4 @@ package core
 
 	// Optionally set GID of the downloaded file
 	gid?: int
-
-	// New filesystem state containing the downloaded file
-	output: string @dagger(generated)
 }

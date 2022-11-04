@@ -1,10 +1,9 @@
 package core
 
-#Git: {
+#Git: #Task & {
 	$dagger: task: _name: "Git"
-	input: 		_
 	args: 		[...string]
-	output: string @dagger(generated)
+
 }
 
 #GitClone: #Git & {
