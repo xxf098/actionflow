@@ -18,35 +18,24 @@ type gitTask struct {
 
 // FIXME: auth
 func (t *gitTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
-	var gitPull struct {
-		Remote    string
-		Depth     int
-		Directory string
-		Auth      struct {
-			Username string
-		}
+	var gitArgs struct {
+		Args []string
 	}
 
-	if err := v.Decode(&gitPull); err != nil {
+	if err := v.Decode(&gitArgs); err != nil {
 		return nil, err
 	}
 
-	args := []string{"clone"}
-	if gitPull.Depth > 0 {
-		args = append(args, fmt.Sprintf("--depth=%d", gitPull.Depth))
-	}
-	args = append(args, gitPull.Remote)
-
-	if len(gitPull.Directory) > 0 {
-		args = append(args, gitPull.Directory)
+	if len(gitArgs.Args) < 1 {
+		return nil, fmt.Errorf("not enough args")
 	}
 
-	cmd := exec.Command("git", args...)
+	cmd := exec.Command("git", gitArgs.Args...)
 	err := cmd.Run()
 	if err != nil {
 		return nil, err
 	}
 	value := compiler.NewValue()
-	output := value.FillPath(cue.ParsePath("output"), gitPull.Remote)
+	output := value.FillPath(cue.ParsePath("output"), "")
 	return &output, nil
 }

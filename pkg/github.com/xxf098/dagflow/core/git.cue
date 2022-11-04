@@ -2,17 +2,19 @@ package core
 
 #Git: {
 	$dagger: task: _name: "Git"
-	input: 			_
-	remote:     	string
-    depth?:     	uint
-	directory?: 	string
-	auth?:      {
-		username: string
-		password: string // can be password or personal access token
-	} | {
-		authToken: string
-	} | {
-		authHeader: string
-	}
+	input: 		_
+	args: 		[...string]
 	output: string @dagger(generated)
+}
+
+#GitClone: #Git & {
+	args: ["clone", ...string]
+}
+
+#GitPull: #Git & {
+	args: 	["pull", ...string]
+}
+
+#GitPush: #Git & {
+	args: 	["push", ...string]
 }

@@ -10,7 +10,7 @@ import (
 	url: string
  
     write: core.#Git & {
-        remote: url
+        args: ["clone", "--depth=1", url]
     }
 }
 
