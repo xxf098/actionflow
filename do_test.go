@@ -94,3 +94,10 @@ func TestArgs(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestThen(t *testing.T) {
+	err := Flow("./testcues/then.cue", "mkdir")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
