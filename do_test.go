@@ -115,3 +115,10 @@ func TestThen2(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestAll(t *testing.T) {
+	err := Flow("./testcues/all.cue", "writeAll")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
