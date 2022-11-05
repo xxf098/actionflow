@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 
 	"cuelang.org/go/cue"
@@ -144,4 +145,21 @@ func LookupAction(v *cue.Value) (string, *cue.Value) {
 		}
 	}
 	return "", nil
+}
+
+// do then action
+func Then(ctx context.Context, v *cue.Value) error {
+	tv := v.Lookup("then")
+	tk := tv.Kind()
+	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
+		task, err := Lookup(&tv)
+		if err != nil {
+			log.Println(err)
+			return err
+		} else {
+			task.Run(ctx, &tv)
+		}
+	}
+
+	return nil
 }

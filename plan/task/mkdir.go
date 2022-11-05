@@ -3,7 +3,6 @@ package task
 import (
 	"context"
 	"io/fs"
-	"log"
 	"os"
 
 	"cuelang.org/go/cue"
@@ -46,18 +45,7 @@ func (t *mkdirTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// then
-	tv := v.Lookup("then")
-	tk := tv.Kind()
-	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
-		task, err := Lookup(&tv)
-		if err != nil {
-			log.Println(err)
-		} else {
-			task.Run(ctx, &tv)
-		}
-	}
+	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), path)
 	return &output, nil
