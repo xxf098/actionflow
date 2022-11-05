@@ -8,7 +8,12 @@ import (
 dagflow.#Plan & {
 	actions: {
 
+        dir: core.#Mkdir & {
+            path: "./test"
+        }
+
 		writeAll: core.#All & {
+            input: dir.output
 			tasks:  [
                 core.#WriteFile & {
                     path:        "./test/foo1"
