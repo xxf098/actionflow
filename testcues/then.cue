@@ -24,7 +24,15 @@ dagflow.#Plan & {
             }
         }
 
-
+        clone: core.#Git & {
+             args: ["clone", "--depth=1", "https://github.com/changfengoss/pub.git"]
+             then: core.#Exec & {
+				args: ["sh", "-c", "ls ./pub/data | sort | tail -n 3 | xargs -I{} mv ./pub/data/{} ./pub/"]
+				then:  core.#Rm & {					
+					path: "./pub/data"
+				}
+			}
+        }
 	
 	}
 }

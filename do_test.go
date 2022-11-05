@@ -108,3 +108,10 @@ func TestThen1(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestThen2(t *testing.T) {
+	err := Flow("./testcues/then.cue", "clone")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
