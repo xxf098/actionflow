@@ -62,6 +62,7 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		}
 	}
 
+	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), paths[0])
 	return &output, nil
