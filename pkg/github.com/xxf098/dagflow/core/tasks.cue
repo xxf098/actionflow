@@ -12,5 +12,6 @@ package core
 
 #All: #Task & {
 	$dagger: task: _name: "All"
+	ignore_error: bool | *false
 	tasks: 		[...#Task]
 }

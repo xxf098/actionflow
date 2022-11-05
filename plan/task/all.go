@@ -18,6 +18,10 @@ type allTasks struct {
 
 // TODO: max concurrency, exit on error
 func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
+	ignoreError, err := v.Lookup("ignore_error").Bool()
+	if err != nil {
+		return nil, err
+	}
 	iter, err := v.Lookup("tasks").List()
 	if err != nil {
 		return nil, err
@@ -27,7 +31,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		tasks = append(tasks, iter.Value())
 	}
 	var wg sync.WaitGroup
-	// var taskErr error
+	var taskErr error
 	// ignore error anyway
 	for i, task := range tasks {
 		wg.Add(1)
@@ -35,11 +39,13 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			defer wg.Done()
 			task, err := Lookup(&v)
 			if err != nil {
+				taskErr = err
 				log.Println("index:", index, err)
 				return
 			}
 			_, err = task.Run(ctx, &v)
 			if err != nil {
+				taskErr = err
 				log.Println(task.Name(), "index:", index, err)
 			}
 		}(ctx, i, task)
@@ -47,7 +53,10 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	wg.Wait()
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), "")
-	return &output, nil
+	if ignoreError {
+		taskErr = nil
+	}
+	return &output, taskErr
 }
 
 func (t *allTasks) Name() string {
