@@ -50,3 +50,7 @@ func (t *mkdirTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	output := value.FillPath(cue.ParsePath("output"), path)
 	return &output, nil
 }
+
+func (t *mkdirTask) Name() string {
+	return "Mkdir"
+}

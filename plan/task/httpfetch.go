@@ -32,3 +32,7 @@ func (t *httpFetchTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, erro
 	output := value.FillPath(cue.ParsePath("output"), httpFetch.Source)
 	return &output, nil
 }
+
+func (t *httpFetchTask) Name() string {
+	return "HTTPFetch"
+}

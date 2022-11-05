@@ -54,6 +54,10 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	return &output, nil
 }
 
+func (t *execTask) Name() string {
+	return "Exec"
+}
+
 type execCommon struct {
 	args    []string
 	workdir string

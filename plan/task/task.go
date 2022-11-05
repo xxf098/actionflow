@@ -66,6 +66,7 @@ const (
 // return result
 type Task interface {
 	Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
+	Name() string
 }
 
 type NewFunc func() Task

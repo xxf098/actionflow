@@ -33,3 +33,7 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 	output := value.FillPath(cue.ParsePath("output"), p)
 	return &output, nil
 }
+
+func (t *writeFileTask) Name() string {
+	return "WriteFile"
+}

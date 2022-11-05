@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"log"
 	"sync"
 
 	"cuelang.org/go/cue"
@@ -26,21 +27,29 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		tasks = append(tasks, iter.Value())
 	}
 	var wg sync.WaitGroup
-	var taskErr error
-	for _, task := range tasks {
+	// var taskErr error
+	// ignore error anyway
+	for i, task := range tasks {
 		wg.Add(1)
-		go func(ctx context.Context, v cue.Value) {
+		go func(ctx context.Context, index int, v cue.Value) {
 			defer wg.Done()
 			task, err := Lookup(&v)
 			if err != nil {
-				taskErr = err
+				log.Println("index:", index, err)
 				return
 			}
-			_, taskErr = task.Run(ctx, &v)
-		}(ctx, task)
+			_, err = task.Run(ctx, &v)
+			if err != nil {
+				log.Println(task.Name(), "index:", index, err)
+			}
+		}(ctx, i, task)
 	}
 	wg.Wait()
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), "")
-	return &output, taskErr
+	return &output, nil
+}
+
+func (t *allTasks) Name() string {
+	return "All"
 }

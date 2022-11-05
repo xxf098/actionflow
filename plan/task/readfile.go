@@ -32,3 +32,7 @@ func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
 	}
 	return output, nil
 }
+
+func (t *readFileTask) Name() string {
+	return "ReadFile"
+}

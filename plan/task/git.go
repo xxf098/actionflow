@@ -47,3 +47,7 @@ func (t *gitTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	output := value.FillPath(cue.ParsePath("output"), "")
 	return &output, nil
 }
+
+func (t *gitTask) Name() string {
+	return "Git"
+}
