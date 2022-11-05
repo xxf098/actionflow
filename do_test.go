@@ -101,3 +101,10 @@ func TestThen(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestThen1(t *testing.T) {
+	err := Flow("./testcues/then.cue", "gitrm")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
