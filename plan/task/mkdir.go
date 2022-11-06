@@ -40,6 +40,10 @@ func (t *mkdirTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if opts.Parents {
 		err = os.MkdirAll(path, fs.FileMode(permissions))
 	} else {
+		dir, err := os.Stat(path)
+		if err == nil && dir.IsDir() {
+			return nil, nil
+		}
 		err = os.Mkdir(path, fs.FileMode(permissions))
 	}
 	if err != nil {

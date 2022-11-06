@@ -7,7 +7,7 @@ package core
 	$dagger: task: _name: "ReadFile"
 
 	// Path of the file to read
-	path: string
+	path: !=""
 }
 
 // Write a file to a filesystem tree, creating it if needed
@@ -15,7 +15,7 @@ package core
 	$dagger: task: _name: "WriteFile"
 
 	// Path of the file to write
-	path: string
+	path: !=""
 	// Contents to write
 	contents: string
 	// Permissions of the file
