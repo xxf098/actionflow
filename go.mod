@@ -2,12 +2,26 @@ module github.com/xxf098/dagflow
 
 go 1.18
 
-require cuelang.org/go v0.4.3
+require (
+	cuelang.org/go v0.4.3
+	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
+)
 
 require (
-	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
+)
+
+require (
+	github.com/containerd/console v1.0.3
+	github.com/mattn/go-colorable v0.1.12
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db
+	github.com/morikuni/aec v1.0.0
+	github.com/muesli/ansi v0.0.0-20211031195517-c9f0611b6c70
+	github.com/tonistiigi/vt100 v0.0.0-20210615222946-8066bb97264f
 	golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6 // indirect
+	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035
 )
 
 require (
