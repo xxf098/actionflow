@@ -3,9 +3,9 @@ package core
 #Exec: #Task & {
 	$dagger: task: _name: "Exec"
 
-    // Command to execute
+	// cmd is the command to run.
 	// Example: ["echo", "hello, world!"]
-	args: [...string]
+	cmd: string | [string, ...string]
 
 	// Environment variables
 	env: [key=string]: string

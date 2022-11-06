@@ -32,7 +32,7 @@ func Do(dir string, action string) {
 	if err != nil {
 		lg.Fatal().Err(err).Msg("failed to exec plan")
 	}
-	lg.Info().Msg("exec plan")
+	lg.Info().Msg("finish plan")
 }
 
 func Flow(dir string, action string) {

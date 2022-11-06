@@ -9,7 +9,7 @@ dagflow.#Plan & {
 	actions: {
 
 		exec: core.#Exec & {
-			args: ["sh", "-c", "echo -n hello world > ./output.txt"]
+			cmd: ["sh", "-c", "echo -n hello world > ./output.txt"]
 		}
 
         

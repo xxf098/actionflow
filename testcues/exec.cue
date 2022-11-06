@@ -9,7 +9,7 @@ import (
     name: string
 
     exec: core.#Exec & {
-        args: ["touch", name]
+        cmd: ["touch", name]
     }
 }
 

@@ -10,7 +10,7 @@ dagflow.#Plan & {
 
 		verify: core.#Exec & {
 			workdir: "/tmp"
-			args: [
+			cmd: [
 				"sh", "-c",
 				#"""
 					test "$(pwd)" = "/tmp"

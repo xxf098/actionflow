@@ -10,7 +10,7 @@ dagflow.#Plan & {
 
 		verify: core.#Exec & {
 			env: TEST: "hello world"
-			args: [
+			cmd: [
 				"sh", "-c",
 				#"""
 					test "$TEST" = "hello world"
