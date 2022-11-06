@@ -5,8 +5,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"cuelang.org/go/cue"
+	"github.com/rs/zerolog/log"
 	"github.com/xxf098/dagflow/compiler"
 )
 
@@ -20,6 +22,8 @@ type rmTask struct {
 func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	paths := []string{}
 	pValue := v.Lookup("path")
+	lg := log.Ctx(ctx)
+	start := time.Now()
 	if pValue.IncompleteKind().IsAnyOf(cue.ListKind) {
 		iter, err := pValue.List()
 		if err != nil {
@@ -45,7 +49,7 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		if strings.Contains(path, "*") {
 			paths, err := filepath.Glob(path)
 			if err != nil {
-				panic(err)
+				return nil, err
 			}
 			for _, p := range paths {
 				err = os.RemoveAll(p)
@@ -61,7 +65,7 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			return nil, err
 		}
 	}
-
+	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), paths[0])

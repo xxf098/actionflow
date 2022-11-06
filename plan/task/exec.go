@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"time"
 
 	"cuelang.org/go/cue"
+	"github.com/rs/zerolog/log"
 	"github.com/xxf098/dagflow/compiler"
 )
 
@@ -44,11 +46,17 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	// cmd := exec.CommandContext(ctx, name, args...)
 	// cmd.Dir = common.workdir
 	// cmd.Env = append(cmd.Env, envs...)
+	lg := log.Ctx(ctx)
+	start := time.Now()
 	cmd, err := mkCommand(ctx, v)
+	if err != nil {
+		return nil, err
+	}
 	err = cmd.Run()
 	if err != nil {
 		return nil, err
 	}
+	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
 	// FIXME: pipe output
 	value := compiler.NewValue()

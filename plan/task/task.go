@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
+
 	"sync"
 
 	"cuelang.org/go/cue"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -153,12 +154,16 @@ func Then(ctx context.Context, v *cue.Value) error {
 	tv := v.Lookup("then")
 	tk := tv.Kind()
 	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
+		lg := log.Ctx(ctx)
 		task, err := Lookup(&tv)
 		if err != nil {
-			log.Println(err)
+			lg.Error().Err(err).Str("task", v.Path().String()).Msg(task.Name())
 			return err
 		} else {
-			task.Run(ctx, &tv)
+			_, err := task.Run(ctx, &tv)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

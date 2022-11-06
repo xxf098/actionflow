@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"sync"
+	"time"
 
 	"github.com/rs/zerolog/log"
 
@@ -39,17 +40,19 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		wg.Add(1)
 		go func(ctx context.Context, index int, v cue.Value) {
 			defer wg.Done()
-			task, err := Lookup(&v)
+			t, err := Lookup(&v)
 			if err != nil {
 				taskErr = err
 				lg.Error().Err(err).Msgf("index: %d", index)
 				return
 			}
-			_, err = task.Run(ctx, &v)
+			start := time.Now()
+			_, err = t.Run(ctx, &v)
 			if err != nil {
 				taskErr = err
-				lg.Error().Err(err).Msgf("index: %d name: %s", index, task.Name())
+				lg.Error().Err(err).Msgf("index: %d name: %s", index, t.Name())
 			}
+			lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msgf("index: %d name: %s", index, t.Name())
 		}(ctx, i, task)
 	}
 	wg.Wait()
