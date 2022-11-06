@@ -2,8 +2,9 @@ package task
 
 import (
 	"context"
-	"log"
 	"sync"
+
+	"github.com/rs/zerolog/log"
 
 	"cuelang.org/go/cue"
 	"github.com/xxf098/dagflow/compiler"
@@ -33,6 +34,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	var wg sync.WaitGroup
 	var taskErr error
 	// ignore error anyway
+	lg := log.Ctx(ctx)
 	for i, task := range tasks {
 		wg.Add(1)
 		go func(ctx context.Context, index int, v cue.Value) {
@@ -40,13 +42,13 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			task, err := Lookup(&v)
 			if err != nil {
 				taskErr = err
-				log.Println("index:", index, err)
+				lg.Error().Err(err).Msgf("index: %d", index)
 				return
 			}
 			_, err = task.Run(ctx, &v)
 			if err != nil {
 				taskErr = err
-				log.Println(task.Name(), "index:", index, err)
+				lg.Error().Err(err).Msgf("index: %d name: %s", index, task.Name())
 			}
 		}(ctx, i, task)
 	}
