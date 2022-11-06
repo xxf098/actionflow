@@ -36,6 +36,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	var taskErr error
 	// ignore error anyway
 	lg := log.Ctx(ctx)
+	start := time.Now()
 	for i, task := range tasks {
 		wg.Add(1)
 		go func(ctx context.Context, index int, v cue.Value) {
@@ -46,16 +47,16 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 				lg.Error().Err(err).Msgf("index: %d", index)
 				return
 			}
-			start := time.Now()
 			_, err = t.Run(ctx, &v)
 			if err != nil {
 				taskErr = err
 				lg.Error().Err(err).Msgf("index: %d name: %s", index, t.Name())
 			}
-			lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msgf("index: %d name: %s", index, t.Name())
 		}(ctx, i, task)
 	}
 	wg.Wait()
+	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
+
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), "")
 	if ignoreError {

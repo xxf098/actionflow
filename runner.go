@@ -131,7 +131,6 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 			lg.Error().Err(err).Dur("duration", time.Since(start)).Str("state", task.StateCompleted.String()).Msg(task.StateCompleted.String())
 			return fmt.Errorf("%s: %s", t.Path().String(), err.Error())
 		}
-		lg.Info().Dur("duration", time.Since(start)).Str("state", task.StateCompleted.String()).Msg(handler.Name())
 		if !result.IsConcrete() {
 			return nil
 		}

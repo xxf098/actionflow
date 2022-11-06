@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"cuelang.org/go/cue"
+	"github.com/rs/zerolog/log"
 	"github.com/xxf098/dagflow/compiler"
 )
 
@@ -17,6 +19,8 @@ type readFileTask struct {
 }
 
 func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
+	lg := log.Ctx(ctx)
+	start := time.Now()
 	path, err := v.Lookup("path").String()
 	if err != nil {
 		return nil, err
@@ -30,6 +34,7 @@ func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
 	if err := output.FillPath(cue.ParsePath("output"), string(contents)); err.Err() != nil {
 		return nil, err.Err()
 	}
+	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	return output, nil
 }
 
