@@ -29,7 +29,15 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 	if err != nil {
 		return nil, errors.New("fail to parse contents")
 	}
-	err = os.WriteFile(p, []byte(contents), 0644)
+	append, err := v.Lookup("append").Bool()
+	if err != nil {
+		return nil, errors.New("fail to parse append")
+	}
+	if append {
+		err = appendFile(p, contents)
+	} else {
+		err = os.WriteFile(p, []byte(contents), 0644)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +46,17 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), p)
 	return &output, nil
+}
+
+func appendFile(path, contents string) error {
+	f, err := os.OpenFile(path,
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	_, err = f.WriteString(contents)
+	return err
 }
 
 func (t *writeFileTask) Name() string {

@@ -20,6 +20,8 @@ package core
 	contents: string
 	// Permissions of the file
 	permissions: *0o644 | int
+	// append to file
+	append: bool | *false
 }
 
 
