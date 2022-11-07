@@ -1,6 +1,7 @@
 package task
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -52,15 +53,16 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
+	var outBuf bytes.Buffer
+	cmd.Stdout = &outBuf
 	err = cmd.Run()
 	if err != nil {
 		return nil, err
 	}
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
-	// FIXME: pipe output
 	value := compiler.NewValue()
-	output := value.FillPath(cue.ParsePath("output"), "")
+	output := value.FillPath(cue.ParsePath("output"), outBuf.String())
 	return &output, nil
 }
 

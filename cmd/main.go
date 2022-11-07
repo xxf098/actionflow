@@ -34,7 +34,7 @@ func main() {
 }
 
 func projectInit(args []string) {
-	dir, _ := os.Getwd()
+	dir := "."
 	if len(args) > 1 {
 		dir = args[1]
 	}

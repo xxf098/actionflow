@@ -95,6 +95,13 @@ func TestArgs(t *testing.T) {
 	}
 }
 
+func TestOutput(t *testing.T) {
+	err := Flow("./testcues/exec/output.cue", "save")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestThen(t *testing.T) {
 	err := Flow("./testcues/then.cue", "mkdir")
 	if err != nil {
