@@ -24,6 +24,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	iter, err := v.Lookup("tasks").List()
 	if err != nil {
 		return nil, err
@@ -32,15 +33,29 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	for iter.Next() {
 		tasks = append(tasks, iter.Value())
 	}
+	// max
+	max, err := v.Lookup("max").Int64()
+	if err != nil {
+		return nil, err
+	}
+	if max == 0 || max > int64(len(tasks)) {
+		max = int64(len(tasks))
+	}
+	ch := make(chan struct{}, max)
 	var wg sync.WaitGroup
+
 	var taskErr error
 	// ignore error anyway
 	lg := log.Ctx(ctx)
 	start := time.Now()
 	for i, task := range tasks {
 		wg.Add(1)
+		ch <- struct{}{}
 		go func(ctx context.Context, index int, v cue.Value) {
 			defer wg.Done()
+			defer func() {
+				<-ch
+			}()
 			t, err := Lookup(&v)
 			if err != nil {
 				taskErr = err

@@ -13,5 +13,7 @@ package core
 #All: #Task & {
 	$dagger: task: _name: "All"
 	ignore_error: bool | *false
+	// api limit
+	max: int | *0
 	tasks: 		[...#Task]
 }
