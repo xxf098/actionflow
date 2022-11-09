@@ -30,12 +30,11 @@ func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
 	if err != nil {
 		return nil, fmt.Errorf("ReadFile %s: %w", path, err)
 	}
-	output := compiler.NewValue()
-	if err := output.FillPath(cue.ParsePath("output"), string(contents)); err.Err() != nil {
-		return nil, err.Err()
-	}
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
-	return output, nil
+	Then(ctx, v)
+	value := compiler.NewValue()
+	output := value.FillPath(cue.ParsePath("output"), string(contents))
+	return &output, nil
 }
 
 func (t *readFileTask) Name() string {
