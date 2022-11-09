@@ -13,7 +13,7 @@ import (
 
 // run a action in cue
 // TODO: run action with dependency
-func Do(filePath string, actionName string) (*cue.Value, error) {
+func doTest(filePath string, actionName string) (*cue.Value, error) {
 
 	ctx := cuecontext.New()
 	entrypoints := []string{filePath}

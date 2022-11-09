@@ -8,7 +8,7 @@ import (
 )
 
 func TestWriteFile(t *testing.T) {
-	Do("./testcues/writefile.cue", "hello")
+	doTest("./testcues/writefile.cue", "hello")
 }
 
 func TestWriteFile1(t *testing.T) {
@@ -20,11 +20,11 @@ func TestWriteFile2(t *testing.T) {
 }
 
 func TestExec(t *testing.T) {
-	Do("./testcues/exec.cue", "touch")
+	doTest("./testcues/exec.cue", "touch")
 }
 
 func TestRmFile(t *testing.T) {
-	_, err := Do("./testcues/rmfile.cue", "test.rmFile.verify")
+	_, err := doTest("./testcues/rmfile.cue", "test.rmFile.verify")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func TestMkDirParent(t *testing.T) {
 	}
 }
 func TestMkdir(t *testing.T) {
-	output, err := Do("./testcues/mkdir.cue", "hello")
+	output, err := doTest("./testcues/mkdir.cue", "hello")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func TestMkdir(t *testing.T) {
 }
 
 func TestGitPull(t *testing.T) {
-	Do("./testcues/git.cue", "hello")
+	doTest("./testcues/git.cue", "hello")
 }
 
 func TestWorkDir(t *testing.T) {
