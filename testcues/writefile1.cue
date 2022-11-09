@@ -28,7 +28,7 @@ import (
 dagflow.#Plan & {
       actions: {
           hellodir: #MkHello & {
-                dir: "dir"
+                dir: "test"
          },
           hello: #AddHello & {
             dir: hellodir.result

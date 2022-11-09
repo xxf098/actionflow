@@ -12,7 +12,11 @@ func TestWriteFile(t *testing.T) {
 }
 
 func TestWriteFile1(t *testing.T) {
-	Do("./testcues/writefile1.cue", "hello")
+	Flow("./testcues/writefile1.cue", "hello")
+}
+
+func TestWriteFile2(t *testing.T) {
+	Flow("./testcues/writefile2.cue", "hello")
 }
 
 func TestExec(t *testing.T) {
