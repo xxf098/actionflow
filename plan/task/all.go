@@ -71,7 +71,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	}
 	wg.Wait()
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
-
+	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), "")
 	if ignoreError {

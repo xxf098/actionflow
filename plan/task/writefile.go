@@ -42,7 +42,7 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 		return nil, err
 	}
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
-
+	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), p)
 	return &output, nil

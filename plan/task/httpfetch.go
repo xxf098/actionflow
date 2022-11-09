@@ -27,7 +27,7 @@ func (t *httpFetchTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, erro
 	if err := v.Decode(&httpFetch); err != nil {
 		return nil, err
 	}
-
+	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), httpFetch.Source)
 	return &output, nil
