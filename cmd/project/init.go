@@ -3,7 +3,7 @@ package project
 import (
 	"context"
 
-	"github.com/xxf098/dagflow/pkg"
+	"github.com/xxf098/actionflow/pkg"
 )
 
 func Init(ctx context.Context, parentDir, module string) error {

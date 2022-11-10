@@ -1,8 +1,8 @@
 package testcues
 
 import (
-    "github.com/xxf098/dagflow"
-    "github.com/xxf098/dagflow/core"
+    "github.com/xxf098/actionflow"
+    "github.com/xxf098/actionflow/core"
 )
 
 #TouchFile: {
@@ -13,7 +13,7 @@ import (
     }
 }
 
-dagflow.#Plan & {
+actionflow.#Plan & {
       actions: touch: #TouchFile & {
         name: "hello.txt"
     }

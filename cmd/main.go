@@ -6,16 +6,18 @@ import (
 	"log"
 	"os"
 
-	"github.com/xxf098/dagflow/cmd/project"
+	"github.com/xxf098/actionflow/cmd/project"
 )
 
 // Go api
 // actionflow
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("dagflow version: v0.1.0")
+		fmt.Println("actionflow version: v0.1.0")
 		fmt.Println(`useage:
-	dagflow init [project path]		
+	flow init [project path]
+	flow update [project path]
+	flow do [action name]	
 `)
 		return
 	}
@@ -45,9 +47,9 @@ func projectInit(args []string) {
 		log.Fatal(err)
 	}
 	if dir == "." {
-		fmt.Println("Project initialized! To install dagger packages, run `dagflow update`")
+		fmt.Println("Project initialized! To install dagger packages, run `flow update`")
 	} else {
-		fmt.Printf("Project initialized in \"%s\"! To install dagflow packages, go to subfolder \"%s\" and run \"dagflow update\"", dir, dir)
+		fmt.Printf("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"", dir, dir)
 	}
 }
 

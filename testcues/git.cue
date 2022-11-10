@@ -1,8 +1,8 @@
 package testcues
 
 import (
-    "github.com/xxf098/dagflow"
-    "github.com/xxf098/dagflow/core"
+    "github.com/xxf098/actionflow"
+    "github.com/xxf098/actionflow/core"
 )
 
 
@@ -15,7 +15,7 @@ import (
 }
 
 
-dagflow.#Plan & {
+actionflow.#Plan & {
       actions: hello: #HelloClone & {
         url: "https://github.com/SimaRyan/simaryan.github.io.git"
     }

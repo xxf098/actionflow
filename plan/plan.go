@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"cuelang.org/go/cue"
-	"github.com/xxf098/dagflow/compiler"
-	"github.com/xxf098/dagflow/pkg"
+	"github.com/xxf098/actionflow/compiler"
+	"github.com/xxf098/actionflow/pkg"
 )
 
 var (

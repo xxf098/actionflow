@@ -10,16 +10,16 @@ import (
 	"cuelang.org/go/cue"
 	"github.com/containerd/console"
 	"github.com/rs/zerolog"
-	"github.com/xxf098/dagflow"
-	"github.com/xxf098/dagflow/cmd/logger"
-	"github.com/xxf098/dagflow/plan"
+	actionflow "github.com/xxf098/actionflow"
+	"github.com/xxf098/actionflow/cmd/logger"
+	"github.com/xxf098/actionflow/plan"
 	"golang.org/x/term"
 )
 
 // https://cuelang.org/docs/concepts/packages/#import-path
 func Do(dir string, action string) {
 	lg, ctx := setupLog()
-	err := dagflow.Do(ctx, dir, action)
+	err := actionflow.Do(ctx, dir, action)
 	if err != nil {
 		lg.Fatal().Err(err).Msg("failed to exec plan")
 	}

@@ -1,11 +1,11 @@
 package testcues
 
 import (
-    "github.com/xxf098/dagflow"
-    "github.com/xxf098/dagflow/core"
+    "github.com/xxf098/actionflow"
+    "github.com/xxf098/actionflow/core"
 )
 
-dagflow.#Plan & {
+actionflow.#Plan & {
 	actions: {
 
 		mkdir: core.#Mkdir & {

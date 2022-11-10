@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"cuelang.org/go/cue"
-	_ "github.com/xxf098/dagflow/plan/task"
+	_ "github.com/xxf098/actionflow/plan/task"
 )
 
 func TestRun(t *testing.T) {

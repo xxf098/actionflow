@@ -15,7 +15,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// ln -s ~/github/dagflow/pkg/github.com/xxf098/dagflow dagflow
+// ln -s ~/github/actionflow/pkg/github.com/xxf098/actionflow actionflow
 var (
 	// FS contains the filesystem of the stdlib.
 	//go:embed github.com
@@ -167,11 +167,11 @@ func CueModInit(ctx context.Context, parentDir, module string) error {
 		lg.Debug().Str("mod", parentDir).Msg("initializing main.cue")
 		contents := `package main
 import (
-	"github.com/xxf098/dagflow"
-	"github.com/xxf098/dagflow/core"
+	"github.com/xxf098/actionflow"
+	"github.com/xxf098/actionflow/core"
 )
 
-dagflow.#Plan & {
+actionflow.#Plan & {
 	actions: {
 
 		mkdir: core.#Mkdir & {

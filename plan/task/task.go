@@ -17,11 +17,11 @@ var (
 	typePath   = cue.MakePath(
 		cue.Str("$dagger"),
 		cue.Str("task"),
-		cue.Hid("_name", "github.com/xxf098/dagflow"))
+		cue.Hid("_name", "github.com/xxf098/actionflow"))
 	corePath = cue.MakePath(
 		cue.Str("$dagger"),
 		cue.Str("task"),
-		cue.Hid("_name", "github.com/xxf098/dagflow/core"))
+		cue.Hid("_name", "github.com/xxf098/actionflow/core"))
 	paths = []cue.Path{corePath, typePath}
 )
 

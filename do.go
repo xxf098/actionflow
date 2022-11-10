@@ -1,4 +1,4 @@
-package dagflow
+package actionflow
 
 import (
 	"context"
@@ -10,8 +10,8 @@ import (
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
-	"github.com/xxf098/dagflow/plan"
-	"github.com/xxf098/dagflow/plan/task"
+	"github.com/xxf098/actionflow/plan"
+	"github.com/xxf098/actionflow/plan/task"
 )
 
 func Do(ctx context.Context, dir string, action string) error {

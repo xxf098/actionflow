@@ -9,7 +9,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"github.com/rs/zerolog/log"
-	"github.com/xxf098/dagflow/compiler"
+	"github.com/xxf098/actionflow/compiler"
 )
 
 func init() {
