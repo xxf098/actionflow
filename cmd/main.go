@@ -71,5 +71,5 @@ func flowAction(args []string) {
 		dir = args[2]
 	}
 	// Flow(dir, action)
-	Do(dir, action)
+	project.Do(dir, action)
 }

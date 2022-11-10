@@ -1,4 +1,4 @@
-package main
+package project
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"cuelang.org/go/cue"
 	"github.com/containerd/console"
 	"github.com/rs/zerolog"
-	actionflow "github.com/xxf098/actionflow"
+	"github.com/xxf098/actionflow"
 	"github.com/xxf098/actionflow/cmd/logger"
 	"github.com/xxf098/actionflow/plan"
 	"golang.org/x/term"
