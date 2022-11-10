@@ -1,0 +1,44 @@
+name: flow
+on:
+  push:
+    branches:   
+      - master
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Cache go module
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Build
+        run: |
+          go mod tidy
+          go build -o flow
+
+      - name: Exec
+        run: |
+          mkdir temp1
+          ./flow init ./temp1
+          ./flow update ./temp1
+          cd temp1
+          ../flow do mkdir
+          test -d ./hello
+
