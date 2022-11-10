@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/xxf098/actionflow/cmd/project"
+	"github.com/xxf098/actionflow/cmd/flow"
 )
 
 // Go api
@@ -42,7 +42,7 @@ func projectInit(args []string) {
 	if len(args) > 1 {
 		dir = args[1]
 	}
-	err := project.Init(context.Background(), dir, "")
+	err := flow.Init(context.Background(), dir, "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func projectUpdate(args []string) {
 	if len(args) > 1 {
 		dir = args[1]
 	}
-	err := project.Update(context.Background(), dir)
+	err := flow.Update(context.Background(), dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -71,5 +71,5 @@ func flowAction(args []string) {
 		dir = args[2]
 	}
 	// Flow(dir, action)
-	project.Do(dir, action)
+	flow.Do(dir, action)
 }
