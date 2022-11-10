@@ -31,15 +31,14 @@ jobs:
       - name: Build
         run: |
           go mod tidy
-          go build -o flow
-          chmod +x ./flow
+          make flow
 
       - name: Exec
         run: |
-          mkdir temp1
-          ./flow init ./temp1
-          ./flow update ./temp1
+          mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
-          ../flow do mkdir
+          ./flow init 
+          ./flow update
+          ./flow do mkdir
           test -d ./hello
 
