@@ -47,9 +47,9 @@ func projectInit(args []string) {
 		log.Fatal(err)
 	}
 	if dir == "." {
-		fmt.Println("Project initialized! To install dagger packages, run `flow update`")
+		log.Fatalln("Project initialized! To install dagger packages, run `flow update`")
 	} else {
-		fmt.Printf("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"", dir, dir)
+		log.Fatalln("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"", dir, dir)
 	}
 }
 
@@ -58,7 +58,10 @@ func projectUpdate(args []string) {
 	if len(args) > 1 {
 		dir = args[1]
 	}
-	project.Update(context.Background(), dir)
+	err := project.Update(context.Background(), dir)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
 
 func flowAction(args []string) {

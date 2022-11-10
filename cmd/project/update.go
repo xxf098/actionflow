@@ -2,20 +2,18 @@ package project
 
 import (
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/xxf098/actionflow/pkg"
 )
 
-func Update(ctx context.Context, dir string) {
+func Update(ctx context.Context, dir string) error {
 
 	cueModPath, cueModExists := pkg.GetCueModParent(dir)
 	if !cueModExists {
-		log.Fatal("dagger project not found. Run `dagger project init`")
+		return fmt.Errorf("project not found. Run `flow init`")
 	}
 
 	err := pkg.Vendor(ctx, cueModPath)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
