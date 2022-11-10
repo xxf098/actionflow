@@ -32,6 +32,7 @@ jobs:
         run: |
           go mod tidy
           go build -o flow
+          chmod +x ./flow
 
       - name: Exec
         run: |
