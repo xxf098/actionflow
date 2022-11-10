@@ -58,7 +58,7 @@ func projectUpdate(args []string) {
 	if len(args) > 1 {
 		dir = args[1]
 	}
-	project.Update(dir)
+	project.Update(context.Background(), dir)
 }
 
 func flowAction(args []string) {

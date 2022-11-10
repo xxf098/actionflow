@@ -7,9 +7,7 @@ import (
 	"github.com/xxf098/actionflow/pkg"
 )
 
-func Update(dir string) {
-
-	ctx := context.Background()
+func Update(ctx context.Context, dir string) {
 
 	cueModPath, cueModExists := pkg.GetCueModParent(dir)
 	if !cueModExists {
