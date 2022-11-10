@@ -1,4 +1,4 @@
-package dagflow
+package plan
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	v := loadFile("./testcues/writefile1.cue")
+	v := LoadFile("../testcues/writefile1.cue")
 	target := cue.ParsePath("actions.hello")
 	runner := NewRunner(target)
 	err := runner.Run(context.Background(), v)
@@ -19,7 +19,7 @@ func TestRun(t *testing.T) {
 }
 
 func TestRun1(t *testing.T) {
-	v := loadFile("./testcues/writefile1.cue")
+	v := LoadFile("../testcues/writefile1.cue")
 	target := cue.ParsePath("actions.hello")
 	runner := NewRunner(target)
 	err := runner.Run(context.Background(), v)

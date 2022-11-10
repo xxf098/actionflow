@@ -1,4 +1,4 @@
-package dagflow
+package plan
 
 import (
 	"context"
@@ -178,7 +178,7 @@ func noOpRunner(v cue.Value) (cueflow.Runner, error) {
 	}), nil
 }
 
-func loadFile(filePath string) cue.Value {
+func LoadFile(filePath string) cue.Value {
 	ctx := cuecontext.New()
 	entrypoints := []string{filePath}
 

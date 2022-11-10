@@ -3,13 +3,65 @@ package dagflow
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"cuelang.org/go/cue/load"
+	"github.com/xxf098/dagflow/plan"
 	"github.com/xxf098/dagflow/plan/task"
 )
+
+func Do(ctx context.Context, dir string, action string) error {
+	targetPath := getTargetPath([]string{action})
+	daggerPlan, err := loadPlan(ctx, dir)
+	if err != nil {
+		return err
+	}
+	err = daggerPlan.Do(ctx, targetPath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func flowTest(cueFile string, action string) error {
+
+	v := plan.LoadFile(cueFile)
+	iter, _ := v.Fields()
+	for iter.Next() {
+		fmt.Println(iter.Label())
+	}
+	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
+	runner := plan.NewRunner(target)
+	err := runner.Run(context.Background(), v)
+	return err
+}
+
+func getTargetPath(args []string) cue.Path {
+	selectors := []cue.Selector{plan.ActionSelector}
+	for _, arg := range args {
+		selectors = append(selectors, cue.Str(arg))
+	}
+	return cue.MakePath(selectors...)
+}
+
+func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
+	absPlanPath, err := filepath.Abs(planPath)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = os.Stat(absPlanPath)
+	if err != nil {
+		return nil, err
+	}
+	return plan.Load(ctx, plan.Config{
+		Args: []string{planPath},
+	})
+}
 
 // run a action in cue
 // TODO: run action with dependency
@@ -66,17 +118,4 @@ func doTest(filePath string, actionName string) (*cue.Value, error) {
 		}
 	}
 	return output, err
-}
-
-func Flow(cueFile string, action string) error {
-
-	v := loadFile(cueFile)
-	iter, _ := v.Fields()
-	for iter.Next() {
-		fmt.Println(iter.Label())
-	}
-	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
-	runner := NewRunner(target)
-	err := runner.Run(context.Background(), v)
-	return err
 }

@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"cuelang.org/go/cue"
-	"github.com/xxf098/dagflow"
 	"github.com/xxf098/dagflow/compiler"
 	"github.com/xxf098/dagflow/pkg"
 )
@@ -61,7 +60,7 @@ func Load(ctx context.Context, cfg Config) (*Plan, error) {
 }
 
 func (p *Plan) Do(ctx context.Context, path cue.Path) error {
-	r := dagflow.NewRunner(path)
+	r := NewRunner(path)
 	err := r.Run(ctx, p.source)
 	return err
 }

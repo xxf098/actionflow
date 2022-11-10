@@ -9,6 +9,8 @@ import (
 	"github.com/xxf098/dagflow/cmd/project"
 )
 
+// Go api
+// actionflow
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("dagflow version: v0.1.0")

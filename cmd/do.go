@@ -6,11 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"path/filepath"
 
 	"cuelang.org/go/cue"
-	"cuelang.org/go/cue/cuecontext"
-	"cuelang.org/go/cue/load"
 	"github.com/containerd/console"
 	"github.com/rs/zerolog"
 	"github.com/xxf098/dagflow"
@@ -22,23 +19,28 @@ import (
 // https://cuelang.org/docs/concepts/packages/#import-path
 func Do(dir string, action string) {
 	lg, ctx := setupLog()
-	targetPath := getTargetPath([]string{action})
-	daggerPlan, err := loadPlan(ctx, dir)
-	if err != nil {
-		lg.Fatal().Err(err).Msg("failed to load plan")
-	}
-	lg.Info().Msg("load plan")
-	err = daggerPlan.Do(ctx, targetPath)
+	err := dagflow.Do(ctx, dir, action)
 	if err != nil {
 		lg.Fatal().Err(err).Msg("failed to exec plan")
 	}
-	lg.Info().Msg("finish plan")
+	lg.Info().Msg("plan finished")
+	// targetPath := getTargetPath([]string{action})
+	// daggerPlan, err := loadPlan(ctx, dir)
+	// if err != nil {
+	// 	lg.Fatal().Err(err).Msg("failed to load plan")
+	// }
+	// lg.Info().Msg("load plan")
+	// err = daggerPlan.Do(ctx, targetPath)
+	// if err != nil {
+	// 	lg.Fatal().Err(err).Msg("failed to exec plan")
+	// }
+	// lg.Info().Msg("finish plan")
 }
 
 func Flow(dir string, action string) {
 	mainCue := path.Join(dir, "main.cue")
 	fmt.Println(mainCue)
-	v := loadFile(mainCue)
+	v := plan.LoadFile(mainCue)
 	iter, err := v.Fields()
 	for iter.Next() {
 		fmt.Println(iter.Label())
@@ -46,7 +48,7 @@ func Flow(dir string, action string) {
 	// setup log
 	lg, ctx := setupLog()
 	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
-	runner := dagflow.NewRunner(target)
+	runner := plan.NewRunner(target)
 	err = runner.Run(ctx, v)
 	if err != nil {
 		lg.Fatal().Err(err).Msg("failed to execute plan")
@@ -108,35 +110,4 @@ func setupLog() (zerolog.Logger, context.Context) {
 
 	}
 	return lg, ctx
-}
-
-func loadFile(filePath string) cue.Value {
-	ctx := cuecontext.New()
-	entrypoints := []string{filePath}
-
-	bis := load.Instances(entrypoints, nil)
-	return ctx.BuildInstance(bis[0])
-}
-
-func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
-	absPlanPath, err := filepath.Abs(planPath)
-	if err != nil {
-		return nil, err
-	}
-
-	_, err = os.Stat(absPlanPath)
-	if err != nil {
-		return nil, err
-	}
-	return plan.Load(ctx, plan.Config{
-		Args: []string{planPath},
-	})
-}
-
-func getTargetPath(args []string) cue.Path {
-	selectors := []cue.Selector{plan.ActionSelector}
-	for _, arg := range args {
-		selectors = append(selectors, cue.Str(arg))
-	}
-	return cue.MakePath(selectors...)
 }
