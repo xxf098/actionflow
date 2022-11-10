@@ -14,7 +14,7 @@ import (
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("actionflow version: v0.1.0")
-		fmt.Println(`useage:
+		fmt.Print(`useage:
 	flow init [project path]
 	flow update [project path]
 	flow do [action name]	
@@ -49,7 +49,7 @@ func projectInit(args []string) {
 	if dir == "." {
 		log.Fatalln("Project initialized! To install dagger packages, run `flow update`")
 	} else {
-		log.Fatalln("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"", dir, dir)
+		log.Fatalf("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"", dir, dir)
 	}
 }
 
