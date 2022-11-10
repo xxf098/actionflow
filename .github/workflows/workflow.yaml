@@ -31,6 +31,7 @@ jobs:
       - name: Build
         run: |
           go mod tidy
+          go test ./...
           make flow
 
       - name: Exec
