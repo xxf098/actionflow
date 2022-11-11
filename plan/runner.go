@@ -11,7 +11,6 @@ import (
 	"cuelang.org/go/cue/load"
 	cueflow "cuelang.org/go/tools/flow"
 	"github.com/rs/zerolog/log"
-	"github.com/xxf098/actionflow/compiler"
 	"github.com/xxf098/actionflow/plan/task"
 )
 
@@ -21,14 +20,14 @@ import (
 type Runner struct {
 	target cue.Path
 	tasks  sync.Map
-	mirror cue.Value
-	l      sync.Mutex
+	// mirror cue.Value
+	l sync.Mutex
 }
 
 func NewRunner(target cue.Path) *Runner {
 	return &Runner{
 		target: target,
-		mirror: *compiler.NewValue(),
+		// mirror: *compiler.NewValue(),
 	}
 }
 
@@ -59,10 +58,10 @@ func (r *Runner) update(p cue.Path, v *cue.Value) error {
 	r.l.Lock()
 	defer r.l.Unlock()
 
-	value := r.mirror.FillPath(p, v)
-	if value.Value().Err() != nil {
-		return value.Value().Err()
-	}
+	// value := r.mirror.FillPath(p, v)
+	// if value.Value().Err() != nil {
+	// 	return value.Value().Err()
+	// }
 	r.initTasks(v)
 	return nil
 }
