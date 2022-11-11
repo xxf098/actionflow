@@ -44,7 +44,7 @@ func Load(ctx context.Context, cfg Config) (*Plan, error) {
 	}
 
 	if !cueModExists {
-		return nil, fmt.Errorf("dagger project not found. Run `dagger project init`")
+		return nil, fmt.Errorf("project not found. Run `flow project init`")
 	}
 
 	v, err := compiler.Build(ctx, src, args)

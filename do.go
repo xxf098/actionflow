@@ -58,8 +58,9 @@ func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
 	if err != nil {
 		return nil, err
 	}
+	os.Chdir(absPlanPath)
 	return plan.Load(ctx, plan.Config{
-		Args: []string{planPath},
+		Args: []string{absPlanPath},
 	})
 }
 

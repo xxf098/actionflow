@@ -11,7 +11,7 @@ import (
 	"github.com/containerd/console"
 	"github.com/rs/zerolog"
 	"github.com/xxf098/actionflow"
-	"github.com/xxf098/actionflow/cmd/logger"
+	"github.com/xxf098/actionflow/logger"
 	"github.com/xxf098/actionflow/plan"
 	"golang.org/x/term"
 )
