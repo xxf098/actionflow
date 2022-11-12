@@ -2,7 +2,6 @@ package task
 
 import (
 	"context"
-	"sync"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -38,38 +37,47 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-	if max == 0 || max > int64(len(tasks)) {
-		max = int64(len(tasks))
+	lenTasks := len(tasks)
+	if max == 0 || max > int64(lenTasks) {
+		max = int64(lenTasks)
 	}
 	ch := make(chan struct{}, max)
-	var wg sync.WaitGroup
+	// var wg sync.WaitGroup
 
-	var taskErr error
 	// ignore error anyway
 	lg := log.Ctx(ctx)
 	start := time.Now()
+	// timeout
+	errChan := make(chan error, lenTasks)
 	for i, task := range tasks {
-		wg.Add(1)
+		// wg.Add(1)
 		ch <- struct{}{}
 		go func(ctx context.Context, index int, v cue.Value) {
-			defer wg.Done()
+			// defer wg.Done()
+			var err error
 			defer func() {
 				<-ch
+				errChan <- err
 			}()
 			t, err := Lookup(&v)
 			if err != nil {
-				taskErr = err
 				lg.Error().Err(err).Msgf("index: %d", index)
 				return
 			}
 			_, err = t.Run(ctx, &v)
 			if err != nil {
-				taskErr = err
 				lg.Error().Err(err).Msgf("index: %d name: %s", index, t.Name())
 			}
 		}(ctx, i, task)
 	}
-	wg.Wait()
+	var taskErr error
+	for i := 0; i < lenTasks; i++ {
+		taskErr = <-errChan
+		if !ignoreError && taskErr != nil {
+			break
+		}
+	}
+	// wg.Wait()
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
 	value := compiler.NewValue()
