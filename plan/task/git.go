@@ -1,6 +1,7 @@
 package task
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os/exec"
@@ -41,10 +42,12 @@ func (t *gitTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		return nil, fmt.Errorf("not enough args")
 	}
 
+	var errBuf bytes.Buffer
 	cmd := exec.Command("git", args...)
+	cmd.Stderr = &errBuf
 	err := cmd.Run()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: %s", err.Error(), errBuf.String())
 	}
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
