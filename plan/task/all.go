@@ -71,7 +71,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			}
 			_, err = t.Run(ctx, &v)
 			if err != nil {
-				errStr := fmt.Sprintf("Lookup error: %s", v.Path().String())
+				errStr := fmt.Sprintf("Run error: %s", v.Path().String())
 				if ignoreError {
 					errStr = fmt.Sprintf("%s %s", errStr, err.Error())
 				}
