@@ -151,7 +151,12 @@ func LookupAction(v *cue.Value) (string, *cue.Value) {
 
 // do then action
 func Then(ctx context.Context, v *cue.Value) error {
-	tv := v.Lookup("then")
+	tv := v.LookupPath(cue.ParsePath("then"))
+	isBackground := false
+	if !tv.Exists() {
+		tv = v.LookupPath(cue.ParsePath("then_"))
+		isBackground = true
+	}
 	tk := tv.Kind()
 	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
 		lg := log.Ctx(ctx)
@@ -160,6 +165,13 @@ func Then(ctx context.Context, v *cue.Value) error {
 			lg.Error().Err(err).Str("task", v.Path().String()).Msg(task.Name())
 			return err
 		} else {
+			if isBackground {
+				go func() {
+					if _, err := task.Run(ctx, &tv); err != nil {
+						lg.Error().Err(err).Str("task", v.Path().String()).Msg(task.Name())
+					}
+				}()
+			}
 			_, err := task.Run(ctx, &tv)
 			if err != nil {
 				return err

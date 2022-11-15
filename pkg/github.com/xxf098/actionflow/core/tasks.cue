@@ -6,6 +6,8 @@ package core
 	input: 		_
 	output: string @dagger(generated)
 	then: 	null | #Task
+	// run task in background
+	then_: 	null | #Task
     ...
 }
 
