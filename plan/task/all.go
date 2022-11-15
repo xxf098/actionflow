@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -61,12 +62,12 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			}()
 			t, err := Lookup(&v)
 			if err != nil {
-				lg.Error().Msgf("index: %d", index)
+				lg.Error().Err(fmt.Errorf("Lookup error: %s", v.Path().String())).Msgf("index: %d name: %s", index, t.Name())
 				return
 			}
 			_, err = t.Run(ctx, &v)
 			if err != nil {
-				lg.Error().Msgf("index: %d name: %s", index, t.Name())
+				lg.Error().Err(fmt.Errorf("Run error: %s", v.Path().String())).Msgf("index: %d name: %s", index, t.Name())
 			}
 		}(ctx, i, task)
 	}
