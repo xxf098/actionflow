@@ -30,6 +30,7 @@ jobs:
 
       - name: Build
         run: |
+          node --version
           go mod tidy
           make flow
 

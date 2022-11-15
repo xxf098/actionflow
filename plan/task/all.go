@@ -61,12 +61,12 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			}()
 			t, err := Lookup(&v)
 			if err != nil {
-				lg.Error().Err(err).Msgf("index: %d", index)
+				lg.Error().Msgf("index: %d", index)
 				return
 			}
 			_, err = t.Run(ctx, &v)
 			if err != nil {
-				lg.Error().Err(err).Msgf("index: %d name: %s", index, t.Name())
+				lg.Error().Msgf("index: %d name: %s", index, t.Name())
 			}
 		}(ctx, i, task)
 	}
