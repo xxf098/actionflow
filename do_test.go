@@ -133,3 +133,10 @@ func TestAll(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestStep(t *testing.T) {
+	err := flowTest("./testcues/step.cue", "setup")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

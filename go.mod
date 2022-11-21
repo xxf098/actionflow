@@ -17,6 +17,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/morikuni/aec v1.0.0
 	github.com/muesli/ansi v0.0.0-20211031195517-c9f0611b6c70
 	github.com/tonistiigi/vt100 v0.0.0-20210615222946-8066bb97264f

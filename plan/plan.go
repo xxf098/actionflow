@@ -44,7 +44,7 @@ func Load(ctx context.Context, cfg Config) (*Plan, error) {
 	}
 
 	if !cueModExists {
-		return nil, fmt.Errorf("project not found. Run `flow project init`")
+		return nil, fmt.Errorf("project not found. Run `flow init`")
 	}
 
 	v, err := compiler.Build(ctx, src, args)

@@ -28,9 +28,9 @@ jobs:
 
       - name: Build
         run: |
-          printenv
           go mod tidy
           make flow
+          ls
 
       - name: Exec
         run: |
