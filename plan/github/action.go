@@ -11,8 +11,8 @@ import (
 	"github.com/xxf098/actionflow/plan/github/model"
 )
 
-func ReadAction(ctx context.Context, actionDir string, remoteAction string) (*model.Action, error) {
-	actionPath := path.Join(actionDir, remoteAction, "action.yml")
+func ReadAction(ctx context.Context, actionDir string) (*model.Action, error) {
+	actionPath := path.Join(actionDir, "action.yml")
 	f, err := os.Open(actionPath)
 	if os.IsNotExist(err) {
 		f, err = os.Open(actionPath)
