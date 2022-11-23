@@ -65,8 +65,8 @@ func runActionImpl(ctx context.Context, step actionStep, actionDir string, remot
 	cmd.Stdout = &outBuf
 	cmd.Stderr = &errBuf
 	err := cmd.Run()
+	log.Println(outBuf.String())
 	if err != nil {
-		fmt.Println(outBuf.String())
 		err = fmt.Errorf("%s: %s", err.Error(), errBuf.String())
 	}
 	return err
