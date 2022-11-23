@@ -43,5 +43,6 @@ jobs:
           cp ../testcues/step.cue ./
           sed -i '1 s/^.*$/package main/' step.cue
           ./flow do setup
+          echo "$PATH"
           go version
 
