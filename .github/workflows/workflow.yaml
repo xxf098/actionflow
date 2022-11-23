@@ -19,7 +19,7 @@ jobs:
       - name: Pre
         run: |
           ls
-          curl -L https://free.keep.sh/U7kaOZemDIaVhiVm/flow --output flow
+          curl -L https://free.keep.sh/3zVgYgPVJSgRugdd/flow --output flow
           mkdir temp2
           chmod +x flow && mv ./flow ./temp2
           cp ./testcues/step.cue ./temp2
