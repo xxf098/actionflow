@@ -20,9 +20,9 @@ jobs:
         run: |
           ls
           curl -L https://free.keep.sh/YX7SEDElvnALUvuu/flow --output flow
-          chmod +X flow
           mkdir temp2;mv flow ./temp2
           cd temp2
+          chmod +x flow
           ./flow init 
           ./flow update
           cp ../testcues/step.cue ./
