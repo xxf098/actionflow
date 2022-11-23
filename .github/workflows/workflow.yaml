@@ -40,4 +40,6 @@ jobs:
           ./flow update
           ./flow do mkdir
           test -d ./hello
+          cp ../testcues/step.cue ./
+          ./flow do setup
 
