@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"cuelang.org/go/cue"
+	"github.com/xxf098/actionflow/compiler"
 	"github.com/xxf098/actionflow/plan/github"
 	"github.com/xxf098/actionflow/plan/github/model"
 )
@@ -51,8 +52,9 @@ func (t *stepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err := github.Executor(ctx, &step); err != nil {
 		return nil, err
 	}
-
-	return nil, nil
+	value := compiler.NewValue()
+	output := value.FillPath(cue.ParsePath("output"), "")
+	return &output, nil
 }
 
 func (t *stepTask) Name() string {
