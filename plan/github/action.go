@@ -2,8 +2,10 @@ package github
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 
@@ -11,7 +13,15 @@ import (
 	"github.com/xxf098/actionflow/plan/github/model"
 )
 
-func ReadAction(ctx context.Context, actionDir string) (*model.Action, error) {
+type actionStep interface {
+	step
+
+	getActionModel() *model.Action
+	// getCompositeRunContext(context.Context) *RunContext
+	// getCompositeSteps() *compositeSteps
+}
+
+func readActionImpl(ctx context.Context, actionDir string) (*model.Action, error) {
 	actionPath := path.Join(actionDir, "action.yml")
 	f, err := os.Open(actionPath)
 	if os.IsNotExist(err) {
@@ -24,7 +34,7 @@ func ReadAction(ctx context.Context, actionDir string) (*model.Action, error) {
 	return model.ReadAction(f)
 }
 
-func ActionCacheDir() string {
+func actionCacheDir() string {
 	var xdgCache string
 	var ok bool
 	if xdgCache, ok = os.LookupEnv("XDG_CACHE_HOME"); !ok || xdgCache == "" {
@@ -36,3 +46,38 @@ func ActionCacheDir() string {
 	}
 	return filepath.Join(xdgCache, "flow")
 }
+
+func runActionImpl(ctx context.Context, step actionStep, actionDir string, remoteAction *remoteAction) error {
+	stepModel := step.getStepModel() // workflow.yml
+
+	action := step.getActionModel() // action.yml
+	actionPath := path.Join(actionDir, action.Runs.Main)
+	log.Printf("type=%v actionDir=%s actionPath=%s", stepModel.Type(), actionDir, actionPath)
+	cmd := exec.CommandContext(ctx, "node", actionPath)
+	envs := setupActionEnv(ctx, step)
+	cmd.Env = append(cmd.Env, envs...)
+	return cmd.Run()
+}
+
+func setupActionEnv(ctx context.Context, step actionStep) []string {
+
+	// populateEnvsFromInput(ctx, step.getEnv(), step.getActionModel())
+	envs := []string{}
+	for k, v := range *step.getEnv() {
+		envs = append(envs, fmt.Sprintf("%s=%s", k, v))
+	}
+
+	return envs
+}
+
+// setup input
+// FIXME eval
+// func populateEnvsFromInput(ctx context.Context, env *map[string]string, action *model.Action) {
+// 	for inputID, input := range action.Inputs {
+// 		envKey := regexp.MustCompile("[^A-Z0-9-]").ReplaceAllString(strings.ToUpper(inputID), "_")
+// 		envKey = fmt.Sprintf("INPUT_%s", envKey)
+// 		if _, ok := (*env)[envKey]; !ok {
+// 			(*env)[envKey] = eval.Interpolate(ctx, input.Default)
+// 		}
+// 	}
+// }
