@@ -105,6 +105,7 @@ func setupRunnerEnv(envs []string) []string {
 	if !checkEnv(envs, "RUNNER_TEMP") {
 		envs = append(envs, fmt.Sprintf("%s=%s", "RUNNER_TEMP", "/tmp"))
 	}
+	envs = append(envs, fmt.Sprintf("%s=%s", "ACTIONS_ALLOW_UNSECURE_COMMANDS", "true"))
 	return envs
 }
 
