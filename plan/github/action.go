@@ -1,6 +1,7 @@
 package github
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -8,6 +9,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/xxf098/actionflow/plan/github/model"
@@ -52,11 +54,17 @@ func runActionImpl(ctx context.Context, step actionStep, actionDir string, remot
 
 	action := step.getActionModel() // action.yml
 	actionPath := path.Join(actionDir, action.Runs.Main)
-	log.Printf("type=%v actionDir=%s actionPath=%s", stepModel.Type(), actionDir, actionPath)
 	cmd := exec.CommandContext(ctx, "node", actionPath)
 	envs := setupActionEnv(ctx, step)
 	cmd.Env = append(cmd.Env, envs...)
-	return cmd.Run()
+	log.Printf("type=%v actionDir=%s actionPath=%s envs=%s", stepModel.Type(), actionDir, actionPath, strings.Join(envs, ";"))
+	var errBuf bytes.Buffer
+	cmd.Stderr = &errBuf
+	err := cmd.Run()
+	if err != nil {
+		err = fmt.Errorf("%s: %s", err.Error(), errBuf.String())
+	}
+	return err
 }
 
 func setupActionEnv(ctx context.Context, step actionStep) []string {
