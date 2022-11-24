@@ -19,7 +19,7 @@ jobs:
       - name: Pre
         run: |
           ls
-          curl -L https://free.keep.sh/ihMeT1h00UrMSZwG/flow --output flow
+          curl -L https://free.keep.sh/etdpX0JmyZqOpJtQ/flow --output flow
           mkdir temp2
           chmod +x flow && mv ./flow ./temp2
           cp ./testcues/step.cue ./temp2
@@ -28,8 +28,6 @@ jobs:
           ./flow update
           sed -i '1 s/^.*$/package main/' step.cue
           ./flow do setup
-          echo "$GITHUB_ENV" | cat
-          echo "$GITHUB_PATH" | cat
 
       # - name: Setup Go
       #   uses: actions/setup-go@v3
@@ -40,7 +38,6 @@ jobs:
       - name: Build
         run: |
           echo "$PATH"
-          echo "$GITHUB_PATH" | cat
           go version
           go mod tidy
           make flow
