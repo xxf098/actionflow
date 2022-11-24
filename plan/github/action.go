@@ -92,66 +92,15 @@ func setupActionEnv(ctx context.Context, step actionStep) []string {
 
 func setupGithubEnv(envs []string) []string {
 	envs = append(envs, "CI=true")
-	if v, ok := os.LookupEnv("GITHUB_ENV"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_ENV=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_PATH"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_PATH=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_WORKFLOW"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_WORKFLOW=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_RUN_ID"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_RUN_ID=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_RUN_NUMBER"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_RUN_NUMBER=%s", v))
-	}
 	envs = append(envs, "GITHUB_ACTIONS=true")
-	if v, ok := os.LookupEnv("GITHUB_REPOSITORY"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_REPOSITORY=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_EVENT_NAME"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_EVENT_NAME=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_EVENT_PATH"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_EVENT_PATH=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_WORKSPACE"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_WORKSPACE=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_SHA"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_SHA=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_REF"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_REF=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_REF_NAME"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_REF_NAME=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_REF_TYPE"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_REF_TYPE=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_TOKEN"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_TOKEN=%s", v))
-	}
 	envs = append(envs, "GITHUB_SERVER_URL=https://github.com")
 	envs = append(envs, "GITHUB_API_URL=https://api.github.com")
 	envs = append(envs, "GITHUB_GRAPHQL_URL=https://api.github.com/graphql")
-	if v, ok := os.LookupEnv("GITHUB_JOB"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_JOB=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_REPOSITORY_OWNER"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_REPOSITORY_OWNER=%s", v))
-	}
-	if v, ok := os.LookupEnv("GITHUB_RETENTION_DAYS"); ok {
-		envs = append(envs, fmt.Sprintf("GITHUB_RETENTION_DAYS=%s", v))
-	}
-	if v, ok := os.LookupEnv("RUNNER_PERFLOG"); ok {
-		envs = append(envs, fmt.Sprintf("RUNNER_PERFLOG=%s", v))
-	}
-	if v, ok := os.LookupEnv("RUNNER_TRACKING_ID"); ok {
-		envs = append(envs, fmt.Sprintf("RUNNER_TRACKING_ID=%s", v))
+	keys := []string{"GITHUB_ENV", "GITHUB_PATH", "GITHUB_WORKFLOW", "GITHUB_RUN_ID", "GITHUB_RUN_NUMBER", "GITHUB_REPOSITORY", "GITHUB_EVENT_NAME",
+		"GITHUB_EVENT_PATH", "GITHUB_WORKSPACE", "GITHUB_SHA", "GITHUB_REF", "GITHUB_REF_NAME", "GITHUB_REF_TYPE", "GITHUB_TOKEN", "GITHUB_JOB",
+		"GITHUB_REPOSITORY_OWNER", "GITHUB_RETENTION_DAYS", "RUNNER_PERFLOG", "RUNNER_TRACKING_ID", "XDG_CONFIG_HOME"}
+	for _, key := range keys {
+		envs = append(envs, fmt.Sprintf("%s=%s", key, os.Getenv(key)))
 	}
 	return envs
 }
