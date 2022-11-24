@@ -18,16 +18,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Pre
         run: |
-          env
-          curl -L https://free.keep.sh/RVohIJzXlIFC4ks0/flow --output flow
-          mkdir temp2
-          chmod +x flow && mv ./flow ./temp2
-          cp ./testcues/step.cue ./temp2
-          cd temp2
-          ./flow init 
-          ./flow update
-          sed -i '1 s/^.*$/package main/' step.cue
-          ./flow do setup
+          git clone --depth=1 https://github.com/actions/setup-go.git  /home/runner/.cache/flow/actions-setup-go@v3
+          env INPUT_GO-VERSION=1.19 INPUT_CHECK-LATEST=false INPUT_CACHE=true INPUT_CACHE-DEPENDENCY-PATH= RUNNER_TOOL_CACHE=/opt/hostedtoolcache RUNNER_OS=Linux RUNNER_ARCH=x64 RUNNER_TEMP=/tmp node /home/runner/.cache/flow/actions-setup-go@v3/dist/setup/index.js
 
       # - name: Setup Go
       #   uses: actions/setup-go@v3
