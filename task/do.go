@@ -57,7 +57,7 @@ func Flow(dir string, action string) {
 
 func setupLog() (zerolog.Logger, context.Context) {
 	cfg := logger.LogConfig{
-		Level:  "info", // panic fatal error warn info debug trace
+		Level:  "debug", // panic fatal error warn info debug trace
 		Format: "plain",
 	}
 	lg := logger.New(cfg)
