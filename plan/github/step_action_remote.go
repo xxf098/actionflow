@@ -3,10 +3,10 @@ package github
 import (
 	"context"
 	"fmt"
-	"os/exec"
 	"regexp"
 	"strings"
 
+	"github.com/xxf098/actionflow/common/git"
 	"github.com/xxf098/actionflow/plan/github/model"
 )
 
@@ -28,11 +28,20 @@ func (sar *StepActionRemote) pre(ctx context.Context) error {
 		return fmt.Errorf("Expected format {org}/{repo}[/path]@ref. Actual '%s' Input string was not in a correct format", sar.Step.Uses)
 	}
 	actionDir := fmt.Sprintf("%s/%s", actionCacheDir(), strings.ReplaceAll(sar.Step.Uses, "/", "-"))
-	cloneURL := fmt.Sprintf("%s.git", remoteAction.CloneURL())
-	cmd := exec.CommandContext(ctx, "git", "clone", cloneURL, actionDir)
-	if err := cmd.Run(); err != nil {
+	// cloneURL := fmt.Sprintf("%s.git", remoteAction.CloneURL())
+	cfg := git.GitCloneConfig{
+		URL: remoteAction.CloneURL(),
+		Dir: actionDir,
+		Ref: remoteAction.Ref,
+	}
+	if err := git.Clone(ctx, cfg); err != nil {
 		return err
 	}
+
+	// cmd := exec.CommandContext(ctx, "git", "clone", cloneURL, actionDir)
+	// if err := cmd.Run(); err != nil {
+	// 	return err
+	// }
 	// read action
 	action, err := readActionImpl(ctx, actionDir)
 	if err != nil {
