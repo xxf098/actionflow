@@ -61,5 +61,11 @@ jobs:
           test -f ./test/foo
           rm *.cue &&  cp ../testcues/mkdir_parents.cue ./
           ./flow do writeChecker
-          test -f ./test/baz/foo       
-   
+          test -f ./test/baz/foo
+          rm *.cue &&  cp ../testcues/exec/output.cue ./
+          ./flow do save
+          test -f ./output.txt
+          rm *.cue &&  cp ../testcues/exec/env.cue ./
+          ./flow do verify
+          rm *.cue &&  cp ../testcues/exec/workdir.cue ./
+          ./flow do verify          
