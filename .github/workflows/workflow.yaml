@@ -46,4 +46,8 @@ jobs:
           cp ../testcues/writefile.cue ./
           ./flow do hello
           test -f hello-fileName.txt
+          rm *.cue &&  cp ../testcues/writefile1.cue ./
+          ./flow do hello
+          test -f ./test/hello/hello-fileName.txt
+          
    
