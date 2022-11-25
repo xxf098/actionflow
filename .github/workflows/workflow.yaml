@@ -50,7 +50,7 @@ jobs:
           ./flow do hello
           test -f ./test/hello/hello-fileName.txt
           rm *.cue &&  cp ../testcues/rmfile.cue ./
-          ./flow do rmMulti
+          ./flow do test.rmMulti.rm
           ! test -f ./test/foo.txt
           ! test -f ./test/bar.json
           test -f ./test/baz.yaml
