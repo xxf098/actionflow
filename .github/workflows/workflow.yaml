@@ -49,7 +49,9 @@ jobs:
           rm *.cue &&  cp ../testcues/writefile1.cue ./
           ./flow do hello
           test -f ./test/hello/hello-fileName.txt
-          rm *.cue &&  cp ../testcues/writefile2.cue ./
-          ./flow do hello
-          test -f ./test/hello-fileName.txt
+          rm *.cue &&  cp ../testcues/rmfile.cue ./
+          ./flow do rmMulti
+          ! test -f ./test/foo.txt
+          ! test -f ./test/bar.json
+          test -f ./test/baz.yaml
    
