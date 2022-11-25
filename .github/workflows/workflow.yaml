@@ -52,5 +52,9 @@ jobs:
           rm *.cue &&  cp ../testcues/exec.cue ./
           ./flow do touch
           test -f ./hello.txt
+          rm *.cue &&  cp ../testcues/all.cue ./
+          ./flow do writeAll
+          test -f ./test/foo1
+          test -f ./test/foo2
          
    
