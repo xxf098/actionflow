@@ -42,6 +42,7 @@ jobs:
           ./flow update
           ./flow do mkdir
           test -d ./hello
+          rm *.cue
           cp ../testcues/writefile.cue ./
           ./flow do hello
           test -f hello-fileName.txt
