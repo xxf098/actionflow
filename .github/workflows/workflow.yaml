@@ -34,7 +34,7 @@ jobs:
           make flow
           ls
 
-      - name: Exec
+      - name: Test
         run: |
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
@@ -49,5 +49,7 @@ jobs:
           rm *.cue &&  cp ../testcues/writefile1.cue ./
           ./flow do hello
           test -f ./test/hello/hello-fileName.txt
-          
+          rm *.cue &&  cp ../testcues/writefile2.cue ./
+          ./flow do hello
+          test -f ./test/hello-fileName.txt
    
