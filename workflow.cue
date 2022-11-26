@@ -1,4 +1,4 @@
-package testcues
+package main
 
 import (
     "github.com/xxf098/actionflow"
