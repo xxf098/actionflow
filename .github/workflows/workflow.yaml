@@ -31,7 +31,6 @@ jobs:
 
       - name: Build
         run: |
-          go version
           go mod tidy
           make flow
           ls
