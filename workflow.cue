@@ -13,7 +13,6 @@ actionflow.#Plan & {
 		}
 
 		build: core.#Exec & {
-			input: setup.output
 			cmd: ["sh", "-c", """
 			go mod tidy
 			make flow
