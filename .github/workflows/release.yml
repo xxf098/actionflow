@@ -27,6 +27,8 @@ jobs:
         run: |
           go mod tidy
           make flow
+          chmod +x ./cmd/flow
+          zip -d flow-linux-amd64.zip ./cmd/flow
 
       - name: Upload Release
         uses: softprops/action-gh-release@v1
@@ -34,5 +36,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: cmd/flow
+          files: flow-linux-amd64.zip
           draft: true
