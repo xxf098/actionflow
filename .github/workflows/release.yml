@@ -28,7 +28,7 @@ jobs:
           go mod tidy
           make flow
           chmod +x ./cmd/flow
-          zip flow-linux-amd64.zip ./cmd/flow
+          zip -j flow-linux-amd64.zip ./cmd/flow
           unzip -l flow-linux-amd64.zip
 
       - name: Upload Release
