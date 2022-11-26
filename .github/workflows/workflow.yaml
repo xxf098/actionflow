@@ -38,7 +38,8 @@ jobs:
 
       - name: Test
         run: |
-          mkdir temp1;mv ./flow ./temp1
+          ls
+          mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
           ./flow init 
           ./flow update
