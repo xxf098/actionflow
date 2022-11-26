@@ -11,5 +11,13 @@ actionflow.#Plan & {
 			uses: "actions/setup-go@v3"
 			with: { "go-version": "1.19" }
 		}
+
+		build: core.#Exec & {
+			input: setup.output
+			cmd: ["sh", "-c", """
+			go mod tidy
+			make flow
+"""]
+		}
 	}
 }
