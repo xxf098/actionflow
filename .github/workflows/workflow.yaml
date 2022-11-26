@@ -19,7 +19,7 @@ jobs:
       - name: Pre
         run: |
           wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.8/flow-linux-amd64-v0.5.8.zip
-          unzip flow-linux-amd64.zip
+          unzip flow-linux-amd64-v0.5.8.zip
           rm -rf cue.mod
           ./flow init && ./flow update
           ./flow do setup
