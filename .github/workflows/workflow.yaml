@@ -18,11 +18,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Pre
         run: |
-          wget https://github.com/xxf098/actionflow/releases/download/v0.5.4/flow-linux-amd64.zip
+          wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.8/flow-linux-amd64-v0.5.8.zip
           unzip flow-linux-amd64.zip
-          cp workflow.cue ./cmd/ && cd ./cmd
+          rm -rf cue.mod
           ./flow init && ./flow update
-          ls
           ./flow do setup
 
       # - name: Setup Go
