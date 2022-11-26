@@ -19,7 +19,7 @@ jobs:
       - name: Pre
         run: |
           wget https://github.com/xxf098/actionflow/releases/download/v0.5.4/flow-linux-amd64.zip
-          unzip flow-linux-amd64.zip -d /usr/bin/
+          unzip flow-linux-amd64.zip && PATH="$PATH:$(pwd)/cmd"
           flow init && flow update
           flow do setup
 
