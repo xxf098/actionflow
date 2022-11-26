@@ -17,6 +17,8 @@ jobs:
 
       - name: Setup Go
         uses: actions/setup-go@v3
+        with: 
+          go-version: '1.19'
 
       - name: Get dependencies, run test and static check
         run: |
