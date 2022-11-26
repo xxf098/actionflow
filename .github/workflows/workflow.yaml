@@ -24,12 +24,6 @@ jobs:
           ./flow init && ./flow update
           ./flow do setup
 
-      # - name: Setup Go
-      #   uses: actions/setup-go@v3
-      #   with:
-      #     go-version: 1.18
-      #     cache: false
-
       - name: Build
         run: ./flow do build
           
@@ -42,6 +36,8 @@ jobs:
           ./flow update
           ./flow do mkdir
           test -d ./hello
+          cp ../workflow.cue ./
+          ./flow do testAll 
           rm *.cue
           cp ../testcues/writefile.cue ./
           ./flow do hello

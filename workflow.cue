@@ -1,9 +1,25 @@
-package main
+package testcues
 
 import (
     "github.com/xxf098/actionflow"
     "github.com/xxf098/actionflow/core"
 )
+
+
+#GoTest: {
+	fileName: string
+	actionName: string
+	test: string
+ 
+    write: core.#Exec & {
+        cmd: ["sh", "-c", """
+		cp ../testcues/\(fileName).cue ./
+		./flow do \(actionName)
+		rm -f \(fileName).cue
+		\(test)
+"""]
+    }
+}
 
 actionflow.#Plan & {
 	actions: {
@@ -17,6 +33,12 @@ actionflow.#Plan & {
 			go mod tidy
 			make flow
 """]
+		}
+
+		testAll: #GoTest & {
+			fileName: "writefile"
+			actionName: "hello"
+			test: "test -f hello-fileName.txt"
 		}
 	}
 }
