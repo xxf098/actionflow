@@ -8,7 +8,7 @@ import (
 actionflow.#Plan & {
 	actions: {
 
-		verify: core.#Exec & {
+		verifyEnv: core.#Exec & {
 			env: TEST: "hello world"
 			cmd: [
 				"sh", "-c",
