@@ -40,6 +40,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "exec", actionName: "touch", test: "test -f ./hello.txt" },
 				#GoTest & { fileName: "exec/output", actionName: "save", test: "test -f ./output.txt" },
 				#GoTest & { fileName: "exec/env", actionName: "verify", test: "" },
+				#GoTest & { fileName: "exec/workdir", actionName: "verify", test: "" },
 			]
 		}
 	}

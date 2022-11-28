@@ -48,5 +48,3 @@ jobs:
           rm *.cue &&  cp ../testcues/mkdir_parents.cue ./
           ./flow do writeChecker
           test -f ./test/baz/foo
-          rm *.cue &&  cp ../testcues/exec/workdir.cue ./
-          ./flow do verify          
