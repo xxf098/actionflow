@@ -6,19 +6,17 @@ import (
 )
 
 
-#GoTest: {
+#GoTest: core.#Exec & {
 	fileName: string
 	actionName: string
 	test: string
  
-    write: core.#Exec & {
-        cmd: ["sh", "-c", """
-		cp ../testcues/\(fileName).cue ./
-		./flow do \(actionName)
-		rm -f \(fileName).cue
-		\(test)
+	cmd: ["sh", "-c", """
+	cp ../testcues/\(fileName).cue ./
+	./flow do \(actionName)
+	rm -f \(fileName).cue
+	\(test)
 """]
-    }
 }
 
 actionflow.#Plan & {
