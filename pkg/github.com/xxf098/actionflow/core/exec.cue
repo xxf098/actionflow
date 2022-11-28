@@ -17,3 +17,8 @@ package core
 	user: string | *"root:root"
 
 }
+
+#Run: #Exec & {
+	run: string
+	cmd: ["sh", "-c", run]
+}

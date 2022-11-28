@@ -23,6 +23,10 @@ func TestExec(t *testing.T) {
 	doTest("./testcues/exec.cue", "touch")
 }
 
+func TestRun(t *testing.T) {
+	doTest("./testcues/exec.cue", "touchRun")
+}
+
 func TestRmFile(t *testing.T) {
 	_, err := doTest("./testcues/rmfile.cue", "test.rmFile.verify")
 	if err != nil {

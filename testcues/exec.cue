@@ -14,7 +14,15 @@ import (
 }
 
 actionflow.#Plan & {
-      actions: touch: #TouchFile & {
-        name: "hello.txt"
+      actions: {
+        touch: #TouchFile & {
+                name: "hello.txt"
+            }
+        
+        touchRun: core.#Run & {
+            run: """
+            touch test.log
+        """
+        }
     }
 }

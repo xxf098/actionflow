@@ -28,7 +28,6 @@ jobs:
           
       - name: Test
         run: |
-          ls ./cmd
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
           ./flow init &&  ./flow update
@@ -36,4 +35,4 @@ jobs:
           test -d ./hello
           rm *.cue && cp ../workflow.cue ./
           sed -i '1 s/^.*$/package testcues/' workflow.cue
-          ./flow do testAll 
+          ./flow do testAll
