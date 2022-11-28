@@ -12,9 +12,9 @@ import (
 	test: string
  
 	cmd: ["sh", "-c", """
+	rm *.cue && cp ../workflow.cue ./
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
-	rm -f \(fileName).cue
 	\(test)
 """]
 }
