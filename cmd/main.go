@@ -46,7 +46,7 @@ func projectInit(args []string) {
 		log.Fatal(err)
 	}
 	if dir == "." {
-		log.Println("Project initialized! To install flow packages, run `flow update`")
+		log.Println("Project initialized! To install actionflow packages, run `flow update`")
 	} else {
 		log.Printf("Project initialized in \"%s\"! To install actionflow packages, go to subfolder \"%s\" and run \"flow update\"\n", dir, dir)
 	}
