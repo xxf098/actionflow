@@ -36,7 +36,7 @@ actionflow.#Plan & {
 		testAll: core.#All & {
 			max: 1
 			tasks: [
-				#GoTest & { fileName: "writefile1", actionName: "hello", test: "test -f hello-fileName1.txt" },
+				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
 			]
 		}
 	}
