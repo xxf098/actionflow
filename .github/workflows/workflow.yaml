@@ -35,7 +35,6 @@ jobs:
           ./flow update
           ./flow do mkdir
           test -d ./hello
-          sed -i '1 s/^.*$/package testcues/' workflow.cue
           ./flow do testAll 
           rm *.cue &&  cp ../testcues/mkdir_parents.cue ./
           ./flow do writeChecker
