@@ -38,6 +38,7 @@ actionflow.#Plan & {
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
 				#GoTest & { fileName: "exec", actionName: "touch", test: "test -f ./hello.txt" },
+				#GoTest & { fileName: "exec/output", actionName: "save", test: "test -f ./output.txt" },
 			]
 		}
 	}
