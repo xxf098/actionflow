@@ -38,10 +38,6 @@ jobs:
           cp ../workflow.cue ./
           sed -i '1 s/^.*$/package testcues/' workflow.cue
           ./flow do testAll 
-          rm *.cue &&  cp ../testcues/all.cue ./
-          ./flow do writeAll
-          test -f ./test/foo1
-          test -f ./test/foo2
           rm *.cue &&  cp ../testcues/mkdir_parents.cue ./
           ./flow do writeChecker
           test -f ./test/baz/foo          
