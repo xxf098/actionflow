@@ -60,11 +60,15 @@ func (t *execTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	if err != nil {
 		return nil, fmt.Errorf("%s: %s", err.Error(), errBuf.String())
 	}
-	lg.Debug().Str("task", v.Path().String()).Msg(outBuf.String())
+	s := outBuf.String()
+	if len(s) > 0 {
+		lg.Debug().Str("task", v.Path().String()).Msg(s)
+
+	}
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
 	value := compiler.NewValue()
-	output := value.FillPath(cue.ParsePath("output"), outBuf.String())
+	output := value.FillPath(cue.ParsePath("output"), s)
 	return &output, nil
 }
 
