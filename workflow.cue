@@ -15,6 +15,7 @@ import (
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	rm -f \(fileName).cue
+	rm -f *.txt
 	\(test)
 """]
 }
