@@ -32,7 +32,7 @@ actionflow.#Plan & {
          },
           hello: #AddHello & {
             content: hellofile.result
-            name: "fileName"
+            name: "fileName2"
         }
       }
 }

@@ -15,7 +15,6 @@ import (
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	rm -f \(fileName).cue
-	rm -f *.txt
 	\(test)
 """]
 }
@@ -37,7 +36,7 @@ actionflow.#Plan & {
 		testAll: core.#All & {
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
-				#GoTest & { fileName: "writefile1", actionName: "hello", test: "test -f hello-fileName.txt" },
+				#GoTest & { fileName: "writefile1", actionName: "hello", test: "test -f hello-fileName1.txt" },
 			]
 		}
 	}
