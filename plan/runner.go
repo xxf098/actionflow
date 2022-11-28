@@ -119,7 +119,7 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 		ctx = lg.WithContext(ctx)
 
 		for _, dep := range t.Dependencies() {
-			lg.Debug().Str("dependency", dep.Path().String()).Msg("dependency detected")
+			lg.Trace().Str("dependency", dep.Path().String()).Msg("dependency detected")
 		}
 
 		// fixme

@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"cuelang.org/go/cue"
+	"github.com/rs/zerolog/log"
 	"github.com/xxf098/actionflow/compiler"
 	"github.com/xxf098/actionflow/plan/github"
 	"github.com/xxf098/actionflow/plan/github/model"
@@ -48,10 +50,14 @@ func (t *stepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			}
 		}
 	}
+	lg := log.Ctx(ctx)
+	start := time.Now()
 	step := model.NewStep(uses, withs)
 	if err := github.Executor(ctx, &step); err != nil {
 		return nil, err
 	}
+	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
+
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), "")
 	return &output, nil
