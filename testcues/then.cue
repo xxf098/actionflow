@@ -8,10 +8,10 @@ import (
 actionflow.#Plan & {
 	actions: {
 
-		mkdir: core.#Mkdir & {
+		mkdirWrite: core.#Mkdir & {
 			path:  "./test"
             then: core.#WriteFile & {
-                path:        "./test/foo"
+                path:        "./test/foo4"
                 contents:    "bar"
                 permissions: 700
             }
