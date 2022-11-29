@@ -18,7 +18,7 @@ import (
 
 // https://cuelang.org/docs/concepts/packages/#import-path
 func Do(dir string, action string) {
-	lg, ctx := setupLog()
+	lg, ctx := setupLog(action)
 	err := actionflow.Do(ctx, dir, action)
 	if err != nil {
 		lg.Fatal().Err(err).Msg("failed to exec plan")
@@ -46,7 +46,7 @@ func Flow(dir string, action string) {
 		fmt.Println(iter.Label())
 	}
 	// setup log
-	lg, ctx := setupLog()
+	lg, ctx := setupLog(action)
 	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
 	runner := plan.NewRunner(target)
 	err = runner.Run(ctx, v)
@@ -55,12 +55,12 @@ func Flow(dir string, action string) {
 	}
 }
 
-func setupLog() (zerolog.Logger, context.Context) {
+func setupLog(actionName string) (zerolog.Logger, context.Context) {
 	cfg := logger.LogConfig{
 		Level:  "debug", // panic fatal error warn info debug trace
 		Format: "plain",
 	}
-	lg := logger.New(cfg)
+	lg := logger.New(cfg).With().Str("task", actionName).Logger()
 	ctx := lg.WithContext(context.Background())
 	var tty *logger.TTYOutput
 	var tty2 *logger.TTYOutputV2
