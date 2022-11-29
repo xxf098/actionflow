@@ -40,6 +40,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
 				#GoTest & { fileName: "exec", actionName: "touch", test: "test -f ./hello.txt" },
 				#GoTest & { fileName: "exec/output", actionName: "save", test: "test -f ./output.txt" },
+				#GoTest & { fileName: "exec/run", actionName: "save", test: "test -f ./runoutput.txt" },
 				#GoTest & { fileName: "exec/env", actionName: "verifyEnv", test: "" },
 				#GoTest & { fileName: "exec/workdir", actionName: "verify", test: "" },
 				#GoTest & { fileName: "then", actionName: "mkdirWrite", test: "test -f ./test/foo4" },
