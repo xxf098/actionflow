@@ -82,6 +82,10 @@ func TestGitPull(t *testing.T) {
 	doTest("./testcues/git.cue", "hello")
 }
 
+func TestCheckout(t *testing.T) {
+	doTest("./testcues/git.cue", "checkout")
+}
+
 func TestWorkDir(t *testing.T) {
 	err := flowTest("./testcues/exec/workdir.cue", "verify")
 	if err != nil {

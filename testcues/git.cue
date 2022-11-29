@@ -16,7 +16,12 @@ import (
 
 
 actionflow.#Plan & {
-      actions: hello: #HelloClone & {
-        url: "https://github.com/SimaRyan/simaryan.github.io.git"
-    }
+      actions: {
+        hello: #HelloClone & {
+            url: "https://github.com/SimaRyan/simaryan.github.io.git"
+        }
+        checkout: core.#Git & {
+           repo: "https://github.com/SimaRyan/simaryan.github.io.git"
+        }
+      }
 }
