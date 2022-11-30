@@ -56,11 +56,11 @@ func (sar *StepActionRemote) pre(ctx context.Context) error {
 
 // FIXME: output
 func (sar *StepActionRemote) main(ctx context.Context) error {
-	return runActionImpl(ctx, sar, sar.actionDir, sar.remoteAction)
+	return runActionImpl(ctx, sar, sar.actionDir)
 }
 
 func (sar *StepActionRemote) post(ctx context.Context) error {
-	return nil
+	return runPostStep(ctx, sar, sar.actionDir)
 }
 
 func (sar *StepActionRemote) getActionModel() *model.Action {

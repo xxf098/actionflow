@@ -51,7 +51,28 @@ func actionCacheDir() string {
 	return filepath.Join(xdgCache, "flow")
 }
 
-func runActionImpl(ctx context.Context, step actionStep, actionDir string, remoteAction *remoteAction) error {
+func runActionImpl(ctx context.Context, step actionStep, actionDir string) error {
+	stepModel := step.getStepModel() // workflow.yml
+
+	action := step.getActionModel() // action.yml
+	actionPath := path.Join(actionDir, action.Runs.Main)
+	cmd := exec.CommandContext(ctx, "node", actionPath)
+	envs := setupActionEnv(ctx, step)
+	cmd.Env = append(cmd.Env, envs...)
+	log.Printf("type=%v actionDir=%s actionPath=%s\n envs=%s", stepModel.Type(), actionDir, actionPath, strings.Join(envs, " "))
+	var outBuf, errBuf bytes.Buffer
+	cmd.Stdout = &outBuf
+	cmd.Stderr = &errBuf
+	err := cmd.Run()
+	if err != nil {
+		log.Println(outBuf.String())
+		err = fmt.Errorf("%s: %s", err.Error(), errBuf.String())
+	}
+	// log.Println(outBuf.String())
+	return err
+}
+
+func runPostStep(ctx context.Context, step actionStep, actionDir string) error {
 	stepModel := step.getStepModel() // workflow.yml
 
 	action := step.getActionModel() // action.yml
