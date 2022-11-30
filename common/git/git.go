@@ -320,11 +320,25 @@ func Clone(ctx context.Context, input GitCloneConfig) error {
 	}
 
 	// fetch latest changes
-	fetchOptions, pullOptions := gitOptions(input.Token)
+	_, pullOptions := gitOptions(input.Token)
 
-	err = r.Fetch(&fetchOptions)
-	if err != nil && !errors.Is(err, git.NoErrAlreadyUpToDate) {
+	// err = r.Fetch(&fetchOptions)
+	// if err != nil && !errors.Is(err, git.NoErrAlreadyUpToDate) {
+	// 	return err
+	// }
+
+	var w *git.Worktree
+	if w, err = r.Worktree(); err != nil {
 		return err
+	}
+
+	if len(input.Ref) < 1 {
+		if err = w.Pull(&pullOptions); err != nil && err != git.NoErrAlreadyUpToDate {
+			logger.Debugf("Unable to pull %s: %v", refName, err)
+			return err
+		}
+		logger.Debugf("Cloned %s to %s", input.URL, input.Dir)
+		return nil
 	}
 
 	var hash *plumbing.Hash
@@ -360,11 +374,6 @@ func Clone(ctx context.Context, input GitCloneConfig) error {
 
 	if hash, err = r.ResolveRevision(rev); err != nil {
 		logger.Errorf("Unable to resolve %s: %v", input.Ref, err)
-		return err
-	}
-
-	var w *git.Worktree
-	if w, err = r.Worktree(); err != nil {
 		return err
 	}
 

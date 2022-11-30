@@ -4,7 +4,7 @@ package core
 	$dagger: task: _name: "Git"
 	args: 	[...string] | *[]
 	repo: string | *""
-	ref: string | *"HEAD"
+	ref: string | *""
 	dir: string | *""
 	token: string | *""
 }

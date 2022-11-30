@@ -82,8 +82,8 @@ func TestGitPull(t *testing.T) {
 	doTest("./testcues/git.cue", "hello")
 }
 
-func TestCheckout(t *testing.T) {
-	doTest("./testcues/git.cue", "checkout")
+func TestGitCheckout(t *testing.T) {
+	doTest("./testcues/git.cue", "lite")
 }
 
 func TestWorkDir(t *testing.T) {
