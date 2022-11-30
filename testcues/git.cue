@@ -23,5 +23,8 @@ actionflow.#Plan & {
         checkout: core.#Git & {
            repo: "https://github.com/SimaRyan/simaryan.github.io.git"
         }
+        actionflow: core.#Git & {
+           repo: "https://github.com/xxf098/actionflow.git"
+        }
       }
 }
