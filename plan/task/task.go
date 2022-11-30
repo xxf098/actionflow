@@ -110,7 +110,6 @@ func lookupType(v *cue.Value) (string, error) {
 	for _, path := range paths {
 		typ := v.LookupPath(path)
 		if typ.Exists() {
-			// fmt.Println(v.Cue())
 			return typ.String()
 		}
 	}
