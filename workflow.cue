@@ -24,7 +24,10 @@ actionflow.#Plan & {
 	actions: {
 		setup: core.#Step & {
 			uses: "actions/setup-go@v3"
-			with: { "go-version": "1.19" }
+			with: { 
+				"go-version": "1.19"
+				"cache": true 
+			}
 		}
 
 		build: core.#Exec & {
