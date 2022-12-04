@@ -1,4 +1,4 @@
-name: flow
+name: Test Flow
 on:
   push:
     branches:   
