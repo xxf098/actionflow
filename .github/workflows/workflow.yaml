@@ -24,11 +24,11 @@ jobs:
           # wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.10/flow-linux-amd64-v0.5.10.zip
           # unzip flow-linux-amd64-v0.5.10.zip
           rm -rf cue.mod
-          ./flow init && ./flow update
-          ./flow do setup
+          flow init && ./flow update
+          flow do setup
 
       - name: Build
-        run: ./flow do build
+        run: flow do build
           
       - name: Test
         run: |
