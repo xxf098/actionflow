@@ -15,10 +15,14 @@ jobs:
     steps: 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
+      - name: Setup actionflow
+        uses: xxf098/setup-actionflow@v3
+        with:
+          flow-version: 'v0.5.10'       
       - name: Pre
         run: |
-          wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.10/flow-linux-amd64-v0.5.10.zip
-          unzip flow-linux-amd64-v0.5.10.zip
+          # wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.10/flow-linux-amd64-v0.5.10.zip
+          # unzip flow-linux-amd64-v0.5.10.zip
           rm -rf cue.mod
           ./flow init && ./flow update
           ./flow do setup
