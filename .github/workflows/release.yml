@@ -26,6 +26,8 @@ jobs:
       - name: Get dependencies, run test and static check
         run: |
           go mod tidy
+          LATESTTAG=$(git describe --tags --abbrev=0)
+          sed -i "s/v[0-9]\+\.[0-9]\+\.[0-9]\+/$LATESTTAG/" ./cmd/version.go
           make flow
           chmod +x ./cmd/flow
           zip -j flow-linux-amd64-$(git describe --tags).zip ./cmd/flow
