@@ -10,13 +10,16 @@ import (
 )
 
 // Go api
+// github expr
+//  50 ci
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("actionflow version: v0.1.0")
 		fmt.Print(`useage:
 	flow init [project path]
 	flow update [project path]
-	flow do [action name]	
+	flow do [action name]
+	flow version
 `)
 		return
 	}
@@ -32,6 +35,10 @@ func main() {
 	}
 	if args[0] == "do" {
 		flowAction(args)
+		return
+	}
+	if args[0] == "version" {
+		fmt.Println(VERSION)
 		return
 	}
 }
