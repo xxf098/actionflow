@@ -386,7 +386,9 @@ func Clone(ctx context.Context, input GitCloneConfig) error {
 		logger.Debugf("Provided ref is not a sha. Checking out branch before pulling changes")
 		sourceRef := plumbing.ReferenceName(path.Join("refs", "remotes", "origin", input.Ref))
 		if err = w.Checkout(&git.CheckoutOptions{
-			Branch: sourceRef,
+			Hash:   *hash,
+			Branch: plumbing.ReferenceName(input.Ref),
+			Create: true,
 			Force:  true,
 		}); err != nil {
 			logger.Errorf("Unable to checkout %s: %v", sourceRef, err)

@@ -26,5 +26,10 @@ actionflow.#Plan & {
         actionflow: core.#Git & {
            repo: "https://github.com/xxf098/actionflow.git"
         }
+        lite: core.#Git & {
+           repo: "https://github.com/xxf098/LiteSpeedTest.git"
+           ref: "develop"
+           dir: "lite-proxy"
+        }
       }
 }
