@@ -21,7 +21,7 @@ type rmTask struct {
 
 func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	paths := []string{}
-	pValue := v.Lookup("path")
+	pValue := v.LookupPath(cue.ParsePath("path"))
 	lg := log.Ctx(ctx)
 	start := time.Now()
 	if pValue.IncompleteKind().IsAnyOf(cue.ListKind) {
@@ -58,6 +58,9 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 				}
 			}
 		} else {
+			if absPath, err := filepath.Abs(path); err == nil {
+				path = absPath
+			}
 			err = os.RemoveAll(path)
 		}
 
