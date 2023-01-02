@@ -148,3 +148,10 @@ func TestStep(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestStdout(t *testing.T) {
+	err := flowTest("./testcues/stdout.cue", "print")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

@@ -52,3 +52,11 @@ package core
 	// If set, it creates parents' directory if they do not exist
 	parents: *true | false
 }
+
+// Create one or multiple directory in a container
+#Stdout: #Task & {
+	$dagger: task: _name: "Stdout"
+
+	// text to write
+	text: string
+}
