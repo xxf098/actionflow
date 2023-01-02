@@ -42,3 +42,16 @@ func (t *Stdout) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 func (t *Stdout) Name() string {
 	return "Stdout"
 }
+
+func attrStdout(v *cue.Value, text string) {
+	// read attr
+	attrs := v.Attributes(cue.ValueAttr)
+	for _, attr := range attrs {
+		if attr.Name() == "stdout" {
+			bufStdout := bufio.NewWriter(os.Stdout)
+			defer bufStdout.Flush()
+			fmt.Fprintln(bufStdout, text)
+			break
+		}
+	}
+}

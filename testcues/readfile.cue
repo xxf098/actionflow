@@ -9,6 +9,7 @@ import (
 	p: string
  
     read: core.#ReadFile & {
+        @stdout()
         path: p
     }
     result: read.output
