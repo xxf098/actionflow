@@ -100,14 +100,14 @@ func parseCommon(v *cue.Value) (*execCommon, error) {
 	e.args = cmd.Args
 
 	// workdir
-	workdir, err := v.Lookup("workdir").String()
+	workdir, err := v.LookupPath(cue.ParsePath("workdir")).String()
 	if err != nil {
 		return nil, err
 	}
 	e.workdir = workdir
 
 	// user
-	user, err := v.Lookup("user").String()
+	user, err := v.LookupPath(cue.ParsePath("user")).String()
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func mkCommand(ctx context.Context, v *cue.Value) (c *exec.Cmd, err error) {
 	var bin string
 	var args []string
 
-	cv := v.Lookup("cmd")
+	cv := v.LookupPath(cue.ParsePath("cmd"))
 	switch cv.Kind() {
 	case cue.StringKind:
 		s, err := cv.String()
@@ -156,14 +156,14 @@ func mkCommand(ctx context.Context, v *cue.Value) (c *exec.Cmd, err error) {
 
 	cmd := exec.CommandContext(ctx, bin, args...)
 
-	workdir, err := v.Lookup("workdir").String()
+	workdir, err := v.LookupPath(cue.ParsePath("workdir")).String()
 	if err != nil {
 		return nil, err
 	}
 	cmd.Dir = workdir
 
 	// env
-	it, err := v.Lookup("env").Fields()
+	it, err := v.LookupPath(cue.ParsePath("env")).Fields()
 	if err != nil {
 		return nil, err
 	}

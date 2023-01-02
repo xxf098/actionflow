@@ -20,12 +20,12 @@ type allTasks struct {
 
 // TODO: max concurrency, exit on error
 func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
-	ignoreError, err := v.Lookup("ignore_error").Bool()
+	ignoreError, err := v.LookupPath(cue.ParsePath("ignore_error")).Bool()
 	if err != nil {
 		return nil, err
 	}
 
-	iter, err := v.Lookup("tasks").List()
+	iter, err := v.LookupPath(cue.ParsePath("tasks")).List()
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (t *allTasks) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		tasks = append(tasks, iter.Value())
 	}
 	// max
-	max, err := v.Lookup("max").Int64()
+	max, err := v.LookupPath(cue.ParsePath("max")).Int64()
 	if err != nil {
 		return nil, err
 	}

@@ -29,7 +29,7 @@ func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error
 	if err != nil {
 		return nil, errors.New("fail to parse contents")
 	}
-	append, err := v.Lookup("append").Bool()
+	append, err := v.LookupPath(cue.ParsePath("append")).Bool()
 	if err != nil {
 		return nil, errors.New("fail to parse append")
 	}
