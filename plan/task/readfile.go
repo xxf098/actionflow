@@ -31,7 +31,7 @@ func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error)
 		return nil, fmt.Errorf("ReadFile %s: %w", path, err)
 	}
 	text := string(contents)
-	attrStdout(v, text)
+	debug(v, text)
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
 	Then(ctx, v)
 	value := compiler.NewValue()
