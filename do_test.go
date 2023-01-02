@@ -157,7 +157,7 @@ func TestStdout(t *testing.T) {
 }
 
 func TestReadfile(t *testing.T) {
-	err := flowTest("./testcues/readfile.cue", "hellofile")
+	err := flowTest("./testcues/attr.cue", "hellofile")
 	if err != nil {
 		t.Fatal(err)
 	}
