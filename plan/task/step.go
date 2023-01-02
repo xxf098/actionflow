@@ -22,12 +22,12 @@ type stepTask struct {
 }
 
 func (t *stepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
-	usesValue := v.Lookup("uses")
+	usesValue := v.LookupPath(cue.ParsePath("uses"))
 	uses, err := usesValue.String()
 	if err != nil {
 		return nil, err
 	}
-	withValue := v.Lookup("with")
+	withValue := v.LookupPath(cue.ParsePath("with"))
 	withs := map[string]string{}
 	if withValue.Exists() {
 		ik := withValue.IncompleteKind()

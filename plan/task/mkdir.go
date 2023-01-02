@@ -21,13 +21,13 @@ type mkdirTask struct {
 func (t *mkdirTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	lg := log.Ctx(ctx)
 	start := time.Now()
-	path, err := v.Lookup("path").String()
+	path, err := v.LookupPath(cue.ParsePath("path")).String()
 	if err != nil {
 		return nil, err
 	}
 
 	// Permissions (int)
-	permissions, err := v.Lookup("permissions").Int64()
+	permissions, err := v.LookupPath(cue.ParsePath("permissions")).Int64()
 	if err != nil {
 		return nil, err
 	}

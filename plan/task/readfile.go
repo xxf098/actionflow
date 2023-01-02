@@ -21,7 +21,7 @@ type readFileTask struct {
 func (t readFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	lg := log.Ctx(ctx)
 	start := time.Now()
-	path, err := v.Lookup("path").String()
+	path, err := v.LookupPath(cue.ParsePath("path")).String()
 	if err != nil {
 		return nil, err
 	}

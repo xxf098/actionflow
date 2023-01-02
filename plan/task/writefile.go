@@ -21,11 +21,11 @@ type writeFileTask struct {
 func (t writeFileTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	lg := log.Ctx(ctx)
 	start := time.Now()
-	p, err := v.Lookup("path").String()
+	p, err := v.LookupPath(cue.ParsePath("path")).String()
 	if err != nil {
 		return nil, errors.New("fail to parse path")
 	}
-	contents, err := v.Lookup("contents").String()
+	contents, err := v.LookupPath(cue.ParsePath("contents")).String()
 	if err != nil {
 		return nil, errors.New("fail to parse contents")
 	}
