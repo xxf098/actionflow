@@ -162,3 +162,10 @@ func TestReadfile(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestAPICall(t *testing.T) {
+	err := flowTest("./testcues/api.cue", "print")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

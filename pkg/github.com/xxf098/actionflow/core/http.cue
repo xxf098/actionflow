@@ -16,29 +16,35 @@ package core
 // func Chown(uid, gid int) HTTPOption
 // func Filename(name string) HTTPOption
 
+Method: *"GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "HEAD" | "CONNECT" | "TRACE" | "PATCH"
+
 // Fetch a file over HTTP
-#HTTPFetch: #Task & {
-	$dagger: task: _name: "HTTPFetch"
+#API: #Task & {
+	$dagger: task: _name: "API"
 
-	// Source url
-	// Example: https://www.dagger.io/index.html
-	source: string
+	method: Method
+	host:   string
+	path:   string | *""
+	auth?:  string
+	headers?: [string]: string
+	query?: [string]:   string
+	form?: [string]:    string
+	data?:    string | {...}
+	timeout?: string
+	// curl?: string
+	retry?: {
+		count: int | *3
+		timer: string | *"6s"
+		codes: [...int]
+	}
 
-	// Destination path of the downloaded file
-	// Example: "/downloads/index.html"
-	dest: string
+	// filled by task
+	resp: {
+		status:     string
+		statusCode: int
 
-	// Optionally verify the file checksum
-	// FIXME: what is the best format to encode checksum?
-	checksum?: string
-
-	// Optionally set file permissions on the downloaded file
-	// FIXME: find a more developer-friendly way to input file permissions
-	permissions?: int
-
-	// Optionally set UID of the downloaded file
-	uid?: int
-
-	// Optionally set GID of the downloaded file
-	gid?: int
+		body: *{} | bytes | string
+		header: [string]:  string | [...string]
+		trailer: [string]: string | [...string]
+	}	
 }
