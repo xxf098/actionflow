@@ -8,13 +8,13 @@ import (
 )
 
 func init() {
-	Register("HTTPFetch", func() Task { return &httpFetchTask{} })
+	Register("API", func() Task { return &apiCallTask{} })
 }
 
-type httpFetchTask struct {
+type apiCallTask struct {
 }
 
-func (t *httpFetchTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
+func (t *apiCallTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	var httpFetch struct {
 		Source      string
 		Checksum    string
@@ -33,6 +33,6 @@ func (t *httpFetchTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, erro
 	return &output, nil
 }
 
-func (t *httpFetchTask) Name() string {
-	return "HTTPFetch"
+func (t *apiCallTask) Name() string {
+	return "API"
 }
