@@ -30,6 +30,9 @@ func Do(ctx context.Context, dir string, action string) error {
 func flowTest(cueFile string, action string) error {
 
 	v := plan.LoadFile(cueFile)
+	if v.Err() != nil {
+		return v.Err()
+	}
 	iter, _ := v.Fields()
 	for iter.Next() {
 		fmt.Println(iter.Label())
