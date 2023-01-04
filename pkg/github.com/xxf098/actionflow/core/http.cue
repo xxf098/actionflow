@@ -26,9 +26,9 @@ Method: *"GET" | "POST" | "PUT" | "DELETE" | "OPTIONS" | "HEAD" | "CONNECT" | "T
 	host:   string
 	path:   string | *""
 	auth?:  string
-	headers?: [string]: string
-	query?: [string]:   string
-	form?: [string]:    string
+	headers?: {...}
+	query?: {...}
+	form?: {...}
 	data?:    string | {...}
 	timeout?: string
 	// curl?: string
