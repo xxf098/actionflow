@@ -169,3 +169,10 @@ func TestAPICall(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestDeps(t *testing.T) {
+	err := flowTest("./testcues/deps.cue", "read")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

@@ -52,6 +52,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "git", actionName: "actionflow", test: "test -f ./actionflow/go.mod && test -f ./actionflow/workflow.cue" },
 				#GoTest & { fileName: "stdout", actionName: "print", test: "" },
 				#GoTest & { fileName: "api", actionName: "print", test: "" },
+				#GoTest & { fileName: "deps", actionName: "read", test: "" },
 			]
 		}
 	}
