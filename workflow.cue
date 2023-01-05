@@ -32,6 +32,7 @@ actionflow.#Plan & {
 
 		build: core.#Exec & {
 			cmd: ["sh", "-c", """
+			go env
 			go mod tidy
 			echo "func (t *Task) AddDep(path string, dep *Task) {" >> ${GOMODCACHE}/cuelang.org/go@v0.4.3/tools/flow/flow.go
 			echo "	t.addDep(path, dep)" >> ${GOMODCACHE}/cuelang.org/go@v0.4.3/tools/flow/flow.go
