@@ -11,7 +11,6 @@ require (
 	github.com/elazarl/goproxy v0.0.0-20221015165544-a0805db90819 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/smartystreets/goconvey v1.7.2 // indirect
-	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	moul.io/http2curl v1.0.0 // indirect
 )
 
@@ -64,4 +63,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace cuelang.org/go => github.com/dagger/cue v0.4.1-rc.1.0.20220121023213-66df011a52c2
+// replace cuelang.org/go => ../cue
