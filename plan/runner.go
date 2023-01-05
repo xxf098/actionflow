@@ -3,6 +3,7 @@ package plan
 import (
 	"context"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -20,6 +21,7 @@ import (
 type Runner struct {
 	target cue.Path
 	tasks  sync.Map
+	deps   sync.Map
 	// mirror cue.Value
 	l sync.Mutex
 }
@@ -31,10 +33,16 @@ func NewRunner(target cue.Path) *Runner {
 	}
 }
 
+// runSequence
+
 // context
 func (r *Runner) Run(ctx context.Context, src cue.Value) error {
 	if !src.LookupPath(r.target).Exists() {
 		return fmt.Errorf("%s not found", r.target.String())
+	}
+
+	if err := r.initDeps(ctx, &src); err != nil {
+		return err
 	}
 	if err := r.update(cue.MakePath(), &src); err != nil {
 		return err
@@ -47,6 +55,9 @@ func (r *Runner) Run(ctx context.Context, src cue.Value) error {
 		src,
 		r.taskFunc,
 	)
+
+	// add deps
+	r.updateDeps(flow)
 
 	if err := flow.Run(ctx); err != nil {
 		return err
@@ -75,13 +86,49 @@ func (r *Runner) initTasks(v *cue.Value) {
 		noOpRunner,
 	)
 
+	r.updateDeps(flow)
+
 	// Allow tasks under the target
 	for _, t := range flow.Tasks() {
 		if cuePathHasPrefix(t.Path(), r.target) {
 			r.addTask(t)
 		}
 	}
+	// add dep's deps
 
+}
+
+func (r *Runner) initDeps(ctx context.Context, v *cue.Value) error {
+	flow := cueflow.New(
+		&cueflow.Config{
+			FindHiddenTasks: true,
+		},
+		v,
+		r.depsRunner,
+	)
+	if err := flow.Run(ctx); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Runner) updateDeps(flow *cueflow.Controller) {
+	for _, t := range flow.Tasks() {
+		// if cuePathHasPrefix(t.Path(), r.target) {
+		// add deps from attributes(@$)
+		if val, ok := r.deps.Load(t.Path().String()); ok {
+			deps := val.([]string)
+			for _, t1 := range flow.Tasks() {
+				for _, dep := range deps {
+					if t1.Path().String() == dep {
+						// add deps
+						t.AddDep(t.Path().String(), t1)
+					}
+				}
+			}
+		}
+		// }
+	}
 }
 
 func (r *Runner) addTask(t *cueflow.Task) {
@@ -143,6 +190,40 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 	}), nil
 }
 
+// find attrs deps
+func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
+	_, err := task.Lookup(&v)
+	if err != nil {
+		// Not a task
+		if err == task.ErrNotTask {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	// Return a no op runner
+	return cueflow.RunnerFunc(func(t *cueflow.Task) error {
+		tval := t.Value()
+		attrs := tval.Attributes(cue.ValueAttr)
+		for _, attr := range attrs {
+			name := attr.Name()
+			if strings.HasPrefix(name, "$") {
+				depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
+				taskPath := t.Path().String()
+				if val, ok := r.deps.Load(taskPath); ok {
+					deps := val.([]string)
+					deps = append(deps, depName)
+					r.deps.Store(taskPath, deps)
+				} else {
+					r.deps.Store(taskPath, []string{depName})
+				}
+			}
+		}
+		return nil
+	}), nil
+}
+
+// match against target
 func cuePathHasPrefix(p cue.Path, prefix cue.Path) bool {
 	pathSelectors := p.Selectors()
 	prefixSelectors := prefix.Selectors()
