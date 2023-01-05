@@ -51,6 +51,9 @@ func Load(ctx context.Context, cfg Config) (*Plan, error) {
 	if err != nil {
 		return nil, err
 	}
+	if v.Err() != nil {
+		return nil, v.Err()
+	}
 
 	p := &Plan{
 		config: cfg,
