@@ -29,10 +29,10 @@ jobs:
 
       - name: Build
         run: |
-          go mod tidy
-          echo "func (t *Task) AddDep(path string, dep *Task) {" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go
-          echo "	t.addDep(path, dep)" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go
-          echo "}\n" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go          
+          git clone --branch v0.4.3 --depth 1 https://github.com/cue-lang/cue.git && mv ./cue ../
+          echo "func (t *Task) AddDep(path string, dep *Task) {" >> ../cue/tools/flow/flow.go
+          echo "	t.addDep(path, dep)" >> ../cue/tools/flow/flow.go
+          echo "}\n" >> ../cue/tools/flow/flow.go     
           flow do build
           
       - name: Test
