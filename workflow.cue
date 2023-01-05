@@ -53,6 +53,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "stdout", actionName: "print", test: "" },
 				#GoTest & { fileName: "api", actionName: "print", test: "" },
 				#GoTest & { fileName: "deps", actionName: "read", test: "" },
+				#GoTest & { fileName: "deps1", actionName: "all", test: "" },
 			]
 		}
 	}

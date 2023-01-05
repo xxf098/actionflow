@@ -176,3 +176,10 @@ func TestDeps(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestDeps1(t *testing.T) {
+	err := flowTest("./testcues/deps1.cue", "all")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
