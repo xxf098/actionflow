@@ -29,10 +29,11 @@ jobs:
 
       - name: Build
         run: |
-          git clone --branch v0.4.3 --depth 1 https://github.com/cue-lang/cue.git && mv ./cue ../
-          echo "func (t *Task) AddDep(path string, dep *Task) {" >> ../cue/tools/flow/flow.go
-          echo "	t.addDep(path, dep)" >> ../cue/tools/flow/flow.go
-          echo "}\n" >> ../cue/tools/flow/flow.go     
+          git clone --branch v0.4.3 --depth 1 https://github.com/cue-lang/cue.git
+          echo "func (t *Task) AddDep(path string, dep *Task) {" >> ./cue/tools/flow/flow.go
+          echo "	t.addDep(path, dep)" >> ./cue/tools/flow/flow.go
+          echo "}" >> ./cue/tools/flow/flow.go
+          mv ./cue ../ 
           flow do build
           
       - name: Test
