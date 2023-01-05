@@ -30,9 +30,9 @@ jobs:
       - name: Build
         run: |
           go mod tidy
-          echo "func (t *Task) AddDep(path string, dep *Task) {" >> ${GOMODCACHE}/cuelang.org/go@v0.4.3/tools/flow/flow.go
-          echo "	t.addDep(path, dep)" >> ${GOMODCACHE}/cuelang.org/go@v0.4.3/tools/flow/flow.go
-          echo "}\n" >> ${GOMODCACHE}/cuelang.org/go@v0.4.3/tools/flow/flow.go          
+          echo "func (t *Task) AddDep(path string, dep *Task) {" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go
+          echo "	t.addDep(path, dep)" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go
+          echo "}\n" >> /home/runner/go/pkg/mod/cuelang.org/go@v0.4.3/tools/flow/flow.go          
           flow do build
           
       - name: Test
