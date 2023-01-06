@@ -19,9 +19,10 @@ import (
 // addTask(t *cueflow.Task) {
 
 type Runner struct {
-	target cue.Path
-	tasks  sync.Map
-	deps   sync.Map // dependency by attributes
+	target    cue.Path
+	tasks     sync.Map
+	deps      sync.Map // dependency by attributes
+	taskPaths []string // all tasks path order by flow
 	// mirror cue.Value
 	l sync.Mutex
 }
@@ -106,6 +107,9 @@ func (r *Runner) initDeps(ctx context.Context, v *cue.Value) error {
 		v,
 		r.depsRunner,
 	)
+	for _, task := range flow.Tasks() {
+		r.taskPaths = append(r.taskPaths, task.Path().String())
+	}
 	if err := flow.Run(ctx); err != nil {
 		return err
 	}
@@ -196,6 +200,17 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 	}), nil
 }
 
+func (r *Runner) checkTaskValid(taskPath string) bool {
+	found := false
+	for _, p := range r.taskPaths {
+		if p == taskPath {
+			found = true
+			break
+		}
+	}
+	return found
+}
+
 // find attrs deps
 func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 	_, err := task.Lookup(&v)
@@ -220,7 +235,11 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 			taskPath := t.Path().String()
 			// self dependency
 			if taskPath == depName {
-				return fmt.Errorf("self dependency found: %s", depName)
+				return fmt.Errorf("self dependency found: @%s", name)
+			}
+			// check invalided dependency
+			if !r.checkTaskValid(depName) {
+				return fmt.Errorf("invalided dependency found: @%s", name)
 			}
 			if val, ok := r.deps.Load(taskPath); ok {
 				deps := val.([]string)
