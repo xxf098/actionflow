@@ -212,8 +212,18 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 				taskPath := t.Path().String()
 				if val, ok := r.deps.Load(taskPath); ok {
 					deps := val.([]string)
-					deps = append(deps, depName)
-					r.deps.Store(taskPath, deps)
+					// check already add
+					found := false
+					for _, dep := range deps {
+						if dep == depName {
+							found = true
+							break
+						}
+					}
+					if !found {
+						deps = append(deps, depName)
+						r.deps.Store(taskPath, deps)
+					}
 				} else {
 					r.deps.Store(taskPath, []string{depName})
 				}
