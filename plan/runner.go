@@ -72,11 +72,10 @@ func (r *Runner) update(p cue.Path, v *cue.Value) error {
 	// if value.Value().Err() != nil {
 	// 	return value.Value().Err()
 	// }
-	r.initTasks(v)
-	return nil
+	return r.initTasks(v)
 }
 
-func (r *Runner) initTasks(v *cue.Value) {
+func (r *Runner) initTasks(v *cue.Value) error {
 	flow := cueflow.New(
 		&cueflow.Config{
 			FindHiddenTasks: true,
@@ -87,14 +86,18 @@ func (r *Runner) initTasks(v *cue.Value) {
 
 	r.updateDeps(flow)
 
+	// check cycle
+	if err := cueflow.CheckCycle(flow.Tasks()); err != nil {
+		return err
+	}
+
 	// Allow tasks under the target
 	for _, t := range flow.Tasks() {
 		if cuePathHasPrefix(t.Path(), r.target) {
 			r.addTask(t)
 		}
 	}
-	// add dep's deps
-
+	return nil
 }
 
 func (r *Runner) initDeps(ctx context.Context, v *cue.Value) error {
