@@ -207,26 +207,27 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 		attrs := tval.Attributes(cue.ValueAttr)
 		for _, attr := range attrs {
 			name := attr.Name()
-			if strings.HasPrefix(name, "$") {
-				depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
-				taskPath := t.Path().String()
-				if val, ok := r.deps.Load(taskPath); ok {
-					deps := val.([]string)
-					// check already add
-					found := false
-					for _, dep := range deps {
-						if dep == depName {
-							found = true
-							break
-						}
+			if !strings.HasPrefix(name, "$") {
+				continue
+			}
+			depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
+			taskPath := t.Path().String()
+			if val, ok := r.deps.Load(taskPath); ok {
+				deps := val.([]string)
+				// check already add
+				found := false
+				for _, dep := range deps {
+					if dep == depName {
+						found = true
+						break
 					}
-					if !found {
-						deps = append(deps, depName)
-						r.deps.Store(taskPath, deps)
-					}
-				} else {
-					r.deps.Store(taskPath, []string{depName})
 				}
+				if !found {
+					deps = append(deps, depName)
+					r.deps.Store(taskPath, deps)
+				}
+			} else {
+				r.deps.Store(taskPath, []string{depName})
 			}
 		}
 		return nil
