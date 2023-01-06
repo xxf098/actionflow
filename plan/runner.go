@@ -200,15 +200,35 @@ func (r *Runner) taskFunc(v cue.Value) (cueflow.Runner, error) {
 	}), nil
 }
 
-func (r *Runner) checkTaskValid(taskPath string) bool {
+func (r *Runner) checkTaskValid(depPath string) bool {
 	found := false
 	for _, p := range r.taskPaths {
-		if p == taskPath {
+		if p == depPath {
 			found = true
 			break
 		}
 	}
 	return found
+}
+
+func (r *Runner) storeDeps(taskPath string, depPath string) {
+	if val, ok := r.deps.Load(taskPath); ok {
+		depPaths := val.([]string)
+		// check already add
+		found := false
+		for _, dep := range depPaths {
+			if dep == depPath {
+				found = true
+				break
+			}
+		}
+		if !found {
+			depPaths = append(depPaths, depPath)
+			r.deps.Store(taskPath, depPaths)
+		}
+	} else {
+		r.deps.Store(taskPath, []string{depPath})
+	}
 }
 
 // find attrs deps
@@ -231,33 +251,17 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 			if !strings.HasPrefix(name, "$") {
 				continue
 			}
-			depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
+			depPath := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
 			taskPath := t.Path().String()
 			// self dependency
-			if taskPath == depName {
+			if taskPath == depPath {
 				return fmt.Errorf("self dependency found: @%s", name)
 			}
 			// check invalided dependency
-			if !r.checkTaskValid(depName) {
+			if !r.checkTaskValid(depPath) {
 				return fmt.Errorf("invalided dependency found: @%s", name)
 			}
-			if val, ok := r.deps.Load(taskPath); ok {
-				deps := val.([]string)
-				// check already add
-				found := false
-				for _, dep := range deps {
-					if dep == depName {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deps = append(deps, depName)
-					r.deps.Store(taskPath, deps)
-				}
-			} else {
-				r.deps.Store(taskPath, []string{depName})
-			}
+			r.storeDeps(taskPath, depPath)
 		}
 		return nil
 	}), nil
