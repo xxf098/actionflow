@@ -31,6 +31,11 @@ jobs:
             	t.addDep(path, dep)
           }
           END
+          tee -a ./cue/tools/flow/cycle.go << ENDD
+          func CheckCycle(a []*Task) errors.Error {
+            return checkCycle(a)
+          }
+          ENDD
           mv ./cue ../
           go mod tidy
           LATESTTAG=$(git describe --tags --abbrev=0)
