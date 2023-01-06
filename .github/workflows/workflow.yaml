@@ -30,9 +30,11 @@ jobs:
       - name: Build
         run: |
           git clone --branch v0.4.3 --depth 1 https://github.com/cue-lang/cue.git
-          echo "func (t *Task) AddDep(path string, dep *Task) {" >> ./cue/tools/flow/flow.go
-          echo "	t.addDep(path, dep)" >> ./cue/tools/flow/flow.go
-          echo "}" >> ./cue/tools/flow/flow.go
+          tee -a ./cue/tools/flow/flow.go << END
+          func (t *Task) AddDep(path string, dep *Task) {
+            	t.addDep(path, dep)
+          }
+          END
           mv ./cue ../ 
           flow do build
           
