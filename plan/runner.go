@@ -15,9 +15,6 @@ import (
 	"github.com/xxf098/actionflow/plan/task"
 )
 
-// initTasks() {
-// addTask(t *cueflow.Task) {
-
 type Runner struct {
 	target    cue.Path
 	tasks     sync.Map
@@ -35,6 +32,7 @@ func NewRunner(target cue.Path) *Runner {
 }
 
 // runSequence
+// @serie @require
 
 // context
 func (r *Runner) Run(ctx context.Context, src cue.Value) error {
@@ -231,6 +229,30 @@ func (r *Runner) storeDeps(taskPath string, depPath string) {
 	}
 }
 
+func (r *Runner) parseDepPath(name string, taskPath string) (string, error) {
+	depPath := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
+	if name == "$" {
+		for i, path := range r.taskPaths {
+			if path == taskPath {
+				if i < 1 {
+					return "", fmt.Errorf("previous task not found: %s", taskPath)
+				}
+				depPath = r.taskPaths[i-1]
+			}
+		}
+	}
+	// self dependency
+	if taskPath == depPath {
+		return "", fmt.Errorf("self dependency found: @%s", name)
+	}
+	// check invalided dependency
+	if !r.checkTaskValid(depPath) {
+		return "", fmt.Errorf("invalided dependency found: @%s", name)
+	}
+	// check cycle
+	return depPath, nil
+}
+
 // find attrs deps
 func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 	_, err := task.Lookup(&v)
@@ -251,25 +273,10 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 			if !strings.HasPrefix(name, "$") {
 				continue
 			}
-			depPath := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
-			if name == "$" {
-				for i, taskPath := range r.taskPaths {
-					if taskPath == t.Path().String() {
-						if i < 1 {
-							return fmt.Errorf("previous task not found: %s", taskPath)
-						}
-						depPath = r.taskPaths[i-1]
-					}
-				}
-			}
 			taskPath := t.Path().String()
-			// self dependency
-			if taskPath == depPath {
-				return fmt.Errorf("self dependency found: @%s", name)
-			}
-			// check invalided dependency
-			if !r.checkTaskValid(depPath) {
-				return fmt.Errorf("invalided dependency found: @%s", name)
+			depPath, err := r.parseDepPath(name, taskPath)
+			if err != nil {
+				return err
 			}
 			r.storeDeps(taskPath, depPath)
 		}
