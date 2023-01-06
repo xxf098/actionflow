@@ -212,6 +212,10 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 			}
 			depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
 			taskPath := t.Path().String()
+			// ignore self dependency
+			if taskPath == depName {
+				continue
+			}
 			if val, ok := r.deps.Load(taskPath); ok {
 				deps := val.([]string)
 				// check already add
