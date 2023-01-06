@@ -35,11 +35,11 @@ jobs:
             	t.addDep(path, dep)
           }
           END
-          tee -a ./cue/tools/flow/cycle.go << END
+          tee -a ./cue/tools/flow/cycle.go << ENDD
           func CheckCycle(a []*Task) errors.Error {
             return checkCycle(a)
           }
-          END    
+          ENDD
           mv ./cue ../ 
           flow do build
           
