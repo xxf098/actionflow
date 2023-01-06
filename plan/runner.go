@@ -252,6 +252,16 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 				continue
 			}
 			depPath := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
+			if name == "$" {
+				for i, taskPath := range r.taskPaths {
+					if taskPath == t.Path().String() {
+						if i < 1 {
+							return fmt.Errorf("previous task not found: %s", taskPath)
+						}
+						depPath = r.taskPaths[i-1]
+					}
+				}
+			}
 			taskPath := t.Path().String()
 			// self dependency
 			if taskPath == depPath {

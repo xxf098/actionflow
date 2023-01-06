@@ -12,7 +12,7 @@ actionflow.#Plan & {
         },
 
         mkdir: core.#Mkdir & {
-            @$rm()
+            @$()
             path: "./test"
         }
 
@@ -23,7 +23,7 @@ actionflow.#Plan & {
         }
 
         write1: core.#WriteFile & {
-            @$write()
+            @$()
             path: "./test/hello1.txt"
             contents: "hello1 world!"
         }        
