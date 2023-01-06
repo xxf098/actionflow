@@ -23,7 +23,7 @@ actionflow.#Plan & {
         }
 
         write1: core.#WriteFile & {
-            @$write()
+            @$mkdir()
             path: "./test/hello1.txt"
             contents: "hello1 world!"
         }

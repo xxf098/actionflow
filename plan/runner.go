@@ -21,7 +21,7 @@ import (
 type Runner struct {
 	target cue.Path
 	tasks  sync.Map
-	deps   sync.Map
+	deps   sync.Map // dependency by attributes
 	// mirror cue.Value
 	l sync.Mutex
 }
@@ -113,16 +113,22 @@ func (r *Runner) initDeps(ctx context.Context, v *cue.Value) error {
 }
 
 func (r *Runner) updateDeps(flow *cueflow.Controller) {
-	for _, t := range flow.Tasks() {
+	tasks := flow.Tasks()
+	for i, t := range tasks {
 		// if cuePathHasPrefix(t.Path(), r.target) {
 		// add deps from attributes(@$)
-		if val, ok := r.deps.Load(t.Path().String()); ok {
+		path := t.Path().String()
+		if val, ok := r.deps.Load(path); ok {
 			deps := val.([]string)
-			for _, t1 := range flow.Tasks() {
+			for j, t1 := range tasks {
+				if i == j {
+					continue
+				}
 				for _, dep := range deps {
 					if t1.Path().String() == dep {
 						// add deps
-						t.AddDep(t.Path().String(), t1)
+						t.AddDep(path, t1)
+						break
 					}
 				}
 			}
@@ -212,9 +218,9 @@ func (r *Runner) depsRunner(v cue.Value) (cueflow.Runner, error) {
 			}
 			depName := fmt.Sprintf("actions.%s", strings.TrimPrefix(name, "$"))
 			taskPath := t.Path().String()
-			// ignore self dependency
+			// self dependency
 			if taskPath == depName {
-				continue
+				return fmt.Errorf("self dependency found: %s", depName)
 			}
 			if val, ok := r.deps.Load(taskPath); ok {
 				deps := val.([]string)
