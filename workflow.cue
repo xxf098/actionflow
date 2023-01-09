@@ -54,6 +54,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "api", actionName: "print", test: "" },
 				#GoTest & { fileName: "deps", actionName: "read", test: "" },
 				#GoTest & { fileName: "deps1", actionName: "all", test: "" },
+				#GoTest & { fileName: "mkdirs", actionName: "zero", test: "test -d zero/world && test -d yellow" },
 			]
 		}
 	}
