@@ -44,7 +44,7 @@ package core
 
 	// Path of the directory to create
 	// It can be nested (e.g : "/foo" or "/foo/bar")
-	path: string
+	path: string | [...string]
 
 	// Permissions of the directory
 	permissions: *0o755 | int

@@ -62,6 +62,13 @@ func TestMkDir1(t *testing.T) {
 	}
 }
 
+func TestMkDirs(t *testing.T) {
+	err := flowTest("./testcues/mkdirs.cue", "zero")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestMkDirParent(t *testing.T) {
 	err := flowTest("./testcues/mkdir_parents.cue", "readChecker")
 	if err != nil {
