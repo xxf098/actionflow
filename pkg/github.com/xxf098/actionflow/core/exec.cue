@@ -20,5 +20,5 @@ package core
 
 #Run: #Exec & {
 	run: string
-	cmd: ["sh", "-c", run]
+	cmd: ["sh", "-e", "-c", run]
 }
