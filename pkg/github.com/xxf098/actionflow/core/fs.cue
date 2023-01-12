@@ -33,9 +33,6 @@ package core
 	// (e.g. /file.txt or /*.txt)
 	path: string | [...string]
 
-	// Allow wildcard selection
-	// Default to: true
-	allowWildcard: *true | bool
 }
 
 // Create one or multiple directory in a container

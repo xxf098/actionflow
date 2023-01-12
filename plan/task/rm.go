@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 
@@ -46,7 +47,7 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 
 	var err error
 	for _, path := range paths {
-		if strings.Contains(path, "*") {
+		if hasMeta(path) {
 			paths, err := filepath.Glob(path)
 			if err != nil {
 				return nil, err
@@ -77,4 +78,14 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 
 func (t *rmTask) Name() string {
 	return "Rm"
+}
+
+// hasMeta reports whether path contains any of the magic characters
+// recognized by Match.
+func hasMeta(path string) bool {
+	magicChars := `*?[`
+	if runtime.GOOS != "windows" {
+		magicChars = `*?[\`
+	}
+	return strings.ContainsAny(path, magicChars)
 }
