@@ -14,6 +14,7 @@ import (
 	"github.com/xxf098/actionflow/plan/task"
 )
 
+// load files in dir
 func Do(ctx context.Context, dir string, action string) error {
 	targetPath := getTargetPath([]string{action})
 	daggerPlan, err := loadPlan(ctx, dir)
@@ -27,6 +28,7 @@ func Do(ctx context.Context, dir string, action string) error {
 	return nil
 }
 
+// load one file
 func flowTest(cueFile string, action string) error {
 
 	v := plan.LoadFile(cueFile)
@@ -37,8 +39,8 @@ func flowTest(cueFile string, action string) error {
 	for iter.Next() {
 		fmt.Println(iter.Label())
 	}
-	target := cue.ParsePath(fmt.Sprintf(`actions.%s`, action))
-	runner := plan.NewRunner(target)
+	targetPath := getTargetPath([]string{action})
+	runner := plan.NewRunner(targetPath)
 	err := runner.Run(context.Background(), v)
 	return err
 }
