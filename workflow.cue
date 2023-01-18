@@ -40,11 +40,10 @@ actionflow.#Plan & {
 		testKeep: #GoTest & {
 			fileName: "keep", 
 			actionName: "keepFile", 
-			test: "test -f test1/foo.txt && test -f test1/foo1.txt"
+			test: "test -f testkeep/foo.txt && test -f testkeep/foo1.txt"
 		}
 
 		testAll: core.#All & {
-			@$()
 			max: 1
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
