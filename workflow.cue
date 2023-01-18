@@ -12,11 +12,12 @@ import (
 	test: string
  
 	cmd: ["sh", "-c", """
-	rm *.cue && cp ../workflow.cue ./
-	sed -i '1 s/^.*$/package testcues/' workflow.cue
+	rm workflow.cue
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)
+	rm *.cue && cp ../workflow.cue ./
+	sed -i '1 s/^.*$/package testcues/' workflow.cue
 """]
 }
 

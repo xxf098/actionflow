@@ -21,9 +21,10 @@ func Do(dir string, action string) {
 	lg, ctx := setupLog(action)
 	err := actionflow.Do(ctx, dir, action)
 	if err != nil {
-		lg.Fatal().Err(err).Msg("failed to exec plan")
+		lg.Fatal().Err(err).Msg("plan failed")
+	} else {
+		lg.Info().Msg("plan success")
 	}
-	lg.Info().Msg("plan finished")
 	// targetPath := getTargetPath([]string{action})
 	// daggerPlan, err := loadPlan(ctx, dir)
 	// if err != nil {
