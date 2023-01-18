@@ -9,7 +9,7 @@ actionflow.#Plan & {
 	actions: {
 
 		mkdir: core.#Mkdir & {
-			path:  "./test1"
+			path:  "./testkeep"
 		}
 
 		writeChecker: core.#WriteFile & {
