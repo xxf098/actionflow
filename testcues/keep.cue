@@ -40,7 +40,7 @@ actionflow.#Plan & {
 			permissions: 700
 		}
 
-		keep: core.#Keep & {
+		keepFile: core.#Keep & {
             @$()
 			path:  "./test1/foo*.txt"
 		}     

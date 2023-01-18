@@ -192,7 +192,7 @@ func TestDeps1(t *testing.T) {
 }
 
 func TestKeep(t *testing.T) {
-	err := flowTest("./testcues/keep.cue", "keep")
+	err := flowTest("./testcues/keep.cue", "keepFile")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -55,7 +55,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "deps", actionName: "read", test: "" },
 				#GoTest & { fileName: "deps1", actionName: "all", test: "" },
 				#GoTest & { fileName: "mkdirs", actionName: "zero", test: "test -d zero/world && test -d yellow" },
-				#GoTest & { fileName: "keep", actionName: "keep", test: "test -f test1/foo.txt && test -f test1/foo1.txt" },
+				#GoTest & { fileName: "keep", actionName: "keepFile", test: "test -f test1/foo.txt && test -f test1/foo1.txt" },
 			]
 		}
 	}
