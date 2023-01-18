@@ -5,6 +5,13 @@ import (
     "github.com/xxf098/actionflow/core"
 )
 
+#Write: core.#WriteFile & {
+	fileName: string,
+	path:        "./testkeep/\(fileName).txt"
+	contents:    "\(fileName)"
+	permissions: 700	
+}
+
 actionflow.#Plan & {
 	actions: {
 
@@ -12,32 +19,15 @@ actionflow.#Plan & {
 			path:  "./testkeep"
 		}
 
-		writeChecker: core.#WriteFile & {
+		writeFiles: core.#All & {
 			@$()
-			path:        "./testkeep/foo.txt"
-			contents:    "bar"
-			permissions: 700
-		}
-
-        writeChecker1: core.#WriteFile & {
-			@$()
-			path:        "./testkeep/foo1.txt"
-			contents:    "bar"
-			permissions: 700
-		}
-
-        writeChecker2: core.#WriteFile & {
-			@$()
-			path:        "./testkeep/bar.txt"
-			contents:    "bar1"
-			permissions: 700
-		}
-
-        writeChecker3: core.#WriteFile & {
-			@$()
-			path:        "./testkeep/bar1.txt"
-			contents:    "bar2"
-			permissions: 700
+			max: 2
+			tasks: [ 
+				#Write &{ fileName: "foo" },
+				#Write &{ fileName: "foo1" },
+				#Write &{ fileName: "bar" },
+				#Write &{ fileName: "bar1" },
+			]
 		}
 
 		keepFile: core.#Keep & {
