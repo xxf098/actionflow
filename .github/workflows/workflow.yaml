@@ -53,3 +53,4 @@ jobs:
           rm *.cue && cp ../workflow.cue ./
           sed -i '1 s/^.*$/package testcues/' workflow.cue
           ./flow do testAll
+          ./flow do testKeep
