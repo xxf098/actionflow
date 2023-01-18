@@ -30,7 +30,17 @@ package core
 	$dagger: task: _name: "Rm"
 
 	// Path to delete (handle wildcard)
-	// (e.g. /file.txt or /*.txt)
+	// (e.g. /file.txt or /*name.txt)
+	path: string | [...string]
+
+}
+
+// keep file or directory match path and remove other files
+#Keep: #Task & {
+	$dagger: task: _name: "Keep"
+
+	// Path to keep (handle wildcard)
+	// (e.g. /file.txt or /*name.txt)
 	path: string | [...string]
 
 }

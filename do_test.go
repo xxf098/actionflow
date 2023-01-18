@@ -190,3 +190,10 @@ func TestDeps1(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestKeep(t *testing.T) {
+	err := flowTest("./testcues/keep.cue", "keep")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
