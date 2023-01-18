@@ -37,7 +37,14 @@ actionflow.#Plan & {
 """]
 		}
 
+		testKeep: #GoTest & {
+			fileName: "keep", 
+			actionName: "keepFile", 
+			test: "test -f test1/foo.txt && test -f test1/foo1.txt"
+		}
+
 		testAll: core.#All & {
+			@$()
 			max: 1
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
@@ -55,7 +62,6 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "deps", actionName: "read", test: "" },
 				#GoTest & { fileName: "deps1", actionName: "all", test: "" },
 				#GoTest & { fileName: "mkdirs", actionName: "zero", test: "test -d zero/world && test -d yellow" },
-				#GoTest & { fileName: "keep", actionName: "keepFile", test: "test -f test1/foo.txt && test -f test1/foo1.txt" },
 			]
 		}
 	}
