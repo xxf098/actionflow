@@ -24,6 +24,7 @@ type keepTask struct {
 
 // keep files: /abc/def/*.txt
 // keep folder: /abc/def/hij/
+// FIXME: conflict
 func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	paths := []string{}
 	pValue := v.LookupPath(cue.ParsePath("path"))
