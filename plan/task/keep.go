@@ -54,7 +54,6 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		}
 	}
 
-	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg("get root dirs")
 	// get root dirs
 	dirs := []string{}
 	for _, v := range fullPaths {
@@ -71,7 +70,6 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		}
 	}
 
-	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg("skip")
 	// skip
 	if len(fullPaths) < 1 || len(dirs) < 1 {
 		value := compiler.NewValue()
@@ -79,20 +77,16 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 		return &output, nil
 	}
 
-	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg("sort dir by length")
 	// sort dir by length
 	sort.Slice(dirs, func(i, j int) bool {
 		return len(dirs[i]) < len(dirs[j])
 	})
 
-	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg("glob remove files")
 	// glob remove files
 	for _, dir := range dirs {
-		lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(dir)
 		patterns := []string{}
 		for _, path := range fullPaths {
 			if strings.HasPrefix(path, dir) {
-				lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(path)
 				patterns = append(patterns, path)
 			}
 		}
@@ -104,7 +98,6 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			continue
 		}
 		for _, f := range removeFiles {
-			lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(f)
 			os.RemoveAll(f)
 		}
 	}
