@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -21,6 +22,8 @@ func init() {
 type keepTask struct {
 }
 
+// keep files: /abc/def/*.txt
+// keep folder: /abc/def/hij/
 func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	paths := []string{}
 	pValue := v.LookupPath(cue.ParsePath("path"))
@@ -50,6 +53,10 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	fullPaths := []string{}
 	for _, path := range paths {
 		if p, err := filepath.Abs(path); err == nil {
+			// keep path Separator
+			if os.IsPathSeparator(path[len(path)-1]) {
+				p = fmt.Sprintf("%s%s", p, path[len(path)-1:])
+			}
 			fullPaths = append(fullPaths, p)
 		}
 	}
@@ -58,6 +65,10 @@ func (t *keepTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	dirs := []string{}
 	for _, v := range fullPaths {
 		dir := filepath.Dir(v)
+		// set /abc/def/ parent to /abc
+		if len(v) > 1 && os.IsPathSeparator(v[len(v)-1]) {
+			dir = filepath.Dir(dir)
+		}
 		found := false
 		for _, dir1 := range dirs {
 			if dir1 == dir {
@@ -115,7 +126,11 @@ func (t *keepTask) Name() string {
 
 func reverseGlob(rootDir string, patterns []string) ([]string, error) {
 	paths := []string{}
+	dir := ":"
 	filepath.WalkDir(rootDir, func(path string, d fs.DirEntry, err error) error {
+		if strings.HasPrefix(path, dir) {
+			return nil
+		}
 		if m, err := filepath.Match(rootDir, path); err != nil || m {
 			return nil
 		}
@@ -125,6 +140,15 @@ func reverseGlob(rootDir string, patterns []string) ([]string, error) {
 			if err != nil || m {
 				return nil
 			}
+			// /abc/def == /abc/def/
+			if os.IsPathSeparator(p[len(p)-1]) {
+				if strings.HasPrefix(path, p) || (d.IsDir() && fmt.Sprintf("%s%s", path, p[len(p)-1:]) == p) {
+					return nil
+				}
+			}
+		}
+		if d.IsDir() {
+			dir = fmt.Sprintf("%s%c", path, filepath.Separator)
 		}
 		paths = append(paths, path)
 		return nil

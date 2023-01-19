@@ -2,6 +2,7 @@ package actionflow
 
 import (
 	"fmt"
+	"path/filepath"
 	"testing"
 
 	"cuelang.org/go/cue"
@@ -196,4 +197,21 @@ func TestKeep(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestKeep1(t *testing.T) {
+	err := flowTest("./testcues/keep.cue", "keepSub")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestKeep2(t *testing.T) {
+	p := "/home/abc/github/def/sub/trials/*"
+	name := "/home/abc/github/def/sub/trials/abc.txt"
+	m, err := filepath.Match(p, name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(m)
 }

@@ -34,6 +34,10 @@ actionflow.#Plan & {
             @$()
 			path:  "./testkeep/foo*.txt"
 		}     
+
+		keepSub: core.#Keep & {
+			path:  "./sub/trials/"
+		}     
 	
 	}
 }
