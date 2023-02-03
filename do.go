@@ -14,7 +14,7 @@ import (
 	"github.com/xxf098/actionflow/plan/task"
 )
 
-func doInternal[T PlanLoader](ctx context.Context, p string, action string) error {
+func doPlan[T PlanLoader](ctx context.Context, p string, action string) error {
 	targetPath := getTargetPath([]string{action})
 	var t T
 	daggerPlan, err := t.load(ctx, p)
@@ -40,12 +40,12 @@ func Do(ctx context.Context, p string, action string) error {
 	// 	return err
 	// }
 	// return nil
-	return doInternal[DirPlanLoader](ctx, p, action)
+	return doPlan[DirPlanLoader](ctx, p, action)
 }
 
 // load one file
-func flowTest(cueFile string, action string) error {
-	return doInternal[FilePlanLoader](context.Background(), cueFile, action)
+func doFlowTest(cueFile string, action string) error {
+	return doPlan[FilePlanLoader](context.Background(), cueFile, action)
 }
 
 type PlanLoader interface {
@@ -93,22 +93,6 @@ func getTargetPath(args []string) cue.Path {
 	}
 	return cue.MakePath(selectors...)
 }
-
-// func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
-// 	absPlanPath, err := filepath.Abs(planPath)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	_, err = os.Stat(absPlanPath)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	os.Chdir(absPlanPath)
-// 	return plan.Load(ctx, plan.Config{
-// 		Args: []string{absPlanPath},
-// 	})
-// }
 
 // run a action in cue
 // TODO: run action with dependency

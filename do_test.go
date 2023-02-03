@@ -13,11 +13,11 @@ func TestWriteFile(t *testing.T) {
 }
 
 func TestWriteFile1(t *testing.T) {
-	flowTest("./testcues/writefile1.cue", "hello")
+	doFlowTest("./testcues/writefile1.cue", "hello")
 }
 
 func TestWriteFile2(t *testing.T) {
-	flowTest("./testcues/writefile2.cue", "hello")
+	doFlowTest("./testcues/writefile2.cue", "hello")
 }
 
 func TestExec(t *testing.T) {
@@ -36,42 +36,42 @@ func TestRmFile(t *testing.T) {
 }
 
 func TestRmFileWildcard(t *testing.T) {
-	err := flowTest("./testcues/rmfile.cue", "test.rmWildcard.verify")
+	err := doFlowTest("./testcues/rmfile.cue", "test.rmWildcard.verify")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestRmDir(t *testing.T) {
-	err := flowTest("./testcues/rmfile.cue", "test.rmDir.verify")
+	err := doFlowTest("./testcues/rmfile.cue", "test.rmDir.verify")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestRmMulti(t *testing.T) {
-	err := flowTest("./testcues/rmfile.cue", "test.rmMulti.rm")
+	err := doFlowTest("./testcues/rmfile.cue", "test.rmMulti.rm")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestMkDir1(t *testing.T) {
-	err := flowTest("./testcues/mkdir1.cue", "readChecker")
+	err := doFlowTest("./testcues/mkdir1.cue", "readChecker")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestMkDirs(t *testing.T) {
-	err := flowTest("./testcues/mkdirs.cue", "zero")
+	err := doFlowTest("./testcues/mkdirs.cue", "zero")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestMkDirParent(t *testing.T) {
-	err := flowTest("./testcues/mkdir_parents.cue", "readChecker")
+	err := doFlowTest("./testcues/mkdir_parents.cue", "readChecker")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -95,112 +95,112 @@ func TestGitCheckout(t *testing.T) {
 }
 
 func TestWorkDir(t *testing.T) {
-	err := flowTest("./testcues/exec/workdir.cue", "verify")
+	err := doFlowTest("./testcues/exec/workdir.cue", "verify")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestEnv(t *testing.T) {
-	err := flowTest("./testcues/exec/env.cue", "verify")
+	err := doFlowTest("./testcues/exec/env.cue", "verify")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestArgs(t *testing.T) {
-	err := flowTest("./testcues/exec/args.cue", "verify")
+	err := doFlowTest("./testcues/exec/args.cue", "verify")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestOutput(t *testing.T) {
-	err := flowTest("./testcues/exec/output.cue", "save")
+	err := doFlowTest("./testcues/exec/output.cue", "save")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestThen(t *testing.T) {
-	err := flowTest("./testcues/then.cue", "mkdir")
+	err := doFlowTest("./testcues/then.cue", "mkdir")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestThen1(t *testing.T) {
-	err := flowTest("./testcues/then.cue", "gitrm")
+	err := doFlowTest("./testcues/then.cue", "gitrm")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestThen2(t *testing.T) {
-	err := flowTest("./testcues/then.cue", "clone")
+	err := doFlowTest("./testcues/then.cue", "clone")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestAll(t *testing.T) {
-	err := flowTest("./testcues/all.cue", "writeAll")
+	err := doFlowTest("./testcues/all.cue", "writeAll")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestStep(t *testing.T) {
-	err := flowTest("./testcues/step.cue", "setup")
+	err := doFlowTest("./testcues/step.cue", "setup")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestStdout(t *testing.T) {
-	err := flowTest("./testcues/stdout.cue", "print")
+	err := doFlowTest("./testcues/stdout.cue", "print")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestReadfile(t *testing.T) {
-	err := flowTest("./testcues/attr.cue", "hellofile")
+	err := doFlowTest("./testcues/attr.cue", "hellofile")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestAPICall(t *testing.T) {
-	err := flowTest("./testcues/api.cue", "print")
+	err := doFlowTest("./testcues/api.cue", "print")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestDeps(t *testing.T) {
-	err := flowTest("./testcues/deps.cue", "read")
+	err := doFlowTest("./testcues/deps.cue", "read")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestDeps1(t *testing.T) {
-	err := flowTest("./testcues/deps1.cue", "all")
+	err := doFlowTest("./testcues/deps1.cue", "all")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestKeep(t *testing.T) {
-	err := flowTest("./testcues/keep.cue", "keepFile")
+	err := doFlowTest("./testcues/keep.cue", "keepFile")
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestKeep1(t *testing.T) {
-	err := flowTest("./testcues/keep.cue", "keepSub")
+	err := doFlowTest("./testcues/keep.cue", "keepSub")
 	if err != nil {
 		t.Fatal(err)
 	}
