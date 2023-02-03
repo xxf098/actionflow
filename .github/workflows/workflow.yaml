@@ -18,7 +18,7 @@ jobs:
       - name: Setup actionflow
         uses: xxf098/setup-actionflow@v3
         with:
-          flow-version: 'v0.6.0'
+          flow-version: 'v0.7.0'
       - name: Pre
         run: |
           # wget -q https://github.com/xxf098/actionflow/releases/download/v0.5.10/flow-linux-amd64-v0.5.10.zip
@@ -42,6 +42,7 @@ jobs:
           ENDD
           mv ./cue ../ 
           flow do build
+          flow do testFuncs
           
       - name: Test
         run: |
@@ -54,4 +55,3 @@ jobs:
           sed -i '1 s/^.*$/package testcues/' workflow.cue
           ./flow do testAll
           ./flow do testKeep
-          ./flow do testFuncs
