@@ -21,6 +21,15 @@ import (
 """]
 }
 
+#TestFunc: core.#Exec & {
+	name: string
+	cmd: ["sh", "-c", """
+go test -run \(name)
+"""]
+}
+
+funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun"]
+
 actionflow.#Plan & {
 	actions: {
 		setup: core.#Step & {
@@ -63,6 +72,11 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "deps1", actionName: "all", test: "" },
 				#GoTest & { fileName: "mkdirs", actionName: "zero", test: "test -d zero/world && test -d yellow" },
 			]
+		}
+
+		testFuncs: core.#All & {
+			max: 3
+			tasks: [ for f in funcs { #TestFunc & { name: f } } ]
 		}
 	}
 }
