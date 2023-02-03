@@ -9,7 +9,10 @@ import (
 )
 
 func TestWriteFile(t *testing.T) {
-	doTest("./testcues/writefile.cue", "hello")
+	err := doFlowTest("./testcues/writefile.cue", "hello")
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestWriteFile1(t *testing.T) {
@@ -21,15 +24,21 @@ func TestWriteFile2(t *testing.T) {
 }
 
 func TestExec(t *testing.T) {
-	doTest("./testcues/exec.cue", "touch")
+	err := doFlowTest("./testcues/exec.cue", "touch")
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestRun(t *testing.T) {
-	doTest("./testcues/exec.cue", "touchRun")
+	err := doFlowTest("./testcues/exec.cue", "touchRun")
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestRmFile(t *testing.T) {
-	_, err := doTest("./testcues/rmfile.cue", "test.rmFile.verify")
+	err := doFlowTest("./testcues/rmfile.cue", "test.rmFile.verify")
 	if err != nil {
 		t.Fatal(err)
 	}
