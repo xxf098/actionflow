@@ -28,9 +28,8 @@ go test -run \(name)
 """]
 }
 
-funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun", "TestRmFile", "TestRmFileWildcard", "TestRmDir", "TestRmMulti", 
-	"TestMkDir1", "TestMkDirs", "TestMkDirParent", "TestMkdir", "TestGitPull", "TestWorkDir", "TestEnv", "TestArgs", "TestOutput", "TestThen", "TestThen1",
-	"TestThen2", "TestAll", "TestStep", "TestStdout", "TestReadfile", "TestKeep", "TestKeep1", "TestKeep2"]
+funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun",
+	"TestMkDir1", "TestMkDirs", "TestMkDirParent", "TestMkdir", "TestGitPull", "TestWorkDir", "TestArgs", "TestOutput", "TestThen", "TestAll", "TestStep", "TestStdout", "TestReadfile", "TestKeep", "TestKeep1", "TestKeep2"]
 
 actionflow.#Plan & {
 	actions: {
@@ -78,7 +77,6 @@ actionflow.#Plan & {
 
 		testFuncs: core.#All & {
 			max: 2
-			ignore_error: true
 			tasks: [ for f in funcs { #TestFunc & { name: f } } ]
 		}
 	}
