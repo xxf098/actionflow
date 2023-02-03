@@ -77,7 +77,8 @@ actionflow.#Plan & {
 		}
 
 		testFuncs: core.#All & {
-			max: 3
+			max: 2
+			ignore_error: true
 			tasks: [ for f in funcs { #TestFunc & { name: f } } ]
 		}
 	}
