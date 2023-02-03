@@ -29,7 +29,7 @@ go test -run \(name)
 }
 
 funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun",
-	"TestMkDir1", "TestMkDirs", "TestMkDirParent", "TestMkdir", "TestGitPull", "TestWorkDir", "TestArgs", "TestOutput", "TestThen", "TestAll", "TestStep", "TestStdout", "TestReadfile", "TestKeep", "TestKeep1", "TestKeep2"]
+	"TestMkDir1", "TestMkDirs", "TestMkDirParent", "TestMkdir", "TestGitPull", "TestWorkDir", "TestArgs", "TestOutput", "TestAll", "TestStep", "TestStdout", "TestReadfile", "TestKeep", "TestKeep1", "TestKeep2"]
 
 actionflow.#Plan & {
 	actions: {

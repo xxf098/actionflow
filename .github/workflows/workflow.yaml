@@ -38,7 +38,7 @@ jobs:
             return checkCycle(a)
           }
           ENDD
-          mv ./cue ../ 
+          mv ./cue ../
           flow do build
           
       - name: Test
