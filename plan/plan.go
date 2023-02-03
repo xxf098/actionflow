@@ -67,3 +67,7 @@ func (p *Plan) Do(ctx context.Context, path cue.Path) error {
 	err := r.Run(ctx, p.source)
 	return err
 }
+
+func NewPlan(v cue.Value) *Plan {
+	return &Plan{config: Config{}, source: v}
+}

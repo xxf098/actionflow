@@ -14,10 +14,10 @@ import (
 	"github.com/xxf098/actionflow/plan/task"
 )
 
-// load files in dir
-func Do(ctx context.Context, dir string, action string) error {
+func doInternal[T PlanLoader](ctx context.Context, p string, action string) error {
 	targetPath := getTargetPath([]string{action})
-	daggerPlan, err := loadPlan(ctx, dir)
+	var t T
+	daggerPlan, err := t.load(ctx, p)
 	if err != nil {
 		return err
 	}
@@ -28,32 +28,34 @@ func Do(ctx context.Context, dir string, action string) error {
 	return nil
 }
 
+// load files in dir path
+func Do(ctx context.Context, p string, action string) error {
+	// targetPath := getTargetPath([]string{action})
+	// daggerPlan, err := loadPlan(ctx, p)
+	// if err != nil {
+	// 	return err
+	// }
+	// err = daggerPlan.Do(ctx, targetPath)
+	// if err != nil {
+	// 	return err
+	// }
+	// return nil
+	return doInternal[DirPlanLoader](ctx, p, action)
+}
+
 // load one file
 func flowTest(cueFile string, action string) error {
-
-	v := plan.LoadFile(cueFile)
-	if v.Err() != nil {
-		return v.Err()
-	}
-	iter, _ := v.Fields()
-	for iter.Next() {
-		fmt.Println(iter.Label())
-	}
-	targetPath := getTargetPath([]string{action})
-	runner := plan.NewRunner(targetPath)
-	err := runner.Run(context.Background(), v)
-	return err
+	return doInternal[FilePlanLoader](context.Background(), cueFile, action)
 }
 
-func getTargetPath(args []string) cue.Path {
-	selectors := []cue.Selector{plan.ActionSelector}
-	for _, arg := range args {
-		selectors = append(selectors, cue.Str(arg))
-	}
-	return cue.MakePath(selectors...)
+type PlanLoader interface {
+	load(ctx context.Context, p string) (*plan.Plan, error)
 }
 
-func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
+type DirPlanLoader struct {
+}
+
+func (l DirPlanLoader) load(ctx context.Context, planPath string) (*plan.Plan, error) {
 	absPlanPath, err := filepath.Abs(planPath)
 	if err != nil {
 		return nil, err
@@ -68,6 +70,45 @@ func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
 		Args: []string{absPlanPath},
 	})
 }
+
+type FilePlanLoader struct {
+}
+
+func (l FilePlanLoader) load(ctx context.Context, cueFile string) (*plan.Plan, error) {
+	v := plan.LoadFile(cueFile)
+	if v.Err() != nil {
+		return nil, v.Err()
+	}
+	iter, _ := v.Fields()
+	for iter.Next() {
+		fmt.Println(iter.Label())
+	}
+	return plan.NewPlan(v), nil
+}
+
+func getTargetPath(args []string) cue.Path {
+	selectors := []cue.Selector{plan.ActionSelector}
+	for _, arg := range args {
+		selectors = append(selectors, cue.Str(arg))
+	}
+	return cue.MakePath(selectors...)
+}
+
+// func loadPlan(ctx context.Context, planPath string) (*plan.Plan, error) {
+// 	absPlanPath, err := filepath.Abs(planPath)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	_, err = os.Stat(absPlanPath)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	os.Chdir(absPlanPath)
+// 	return plan.Load(ctx, plan.Config{
+// 		Args: []string{absPlanPath},
+// 	})
+// }
 
 // run a action in cue
 // TODO: run action with dependency
