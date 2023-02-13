@@ -65,6 +65,13 @@ func TestRmMulti(t *testing.T) {
 	}
 }
 
+func TestRm1(t *testing.T) {
+	err := doFlowTest("./testcues/rm1.cue", "readChecker")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestMkDir1(t *testing.T) {
 	err := doFlowTest("./testcues/mkdir1.cue", "readChecker")
 	if err != nil {
