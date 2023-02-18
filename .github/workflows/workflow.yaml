@@ -47,12 +47,10 @@ jobs:
           
       - name: Test
         run: |
-          rm -rf cue.mod
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
           ./flow init &&  ./flow update
           ./flow do mkdir
           test -d ./hello
-          rm *.cue && cp ../workflow.cue ./
-          sed -i '1 s/^.*$/package testcues/' workflow.cue
-          ./flow do testKeep
+          rm *.cue
+          cp ../testcues/all.cue && ./flow do writeAll && rm *.cue
