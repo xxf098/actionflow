@@ -9,14 +9,13 @@ import (
 #GoTest: core.#Exec & {
 	fileName: string
 	actionName: string
-	test: string
- 
+	test: string 
 	cmd: ["sh", "-c", """
-	rm *.cue
+	ls
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)
-	rm *.cue
+	rm \(fileName).cue
 """]
 }
 
