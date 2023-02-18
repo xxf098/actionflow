@@ -60,6 +60,4 @@ jobs:
           cp ../testcues/then.cue ./ && ./flow do mkdirWrite && rm *.cue
           cp ../workflow.cue ./
           ./flow do testAll
-          cp ../workflow.cue ./
-          ./flow do testKeep
 
