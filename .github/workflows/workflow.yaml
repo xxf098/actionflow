@@ -47,6 +47,7 @@ jobs:
           
       - name: Test
         run: |
+          rm -rf cue.mod
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
           ./flow init &&  ./flow update
