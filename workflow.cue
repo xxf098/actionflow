@@ -63,6 +63,7 @@ actionflow.#Plan & {
 				#GoTest & { fileName: "exec/run", actionName: "save", test: "test -f ./runoutput.txt" },
 				#GoTest & { fileName: "exec/env", actionName: "verifyEnv", test: "" },
 				#GoTest & { fileName: "exec/workdir", actionName: "verify", test: "" },
+				#GoTest & { fileName: "then", actionName: "mkdirWrite", test: "test -f ./test/foo4" },
 				#GoTest & { fileName: "mkdir_parents", actionName: "writeChecker", test: "test -f ./test/baz/foo" },
 				#GoTest & { fileName: "all", actionName: "writeAll", test: "test -f ./testt/foo1 && test -f ./testt/foo2" },
 				#GoTest & { fileName: "git", actionName: "actionflow", test: "test -f ./actionflow/go.mod && test -f ./actionflow/workflow.cue" },

@@ -10,15 +10,11 @@ actionflow.#Plan & {
 
 		mkdirWrite: core.#Mkdir & {
 			path:  "./test"
-            then: [core.#WriteFile & {
+            then: core.#WriteFile & {
                 path:        "./test/foo4"
                 contents:    "bar"
                 permissions: 700
-            }, core.#WriteFile & {
-                path:        "./test/foo5"
-                contents:    "bar1"
-                permissions: 700
-            }]
+            }
 		}
 
         gitrm: core.#Git & {
