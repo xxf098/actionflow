@@ -158,25 +158,43 @@ func Then(ctx context.Context, v *cue.Value) error {
 	}
 	tk := tv.Kind()
 	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
-		lg := log.Ctx(ctx)
-		task, err := Lookup(&tv)
+		return runThenTask(ctx, tv, isBackground)
+	}
+
+	// list tasks
+	if tv.IncompleteKind().IsAnyOf(cue.ListKind) {
+		iter, err := tv.List()
 		if err != nil {
-			lg.Error().Err(err).Str("task", v.Path().String()).Msg(task.Name())
 			return err
-		} else {
-			if isBackground {
-				go func() {
-					if _, err := task.Run(ctx, &tv); err != nil {
-						lg.Error().Err(err).Str("task", v.Path().String()).Msg(task.Name())
-					}
-				}()
-			}
-			_, err := task.Run(ctx, &tv)
-			if err != nil {
-				return err
-			}
+		}
+		for iter.Next() {
+			v := iter.Value()
+			runThenTask(ctx, v, isBackground)
 		}
 	}
 
+	return nil
+}
+
+func runThenTask(ctx context.Context, tv cue.Value, isBackground bool) error {
+	lg := log.Ctx(ctx)
+	task, err := Lookup(&tv)
+	if err != nil {
+		lg.Error().Err(err).Str("task", tv.Path().String()).Msg(task.Name())
+		return err
+	} else {
+		if isBackground {
+			go func() {
+				if _, err := task.Run(ctx, &tv); err != nil {
+					lg.Error().Err(err).Str("task", tv.Path().String()).Msg(task.Name())
+				}
+			}()
+			return nil
+		}
+		_, err := task.Run(ctx, &tv)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }

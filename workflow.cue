@@ -28,7 +28,7 @@ go test -run \(name)
 """]
 }
 
-funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun", "TestRm1",
+funcs: ["TestWriteFile", "TestWriteFile1", "TestWriteFile2", "TestExec", "TestRun", "TestRm1", TestThen,
 	"TestMkDir1", "TestMkDirs", "TestMkDirParent", "TestMkdir", "TestGitPull", "TestWorkDir", "TestArgs", "TestOutput", "TestAll", "TestStep", "TestStdout", "TestReadfile", "TestKeep", "TestKeep1", "TestKeep2"]
 
 actionflow.#Plan & {

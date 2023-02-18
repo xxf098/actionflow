@@ -139,7 +139,7 @@ func TestOutput(t *testing.T) {
 }
 
 func TestThen(t *testing.T) {
-	err := doFlowTest("./testcues/then.cue", "mkdir")
+	err := doFlowTest("./testcues/then.cue", "mkdirWrite")
 	if err != nil {
 		t.Fatal(err)
 	}

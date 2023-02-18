@@ -5,7 +5,7 @@ package core
 	$dagger: task: _name: string
 	input: 		_
 	output: string @dagger(generated)
-	then: 	null | #Task
+	then: 	null | #Task | [...#Task]
 	// run task in background
 	then_: 	null | #Task
     ...
@@ -17,5 +17,5 @@ package core
 	ignore_error: bool | *false
 	// api limit
 	max: int | *0
-	tasks: 		[...#Task]
+	tasks: 	[...#Task]
 }
