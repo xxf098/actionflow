@@ -54,5 +54,4 @@ jobs:
           ./flow do mkdir
           test -d ./hello
           rm *.cue && cp ../workflow.cue ./
-          sed -i '1 s/^.*$/package testcues/' workflow.cue
           ./flow do testKeep

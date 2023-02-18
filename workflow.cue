@@ -12,7 +12,7 @@ import (
 	test: string
  
 	cmd: ["sh", "-c", """
-	rm workflow.cue
+	rm *.cue
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)
