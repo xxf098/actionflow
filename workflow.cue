@@ -55,7 +55,7 @@ actionflow.#Plan & {
 		rmWokflow: core.#Rm & { path: "./workflow.cue" }
 
 		testAll: core.#All & {
-			$rmWokflow()
+			@$rmWokflow()
 			max: 1
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
