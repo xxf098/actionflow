@@ -159,10 +159,7 @@ func Then(ctx context.Context, v *cue.Value) error {
 	tk := tv.Kind()
 	if tk.IsAnyOf(cue.StructKind) && tv.IsConcrete() {
 		return runThenTask(ctx, tv, isBackground)
-	}
-
-	// list tasks
-	if tv.IncompleteKind().IsAnyOf(cue.ListKind) {
+	} else if tv.IncompleteKind().IsAnyOf(cue.ListKind) {
 		iter, err := tv.List()
 		if err != nil {
 			return err
