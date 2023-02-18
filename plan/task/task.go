@@ -180,13 +180,13 @@ func runThenTask(ctx context.Context, tv cue.Value, isBackground bool) error {
 	lg := log.Ctx(ctx)
 	task, err := Lookup(&tv)
 	if err != nil {
-		lg.Error().Err(err).Str("task", tv.Path().String()).Msg(task.Name())
+		lg.Error().Err(err).Str("then task", tv.Path().String()).Msg(task.Name())
 		return err
 	} else {
 		if isBackground {
 			go func() {
 				if _, err := task.Run(ctx, &tv); err != nil {
-					lg.Error().Err(err).Str("task", tv.Path().String()).Msg(task.Name())
+					lg.Error().Err(err).Str("then task", tv.Path().String()).Msg(task.Name())
 				}
 			}()
 			return nil
