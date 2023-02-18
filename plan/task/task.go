@@ -165,8 +165,7 @@ func Then(ctx context.Context, v *cue.Value) error {
 			return err
 		}
 		for iter.Next() {
-			v := iter.Value()
-			if err := runThenTask(ctx, v, isBackground); err != nil {
+			if err := runThenTask(ctx, iter.Value(), isBackground); err != nil {
 				return err
 			}
 		}
