@@ -42,11 +42,10 @@ jobs:
           flow do build
 
       - name: Test Funcs
-        if: false
         run: |
           flow do testFuncs 
           
-      - name: Test
+      - name: Test(Reference Cycle)
         run: |
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
@@ -61,4 +60,5 @@ jobs:
           cp ../testcues/then.cue ./ && ./flow do mkdirWrite && rm *.cue
           cp ../workflow.cue ./
           ./flow do testAll
+          ./flow do testKeep
 
