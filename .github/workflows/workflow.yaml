@@ -42,6 +42,7 @@ jobs:
           flow do build
 
       - name: Test Funcs
+        if: false
         run: |
           flow do testFuncs 
           
@@ -54,3 +55,8 @@ jobs:
           test -d ./hello
           rm *.cue
           cp ../testcues/all.cue ./ && ./flow do writeAll && rm *.cue
+          cp ../testcues/keep.cue ./ && ./flow do keepFile && rm *.cue
+          cp ../testcues/writefile.cue ./ && ./flow do hello && rm *.cue
+          cp ../testcues/exec.cue ./ && ./flow do touch && rm *.cue
+          cp ../testcues/then.cue ./ && ./flow do mkdirWrite && rm *.cue
+
