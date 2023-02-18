@@ -25,7 +25,7 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 	pValue := v.LookupPath(cue.ParsePath("path"))
 	lg := log.Ctx(ctx)
 	start := time.Now()
-	if pValue.IncompleteKind().IsAnyOf(cue.ListKind) {
+	if pValue.IncompleteKind().IsAnyOf(cue.ListKind) && pValue.IsConcrete() {
 		iter, err := pValue.List()
 		if err != nil {
 			return nil, err
