@@ -40,10 +40,13 @@ jobs:
           ENDD
           mv ./cue ../
           flow do build
+
+      - name: Test Funcs
+        run: |
+          flow do testFuncs 
           
       - name: Test
         run: |
-          flow do testFuncs 
           mkdir temp1;mv ./cmd/flow ./temp1
           cd temp1
           ./flow init &&  ./flow update
