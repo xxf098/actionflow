@@ -11,7 +11,6 @@ import (
 	actionName: string
 	test: string 
 	cmd: ["sh", "-c", """
-	rm workflow.cue
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)
@@ -53,7 +52,10 @@ actionflow.#Plan & {
 			test: "test -f testkeep/foo.txt && test -f testkeep/foo1.txt"
 		}
 
+		rmWokflow: core.#Rm & { path: "./workflow.cue" }
+
 		testAll: core.#All & {
+			$rmWokflow()
 			max: 1
 			tasks: [
 				#GoTest & { fileName: "writefile", actionName: "hello", test: "test -f hello-fileName.txt" },
