@@ -14,7 +14,7 @@ import (
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)
-	rm \(fileName).cue
+	rm *.cue
 """]
 }
 
