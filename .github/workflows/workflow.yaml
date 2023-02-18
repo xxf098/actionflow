@@ -59,4 +59,6 @@ jobs:
           cp ../testcues/writefile.cue ./ && ./flow do hello && rm *.cue
           cp ../testcues/exec.cue ./ && ./flow do touch && rm *.cue
           cp ../testcues/then.cue ./ && ./flow do mkdirWrite && rm *.cue
+          cp ../workflow.cue ./
+          ./flow do testAll
 

@@ -11,7 +11,7 @@ import (
 	actionName: string
 	test: string 
 	cmd: ["sh", "-c", """
-	ls
+	rm workflow.cue
 	cp ../testcues/\(fileName).cue ./
 	./flow do \(actionName)
 	\(test)

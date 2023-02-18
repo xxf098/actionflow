@@ -5,7 +5,7 @@ package core
 	$dagger: task: _name: string
 	input: 		_
 	output: string @dagger(generated)
-	then: [...#Task] | *[]
+	then: null | #Task
 	// run task in background
 	then_: 	null | #Task
     ...
