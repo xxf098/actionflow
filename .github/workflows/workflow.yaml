@@ -53,4 +53,4 @@ jobs:
           ./flow do mkdir
           test -d ./hello
           rm *.cue
-          cp ../testcues/all.cue && ./flow do writeAll && rm *.cue
+          cp ../testcues/all.cue ./ && ./flow do writeAll && rm *.cue
