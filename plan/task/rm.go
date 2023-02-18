@@ -69,8 +69,10 @@ func (t *rmTask) Run(ctx context.Context, v *cue.Value) (*cue.Value, error) {
 			return nil, err
 		}
 	}
+	defer func() {
+		Then(ctx, v)
+	}()
 	lg.Info().Dur("duration", time.Since(start)).Str("task", v.Path().String()).Msg(t.Name())
-	Then(ctx, v)
 	value := compiler.NewValue()
 	output := value.FillPath(cue.ParsePath("output"), paths[0])
 	return &output, nil
