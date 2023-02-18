@@ -166,6 +166,13 @@ func TestAll(t *testing.T) {
 	}
 }
 
+func TestEach(t *testing.T) {
+	err := doFlowTest("./testcues/each.cue", "writeEach")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestStep(t *testing.T) {
 	err := doFlowTest("./testcues/step.cue", "setup")
 	if err != nil {

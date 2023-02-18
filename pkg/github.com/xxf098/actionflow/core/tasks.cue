@@ -19,3 +19,8 @@ package core
 	max: int | *0
 	tasks: 	[...#Task]
 }
+
+
+#Each: #All & {
+	max: 1
+}
